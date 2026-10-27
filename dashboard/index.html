@@ -1,60 +1,255 @@
 <!doctype html>
-<html lang="en">
+<html lang="fil">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kuwenturo — Dashboard</title>
+  <title>Dashboard — Kuwenturo</title>
+  <script>
+    // Signed-out visitors go to the sign-in page before anything renders
+    (() => {
+      let session = null;
+      try { session = sessionStorage.getItem('kuwenturo.session'); } catch { /* storage unavailable */ }
+      if (!session) location.replace('../login/index.html');
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../design-system/tokens.css">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--color-ivory);
-      color: var(--color-dark-blue);
-      font-family: var(--font-body);
-      font-size: var(--text-body);
-      line-height: var(--leading-body);
-    }
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 24px;
-      background: var(--gradient-nav);
-      color: #fff;
-    }
-    .nav-brand { font-family: var(--font-display); font-size: var(--text-h5); }
-    .logout {
-      padding: 0;
-      border: 0;
-      background: none;
-      color: #fff;
-      font: inherit;
-      font-weight: var(--font-weight-bold);
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      cursor: pointer;
-    }
-    .logout:focus-visible { outline: var(--stroke-focus) solid #A4A4A4; outline-offset: 3px; }
-    main { padding: 32px 16px; max-width: 1280px; margin: 0 auto; }
-  </style>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <nav class="nav">
-    <span class="nav-brand">Kuwenturo</span>
-    <button type="button" class="logout" id="logout">Log out</button>
-  </nav>
-  <main id="dashboard"></main>
-  <script>
-    document.getElementById('logout').addEventListener('click', () => {
-      try { sessionStorage.removeItem('kuwenturo.session'); } catch { /* storage unavailable */ }
-      window.location.href = '../login/index.html';
-    });
-  </script>
+  <a class="skip-link" href="#main">Lumaktaw sa nilalaman</a>
+
+  <!-- Figma 4495:13285 BG 1 -->
+  <div class="bg" aria-hidden="true"><div class="bg-frame"><img src="assets/bg.png" alt=""></div></div>
+
+  <div class="app" id="app">
+    <!-- Figma 4495:13787 NAV BAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Pangunahing menu">
+      <div class="sidebar-top">
+        <div class="sidebar-head">
+          <a class="emblem" href="#/" aria-label="Kuwenturo — Dashboard">
+            <img src="assets/emblem.svg" width="13" height="13" alt="">
+          </a>
+          <button type="button" class="collapse-btn" id="collapse-btn" aria-controls="sidebar" aria-expanded="true">
+            <img src="assets/icon-collapse.svg" width="11" height="11" alt="">
+            <span class="sr-only" id="collapse-label">Paliitin ang sidebar</span>
+          </button>
+        </div>
+
+        <nav aria-label="Mga bahagi">
+          <ul class="nav-list">
+            <li>
+              <a class="nav-link" href="#/" data-route="dashboard">
+                <span class="nav-icon-slot"><span class="nav-icon">
+                  <span class="nav-box"></span>
+                  <span class="glyph glyph-home">
+                    <span class="part home-body"><img src="assets/nav-home-body.svg" alt=""></span>
+                    <span class="part home-shape1"></span>
+                    <span class="part home-shape2"><span></span></span>
+                  </span>
+                </span></span>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#/gabay-aralin" data-route="gabay-aralin">
+                <span class="nav-icon-slot"><span class="nav-icon">
+                  <span class="nav-box"></span>
+                  <span class="glyph glyph-std">
+                    <span class="part gabay-body"><img src="assets/nav-gabay-body.svg" alt=""></span>
+                    <img class="part gabay-shape1" src="assets/nav-gabay-shape1.svg" alt="">
+                    <img class="part gabay-shape2" src="assets/nav-gabay-shape2.svg" alt="">
+                  </span>
+                </span></span>
+                <span class="nav-label">Gabay Aralin</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#/lakbay-aralin" data-route="lakbay-aralin">
+                <span class="nav-icon-slot"><span class="nav-icon">
+                  <span class="nav-box"></span>
+                  <span class="glyph glyph-std">
+                    <span class="part lakbay-body"><img src="assets/nav-lakbay-body.svg" alt=""></span>
+                    <img class="part lakbay-shape1" src="assets/nav-lakbay-shape1.svg" alt="">
+                    <img class="part lakbay-shape2" src="assets/nav-lakbay-shape2.svg" alt="">
+                  </span>
+                </span></span>
+                <span class="nav-label">Lakbay Aralin</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#/tulong-aralin" data-route="tulong-aralin">
+                <span class="nav-icon-slot"><span class="nav-icon">
+                  <span class="nav-box"></span>
+                  <span class="glyph glyph-calendar">
+                    <img class="part tulong-body" src="assets/nav-tulong-body.svg" alt="">
+                    <span class="part tulong-ring tulong-ring1"></span>
+                    <span class="part tulong-ring tulong-ring2"></span>
+                    <span class="part tulong-page"></span>
+                    <span class="part tulong-line tulong-line1"><span></span></span>
+                    <span class="part tulong-line tulong-line2"><span></span></span>
+                  </span>
+                </span></span>
+                <span class="nav-label">Tulong Aralin</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#/guro-konek" data-route="guro-konek">
+                <span class="nav-icon-slot"><span class="nav-icon">
+                  <span class="nav-box"></span>
+                  <span class="glyph glyph-std">
+                    <img class="part konek-body" src="assets/nav-konek-body.svg" alt="">
+                    <img class="part konek-shape1" src="assets/nav-konek-shape1.svg" alt="">
+                    <img class="part konek-shape2" src="assets/nav-konek-shape2.svg" alt="">
+                    <img class="part konek-shape3" src="assets/nav-konek-shape3.svg" alt="">
+                  </span>
+                </span></span>
+                <span class="nav-label">Guro Konek</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="sidebar-foot">
+        <button type="button" class="nav-link help-btn" data-open="help-dialog">
+          <span class="nav-icon-slot"><img src="assets/icon-help.svg" width="17" height="17" alt=""></span>
+          <span class="nav-label">Tulong sa Paggamit</span>
+        </button>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim" hidden></div>
+
+    <div class="stage" id="stage">
+      <!-- Figma 4495:13449 TOP BUTTONS -->
+      <header class="topbar">
+        <button type="button" class="menu-btn" id="menu-btn" aria-controls="sidebar" aria-expanded="false">
+          <span class="menu-bars" aria-hidden="true"></span>
+          <span class="sr-only">Buksan ang menu</span>
+        </button>
+
+        <div class="top-actions">
+          <button type="button" class="icon-btn btn-search" data-open="search-dialog">
+            <span class="art-search" aria-hidden="true"><span><img src="assets/btn-search.svg" alt=""></span></span>
+            <span class="sr-only">Maghanap</span>
+          </button>
+
+          <div class="popover-wrap">
+            <button type="button" class="icon-btn btn-bell" aria-expanded="false" aria-controls="notif-panel">
+              <span class="art-bell" aria-hidden="true">
+                <span class="bell-circle"><img src="assets/btn-bell-circle.svg" alt=""></span>
+                <span class="bell-gloss"><img src="assets/btn-bell-gloss.svg" alt=""></span>
+                <span class="bell-dot"><img src="assets/btn-bell-dot.svg" alt=""></span>
+                <img class="bell-icon" src="assets/icon-bell.svg" alt="">
+              </span>
+              <span class="sr-only">Mga abiso</span>
+            </button>
+            <div class="popover" id="notif-panel" hidden>
+              <h2 class="popover-title">Mga Abiso</h2>
+              <p class="popover-empty">Wala kang bagong abiso.</p>
+            </div>
+          </div>
+
+          <div class="popover-wrap">
+            <button type="button" class="icon-btn btn-profile" aria-expanded="false" aria-controls="profile-panel">
+              <span class="art-profile" aria-hidden="true"><span><img src="assets/btn-profile.svg" alt=""></span></span>
+              <span class="sr-only">Profile</span>
+            </button>
+            <div class="popover" id="profile-panel" hidden>
+              <h2 class="popover-title">Profile</h2>
+              <p class="popover-sub" id="profile-who"></p>
+              <button type="button" class="logout-btn" id="logout">Mag-log out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="main" tabindex="-1">
+        <!-- Dashboard view -->
+        <div class="content" id="view-dashboard">
+          <!-- Figma 4495:13865 JEEP CARD 1 -->
+          <h1 class="hero-sign">
+            <img src="assets/sign.png" width="1071" height="572" alt="Tara, Kuwentuhan at Turo Tayo!">
+          </h1>
+
+          <section class="section" aria-labelledby="aralin-heading">
+            <div class="section-head">
+              <h2 id="aralin-heading" class="section-title">Mga Aralin</h2>
+              <!-- Figma 4495:13286 NAANTALA BUTTON -->
+              <div class="segmented" role="group" aria-label="Ipakita ang mga aralin">
+                <button type="button" class="seg-btn" data-filter="naantala" aria-pressed="true">Naantala</button>
+                <button type="button" class="seg-btn" data-filter="natapos" aria-pressed="false">Natapos</button>
+              </div>
+            </div>
+            <div class="lessons-wrap">
+              <ul class="lessons" id="lessons"></ul>
+              <p class="empty" id="lessons-empty" hidden></p>
+            </div>
+          </section>
+
+          <section class="section" aria-labelledby="iskedyul-heading">
+            <div class="section-head">
+              <h2 id="iskedyul-heading" class="section-title">Iskedyul Ngayong Linggo</h2>
+              <!-- Figma 4495:13291 DATE BUTTON -->
+              <div class="week-nav">
+                <button type="button" class="week-arrow week-prev" id="week-prev">
+                  <img src="assets/chevron.svg" width="24" height="24" alt="">
+                  <span class="sr-only">Nakaraang linggo</span>
+                </button>
+                <p class="week-label" id="week-label" aria-live="polite"></p>
+                <button type="button" class="week-arrow week-next" id="week-next">
+                  <img src="assets/chevron.svg" width="24" height="24" alt="">
+                  <span class="sr-only">Susunod na linggo</span>
+                </button>
+              </div>
+            </div>
+            <ul class="schedule" id="schedule"></ul>
+            <p class="empty" id="schedule-empty" hidden>Walang naka-iskedyul na aralin sa linggong ito.</p>
+          </section>
+        </div>
+
+        <!-- Section and lesson pages -->
+        <div class="content" id="view-page" hidden>
+          <article class="page-card">
+            <a class="back-link" href="#/">← Bumalik sa Dashboard</a>
+            <p class="page-kicker" id="page-kicker"></p>
+            <h1 class="page-title" id="page-title" tabindex="-1"></h1>
+            <div id="page-body"></div>
+          </article>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <dialog class="dialog" id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-head">
+      <h2 class="dialog-title" id="search-title">Maghanap ng aralin</h2>
+      <button type="button" class="dialog-close" data-close aria-label="Isara">×</button>
+    </div>
+    <label class="sr-only" for="search-input">Pamagat, kalye, o paksa</label>
+    <input class="search-input" id="search-input" type="search" placeholder="Pamagat, kalye, o paksa…" autocomplete="off" aria-describedby="search-count">
+    <p class="search-count" id="search-count" aria-live="polite"></p>
+    <ul class="search-results" id="search-results"></ul>
+  </dialog>
+
+  <!-- Help -->
+  <dialog class="dialog" id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-head">
+      <h2 class="dialog-title" id="help-title">Tulong sa Paggamit</h2>
+      <button type="button" class="dialog-close" data-close aria-label="Isara">×</button>
+    </div>
+    <ul class="help-list">
+      <li><strong>Menu sa kaliwa</strong> — pumunta sa Gabay Aralin, Lakbay Aralin, Tulong Aralin, o Guro Konek.</li>
+      <li><strong>Naantala / Natapos</strong> — piliin kung aling mga aralin ang ipapakita.</li>
+      <li><strong>Ituloy</strong> — buksan ang aralin na sinimulan mo.</li>
+      <li><strong>Mga arrow sa Iskedyul</strong> — tingnan ang nakaraan o susunod na linggo.</li>
+      <li><strong>Mga bilog na button sa itaas</strong> — maghanap, tingnan ang mga abiso, o mag-log out.</li>
+    </ul>
+  </dialog>
+
+  <script src="dashboard.js"></script>
 </body>
 </html>

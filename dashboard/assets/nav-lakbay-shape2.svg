@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="2.67632" height="2.67632" viewBox="0 0 2.67632 2.67632" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Shape 2">
+<path d="M2.67632 1.33816C2.67632 2.0772 2.0772 2.67632 1.33816 2.67632C0.599114 2.67632 0 2.0772 0 1.33816C0 0.599114 0.599114 0 1.33816 0C2.0772 0 2.67632 0.599114 2.67632 1.33816Z" fill="url(#paint0_linear_0_86)" fill-opacity="0.9"/>
+<path d="M2.64305 1.33816C2.64305 2.05883 2.05883 2.64305 1.33816 2.64305C0.617486 2.64305 0.0332644 2.05883 0.0332644 1.33816C0.0332644 0.617486 0.617486 0.0332644 1.33816 0.0332644C2.05883 0.0332644 2.64305 0.617486 2.64305 1.33816Z" stroke-width="0.0665289" stroke="url(#paint1_linear_0_86)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_86" x1="0.560818" y1="0.775601" x2="4.55255" y2="1.84006" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_86" x1="0.693876" y1="0.442957" x2="2.22404" y2="2.17271" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
