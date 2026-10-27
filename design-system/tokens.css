@@ -1,0 +1,121 @@
+:root {
+  /* Colors — brand and core */
+  --color-royal-blue: #336DFF;
+  --color-main-blue: #2478FF;
+  --color-secondary-blue: #002D9E;
+  --color-dark-blue: #001343;
+  --color-amber: #FFBE33;
+  --color-ivory: #FFFBF4;
+  --color-main-red: #B42224;
+  --color-main-orange: #F37F2F;
+  --color-black: #000000;
+  --color-text-grey: #727272;
+  --color-hint-green: #00834A;
+
+  /* Colors — feedback */
+  --color-emerald: #2ECC71;
+  --color-tangerine: #FF8A3D;
+  --color-coral-red: #E95656;
+
+  /* Colors — button states */
+  --color-button-green: #1FB84E;
+  --color-button-green-hover: #4CD76C;
+  --color-button-green-pressed: #297E3D;
+  --color-disabled-fill: #A1A1A1;
+  --color-disabled-text: #D1D1D1;
+  --color-disabled-fill-stylized: #B2B3BD;
+  --color-disabled-text-stylized: #DFDFDF;
+
+  /* Gradients — signs (direction inferred) */
+  --gradient-green-sign: linear-gradient(180deg, #136C39 2%, #29BF68 49%, #136C39 100%);
+  --gradient-yellow-sign: linear-gradient(180deg, #FFAE00 2%, #FBCB39 49%, #FFAE00 100%);
+  --gradient-red-sign: linear-gradient(180deg, #AF0414 0%, #E43D45 50%, #AF0414 100%);
+  --gradient-blue-sign: linear-gradient(180deg, #001343 0%, #002581 48%, #001343 93%);
+  --gradient-black-sign: linear-gradient(180deg, #000000 2%, #848484 49%, #000000 100%);
+  --gradient-nav: linear-gradient(90deg, #001343 0%, #002581 48%, #001343 93%);
+
+  /* Gradients — buttons (direction inferred) */
+  --gradient-green-button: linear-gradient(180deg, #2FBF80 0%, #00834A 100%);
+  --gradient-red-button: linear-gradient(270deg, #C9373C 0%, #9D0A0A 100%);
+  --gradient-blue-button: linear-gradient(270deg, #2163FA 0%, #001E90 100%);
+  --gradient-orange-button: linear-gradient(270deg, #FFB846 0%, #FA7500 100%);
+  --gradient-pink-button: linear-gradient(270deg, #EC88BC 0%, #D60186 100%);
+
+  /* Gradients — accents, plates, surfaces */
+  --gradient-orange: linear-gradient(180deg, #F36800 0%, #EF9163 49%, #F36800 98%);
+  --gradient-yellow: linear-gradient(180deg, #FDB422 0%, #FFE26B 50%, #FDB422 98%);
+  --gradient-pink: linear-gradient(180deg, #E61F93 5%, #E88EB6 51%, #E61F93 97%);
+  --gradient-light-blue: linear-gradient(180deg, #0476BB 0%, #6EAFE5 50%, #0476BB 97%);
+  --gradient-purple: linear-gradient(180deg, #550868 0%, #9D4CB1 50%, #550868 98%);
+  --gradient-title: linear-gradient(180deg, #FDC771 0%, #FEDEA3 50%, #FDC771 98%);
+  --gradient-subtitle: linear-gradient(180deg, #FFF4C0 0%, #FFFFFF 50%, #FFF4C0 100%);
+  --gradient-card: linear-gradient(180deg, #FFF3E2 0%, #FFFFFF 51%, #FFF3E2 98%);
+
+  /* Gradients — scenery */
+  --gradient-sky: linear-gradient(270deg, #0079E9 0%, rgba(0, 149, 255, 0) 100%);
+  --gradient-sky-2: linear-gradient(270deg, #57B9FB 0%, rgba(0, 149, 255, 0.5) 100%);
+  --gradient-grass: linear-gradient(270deg, #439F52 0%, #1F5F29 100%);
+  --gradient-grass-2: linear-gradient(270deg, #439F52 0%, #359246 33%, #213C24 100%);
+  --gradient-street: linear-gradient(180deg, #4A4744 0%, #A9A095 100%);
+
+  /* Typography — families */
+  --font-display: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, 'Segoe UI', Arial, sans-serif;
+
+  /* Typography — weights */
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  /* Typography — desktop scale */
+  --text-h1: 73px;   --leading-h1: 1.10;
+  --text-h2: 53px;   --leading-h2: 1.23;
+  --text-h3: 47px;   --leading-h3: 1.13;
+  --text-h4: 36px;   --leading-h4: 1.28;
+  --text-h5: 30px;   --leading-h5: 1.27;
+  --text-h6: 24px;   --leading-h6: 1.33;
+  --text-body: 24px; --leading-body: 1.42;
+  --text-caption: 19px; --leading-caption: 1.26;
+
+  /* Shape */
+  --radius-button: 40px;
+  --radius-card: 30px;
+  --radius-panel: 20px;
+  --stroke-button: 5px;
+  --stroke-card: 1px;
+  --stroke-card-outlined: 3px;
+  --stroke-focus: 4px;
+  --size-button-width: 218px;
+  --size-button-height: 65px;
+
+  /* Shadows */
+  --shadow-hover: 0 2px 2px rgba(0, 0, 0, 0.25);
+  --shadow-dragged: 4px 8px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Tablet scale (breakpoint not defined in the file; 1024px is an assumption) */
+@media (max-width: 1024px) {
+  :root {
+    --text-h1: 58px; --leading-h1: 1.15;
+    --text-h2: 46px; --leading-h2: 1.20;
+    --text-h3: 37px; --leading-h3: 1.25;
+    --text-h4: 30px; --leading-h4: 1.30;
+    --text-h5: 24px; --leading-h5: 1.35;
+    --text-h6: 19px; --leading-h6: 1.50;
+    --text-body: 20px; --leading-body: 1.50;
+    --text-caption: 16px; --leading-caption: 1.40;
+  }
+}
+
+/* Phone scale (breakpoint not defined in the file; 640px is an assumption) */
+@media (max-width: 640px) {
+  :root {
+    --text-h1: 52px; --leading-h1: 1.15;
+    --text-h2: 42px; --leading-h2: 1.20;
+    --text-h3: 33px; --leading-h3: 1.25;
+    --text-h4: 27px; --leading-h4: 1.30;
+    --text-h5: 21px; --leading-h5: 1.35;
+    --text-h6: 17px; --leading-h6: 1.50;
+    --text-body: 18px; --leading-body: 1.56;
+    --text-caption: 14px; --leading-caption: 1.40;
+  }
+}

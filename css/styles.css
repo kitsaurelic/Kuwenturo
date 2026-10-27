@@ -1,0 +1,39 @@
+/* Base styles. Tokens live in ../design-system/tokens.css */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-ivory);
+  color: var(--color-dark-blue);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--text-h1); line-height: var(--leading-h1); margin: 0 0 16px; }
+
+main { padding: 32px 16px; max-width: 1280px; margin: 0 auto; }
+
+.nav {
+  background: var(--gradient-nav);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: var(--text-h5);
+  padding: 16px 24px;
+}
+
+.btn-pill {
+  min-width: var(--size-button-width);
+  height: var(--size-button-height);
+  border: none;
+  border-radius: var(--radius-button);
+  background: var(--gradient-green-button);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-bold);
+  font-size: 30px;
+  cursor: pointer;
+}
+.btn-pill:hover { box-shadow: var(--shadow-hover); filter: brightness(1.08); }
+.btn-pill:active { filter: brightness(0.9); }
+.btn-pill:disabled { background: var(--color-disabled-fill-stylized); color: var(--color-disabled-text-stylized); cursor: not-allowed; }
