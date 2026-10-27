@@ -1,89 +1,93 @@
-// Log-in page behaviour. No back end yet: sign-in validates the form and
-// opens the dashboard; sign-up and forgot-password show confirmations only.
+// Sign-in page behaviour. No back end yet: sign-in (email or Google) validates
+// and opens the dashboard; reset-password and create-account show confirmations only.
 (() => {
   const DASHBOARD_URL = '../dashboard/index.html';
-  const REMEMBER_KEY = 'kuwenturo.remember';
+  const MIN_PASSWORD = 8;
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const storage = {
-    get(key) { try { return localStorage.getItem(key); } catch { return null; } },
-    set(key, value) { try { localStorage.setItem(key, value); } catch { /* storage unavailable */ } },
-    remove(key) { try { localStorage.removeItem(key); } catch { /* storage unavailable */ } },
-  };
+  const $ = (id) => document.getElementById(id);
+  const status = $('status');
+
+  function announce(message) {
+    status.textContent = '';
+    setTimeout(() => { status.textContent = message; }, 50);
+  }
 
   function setError(input, message) {
-    const error = document.getElementById(`${input.id}-error`);
+    const error = $(`${input.id}-error`);
     if (error) error.textContent = message;
-    input.setAttribute('aria-invalid', message ? 'true' : 'false');
+    if (message) input.setAttribute('aria-invalid', 'true');
+    else input.removeAttribute('aria-invalid');
     return !message;
   }
 
-  function clearErrorOnInput(form) {
+  function emailError(value) {
+    if (!value) return 'Enter your email.';
+    if (!EMAIL_RE.test(value)) return 'Enter an email like name@school.edu.ph.';
+    return '';
+  }
+
+  function passwordError(value) {
+    if (!value) return 'Enter your password.';
+    if (value.length < MIN_PASSWORD) return `Password must be at least ${MIN_PASSWORD} characters.`;
+    return '';
+  }
+
+  // Validate all, then move focus to the first invalid field
+  function validate(form, checks) {
+    const ok = checks.map(([input, message]) => setError(input, message)).every(Boolean);
+    if (!ok) form.querySelector('[aria-invalid="true"]').focus();
+    return ok;
+  }
+
+  document.querySelectorAll('form').forEach((form) => {
     form.querySelectorAll('input').forEach((input) => {
       input.addEventListener('input', () => setError(input, ''));
     });
+  });
+
+  function startSession(email, provider) {
+    try { sessionStorage.setItem('kuwenturo.session', JSON.stringify({ email, provider })); } catch { /* storage unavailable */ }
+    window.location.href = DASHBOARD_URL;
   }
 
-  function focusFirstInvalid(form) {
-    const invalid = form.querySelector('[aria-invalid="true"]');
-    if (invalid) invalid.focus();
-  }
-
-  // --- Log in ---
-  const loginForm = document.getElementById('login-form');
-  const username = document.getElementById('username');
-  const password = document.getElementById('password');
-  const remember = document.getElementById('remember');
-
-  const saved = storage.get(REMEMBER_KEY);
-  if (saved) {
-    try {
-      const { user, role } = JSON.parse(saved);
-      username.value = user || '';
-      const radio = loginForm.querySelector(`input[name="role"][value="${role}"]`);
-      if (radio) radio.checked = true;
-      remember.checked = true;
-    } catch { storage.remove(REMEMBER_KEY); }
-  }
-
-  clearErrorOnInput(loginForm);
+  // --- Email sign-in ---
+  const loginForm = $('login-form');
+  const email = $('email');
+  const password = $('password');
 
   loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const user = username.value.trim();
-    const pass = password.value;
-
-    const ok = [
-      setError(username, user ? '' : 'Ilagay ang iyong username o email.'),
-      setError(password, !pass ? 'Ilagay ang iyong password.'
-        : pass.length < 6 ? 'Ang password ay dapat may hindi bababa sa 6 na character.' : ''),
-    ].every(Boolean);
-
-    if (!ok) { focusFirstInvalid(loginForm); return; }
-
-    const role = loginForm.querySelector('input[name="role"]:checked').value;
-    if (remember.checked) storage.set(REMEMBER_KEY, JSON.stringify({ user, role }));
-    else storage.remove(REMEMBER_KEY);
-
-    try { sessionStorage.setItem('kuwenturo.session', JSON.stringify({ user, role })); } catch { /* storage unavailable */ }
-
-    const submit = loginForm.querySelector('button[type="submit"]');
+    const value = email.value.trim();
+    if (!validate(loginForm, [[email, emailError(value)], [password, passwordError(password.value)]])) {
+      announce('Please fix the errors in the form.');
+      return;
+    }
+    const submit = loginForm.querySelector('[type="submit"]');
     submit.disabled = true;
-    submit.textContent = 'Sandali lang...';
-    window.location.href = DASHBOARD_URL;
+    submit.textContent = 'Signing in…';
+    announce('Signing in.');
+    startSession(value, 'email');
+  });
+
+  // --- Google sign-in (placeholder until OAuth is connected) ---
+  $('google-signin').addEventListener('click', (event) => {
+    event.currentTarget.disabled = true;
+    announce('Signing in with Google.');
+    startSession('', 'google');
   });
 
   // --- Show / hide password ---
   document.querySelector('.toggle-password').addEventListener('click', (event) => {
     const button = event.currentTarget;
-    const showing = password.type === 'text';
-    password.type = showing ? 'password' : 'text';
-    button.textContent = showing ? 'Ipakita' : 'Itago';
-    button.setAttribute('aria-pressed', String(!showing));
-    password.focus();
+    const show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    button.textContent = show ? 'Hide' : 'Show';
+    button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
   });
 
   // --- Dialogs ---
+
   function resetDialog(dialog) {
     const form = dialog.querySelector('form');
     form.reset();
@@ -92,17 +96,19 @@
     form.querySelector('[data-step="done"]').hidden = true;
   }
 
-  function showDone(dialog) {
+  function showDone(dialog, address) {
     dialog.querySelector('[data-step="form"]').hidden = true;
     const done = dialog.querySelector('[data-step="done"]');
+    done.querySelector('[data-email]').textContent = address;
     done.hidden = false;
-    done.querySelector('button').focus();
+    done.querySelector('.dialog-title').focus();
   }
 
   document.querySelectorAll('[data-open]').forEach((trigger) => {
     trigger.addEventListener('click', () => {
-      const dialog = document.getElementById(trigger.dataset.open);
+      const dialog = $(trigger.dataset.open);
       resetDialog(dialog);
+      trigger.focus(); // Safari doesn't focus buttons on click; the dialog restores focus here on close
       dialog.showModal();
     });
   });
@@ -111,62 +117,52 @@
     dialog.querySelectorAll('[data-close]').forEach((button) => {
       button.addEventListener('click', () => dialog.close());
     });
-    // Close when clicking the backdrop
     dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) dialog.close();
+      if (event.target === dialog) dialog.close(); // backdrop click
     });
-    clearErrorOnInput(dialog.querySelector('form'));
   });
 
-  // --- Forgot password ---
-  const forgotDialog = document.getElementById('forgot-dialog');
-  const forgotForm = document.getElementById('forgot-form');
-  const forgotEmail = document.getElementById('forgot-email');
+  // --- Reset password ---
+  const forgotForm = $('forgot-form');
+  const forgotEmail = $('forgot-email');
 
   forgotForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const email = forgotEmail.value.trim();
-    const ok = setError(forgotEmail, !email ? 'Ilagay ang iyong email.'
-      : !EMAIL_RE.test(email) ? 'Hindi tama ang format ng email.' : '');
-    if (!ok) { forgotEmail.focus(); return; }
-    forgotDialog.querySelector('[data-email]').textContent = email;
-    showDone(forgotDialog);
+    const value = forgotEmail.value.trim();
+    if (!validate(forgotForm, [[forgotEmail, emailError(value)]])) return;
+    showDone($('forgot-dialog'), value);
   });
 
   // --- Create account ---
-  const signupDialog = document.getElementById('signup-dialog');
-  const signupForm = document.getElementById('signup-form');
-  const field = (id) => document.getElementById(id);
+  const signupDialog = $('signup-dialog');
+  const signupForm = $('signup-form');
 
   signupForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const name = field('signup-name');
-    const email = field('signup-email');
-    const pass = field('signup-password');
-    const confirm = field('signup-confirm');
+    const name = $('signup-name');
+    const signupEmail = $('signup-email');
+    const pass = $('signup-password');
+    const confirm = $('signup-confirm');
+    const value = signupEmail.value.trim();
 
-    const ok = [
-      setError(name, name.value.trim() ? '' : 'Ilagay ang iyong buong pangalan.'),
-      setError(email, !email.value.trim() ? 'Ilagay ang iyong email.'
-        : !EMAIL_RE.test(email.value.trim()) ? 'Hindi tama ang format ng email.' : ''),
-      setError(pass, pass.value.length < 6 ? 'Ang password ay dapat may hindi bababa sa 6 na character.' : ''),
-      setError(confirm, !confirm.value ? 'Ulitin ang iyong password.'
-        : confirm.value !== pass.value ? 'Hindi magkapareho ang password.' : ''),
-    ].every(Boolean);
+    const ok = validate(signupForm, [
+      [name, name.value.trim() ? '' : 'Enter your full name.'],
+      [signupEmail, emailError(value)],
+      [pass, passwordError(pass.value)],
+      [confirm, !confirm.value ? 'Confirm your password.'
+        : confirm.value !== pass.value ? 'Passwords do not match.' : ''],
+    ]);
+    if (!ok) return;
 
-    if (!ok) { focusFirstInvalid(signupForm); return; }
-
-    signupDialog.dataset.email = email.value.trim();
-    signupDialog.dataset.role = field('signup-role').value;
-    showDone(signupDialog);
+    signupDialog.dataset.email = value;
+    showDone(signupDialog, value);
   });
 
-  // After sign-up, fill the log-in form with the new account
+  // After sign-up, carry the email into the sign-in form
   signupDialog.querySelector('[data-fill-login]').addEventListener('click', () => {
-    username.value = signupDialog.dataset.email || '';
-    const radio = loginForm.querySelector(`input[name="role"][value="${signupDialog.dataset.role}"]`);
-    if (radio) radio.checked = true;
-    setError(username, '');
-    setTimeout(() => password.focus(), 0);
+    email.value = signupDialog.dataset.email || '';
+    setError(email, '');
+    signupDialog.close(); // restores focus to the opener first…
+    password.focus();     // …then move it to the next field to fill
   });
 })();
