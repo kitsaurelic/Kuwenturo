@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fil">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kuwenturo — Mag-log in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../design-system/tokens.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="grass"></div>
+  </div>
+
+  <main class="login">
+    <div class="title-plate">
+      <h1 class="brand">Kuwenturo</h1>
+      <p class="tagline">Tara, magbasa tayo!</p>
+    </div>
+
+    <section class="card" aria-labelledby="login-heading">
+      <header class="sign sign-blue">
+        <h2 id="login-heading">Mag-log in</h2>
+      </header>
+
+      <form id="login-form" class="card-body" novalidate>
+        <fieldset class="roles">
+          <legend>Sino ka?</legend>
+          <div class="role-group" role="radiogroup">
+            <label class="role">
+              <input type="radio" name="role" value="mag-aaral" checked>
+              <span>Mag-aaral</span>
+            </label>
+            <label class="role">
+              <input type="radio" name="role" value="guro">
+              <span>Guro</span>
+            </label>
+            <label class="role">
+              <input type="radio" name="role" value="magulang">
+              <span>Magulang</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="username">Username o email</label>
+          <input id="username" name="username" type="text" autocomplete="username" required aria-describedby="username-error">
+          <p class="error" id="username-error" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="password-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password" required minlength="6" aria-describedby="password-error">
+            <button type="button" class="toggle-password" aria-controls="password" aria-pressed="false">Ipakita</button>
+          </div>
+          <p class="error" id="password-error" role="alert"></p>
+        </div>
+
+        <div class="row">
+          <label class="checkbox">
+            <input type="checkbox" id="remember" name="remember">
+            <span>Tandaan ako</span>
+          </label>
+          <button type="button" class="text-button" data-open="forgot-dialog">Nakalimutan ang password?</button>
+        </div>
+
+        <button type="submit" class="btn-pill btn-green">Mag-sign in</button>
+
+        <p class="signup">
+          Wala pang account?
+          <button type="button" class="text-button" data-open="signup-dialog">Gumawa ng account</button>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <!-- Forgot password -->
+  <dialog id="forgot-dialog" class="card dialog" aria-labelledby="forgot-heading">
+    <header class="sign sign-yellow">
+      <h2 id="forgot-heading">Nakalimutan ang password</h2>
+    </header>
+    <form id="forgot-form" class="card-body" novalidate>
+      <div data-step="form">
+        <p>Ilagay ang iyong email. Magpapadala kami ng link para makagawa ka ng bagong password.</p>
+        <div class="field">
+          <label for="forgot-email">Email</label>
+          <input id="forgot-email" type="email" autocomplete="email" required aria-describedby="forgot-email-error">
+          <p class="error" id="forgot-email-error" role="alert"></p>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-pill btn-basic-outline" data-close>Kanselahin</button>
+          <button type="submit" class="btn-pill btn-green">Ipadala</button>
+        </div>
+      </div>
+      <div data-step="done" hidden>
+        <p class="notice notice-success"><strong>Naipadala na!</strong> Tingnan ang <span data-email></span> para sa link.</p>
+        <div class="actions">
+          <button type="button" class="btn-pill btn-green" data-close>Bumalik</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Create account -->
+  <dialog id="signup-dialog" class="card dialog" aria-labelledby="signup-heading">
+    <header class="sign sign-green">
+      <h2 id="signup-heading">Gumawa ng account</h2>
+    </header>
+    <form id="signup-form" class="card-body" novalidate>
+      <div data-step="form">
+        <div class="field">
+          <label for="signup-name">Buong pangalan</label>
+          <input id="signup-name" type="text" autocomplete="name" required aria-describedby="signup-name-error">
+          <p class="error" id="signup-name-error" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="signup-email">Email</label>
+          <input id="signup-email" type="email" autocomplete="email" required aria-describedby="signup-email-error">
+          <p class="error" id="signup-email-error" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="signup-role">Ako ay isang</label>
+          <select id="signup-role">
+            <option value="mag-aaral">Mag-aaral</option>
+            <option value="guro">Guro</option>
+            <option value="magulang">Magulang</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="signup-password">Password <span class="hint">(hindi bababa sa 6 na character)</span></label>
+          <input id="signup-password" type="password" autocomplete="new-password" required minlength="6" aria-describedby="signup-password-error">
+          <p class="error" id="signup-password-error" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="signup-confirm">Ulitin ang password</label>
+          <input id="signup-confirm" type="password" autocomplete="new-password" required aria-describedby="signup-confirm-error">
+          <p class="error" id="signup-confirm-error" role="alert"></p>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-pill btn-basic-outline" data-close>Kanselahin</button>
+          <button type="submit" class="btn-pill btn-green">Gumawa</button>
+        </div>
+      </div>
+      <div data-step="done" hidden>
+        <p class="notice notice-success"><strong>Magaling!</strong> Nagawa na ang iyong account. Maaari ka nang mag-log in.</p>
+        <div class="actions">
+          <button type="button" class="btn-pill btn-green" data-close data-fill-login>Mag-log in</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="login.js"></script>
+</body>
+</html>
