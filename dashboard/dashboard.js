@@ -18,6 +18,11 @@
       title: 'Ang Angking Galing ni Ika', street: 'Masipag St.', topic: 'Detalye ng Kuwento', minutes: 15,
       art: { src: 'kids-2.png', box: [161.7, -4.29, 132, 103], img: 'left:-0.19%;top:0.47%;width:100.38%;height:100.99%' },
     },
+    // Kuwento 3 of Masipag St. (Figma 4679:2792); the order here is the Gabay story order
+    'ang-matapang-lumuluha-iyan': {
+      title: 'Ang Matapang, Lumuluha Iyan', street: 'Masipag St.', topic: 'Damdamin ng Tauhan', minutes: 15,
+      art: { src: 'kids-6.png', box: [174.71, -14.29, 106, 121], img: 'left:11.8%;top:3.24%;width:76.41%;height:96.83%' },
+    },
     'ang-kendi-sa-sari-sari-store': {
       title: 'Ang Kendi sa Sari-Sari Store', street: 'Masipag St.', topic: 'Damdamin ng Tauhan', minutes: 15,
       art: { src: 'kids-3.png', box: [161.7, -8.29, 132, 107], img: 'left:14.28%;top:-0.11%;width:71.44%;height:103.96%' },
@@ -32,7 +37,6 @@
     },
     'ang-kaniyang-munting-ngiti': { title: 'Ang Kaniyang Munting Ngiti', street: 'Masipag St.' },
     'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Masipag St.' },
-    'ang-matapang-lumuluha-iyan': { title: 'Ang Matapang, Lumuluha Iyan', street: 'Masipag St.' },
     'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Masipag St.' },
   };
 

@@ -287,4 +287,133 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Section 4679:1921, "Kuwento 3" (Gabay page 4679:2792)
+  'ang-matapang-lumuluha-iyan': {
+    thumb: 'thumb-ang-matapang-lumuluha-iyan.jpg',
+    paksa: 'Pagpapahayag ng Damdamin at Pagiging Mahina',
+    aral: 'Mahalaga ang pagpapahayag ng damdamin dahil hindi kahinaan ang pag-iyak.',
+    salita: 97,
+    vocab: [
+      ['Hikbi', 'Putol-putol na paghinga habang umiiyak.'],
+      ['Nadulas', 'Kawalan ng lakas o kakayahan sa isang bagay.'],
+      ['Sugat', 'Hiwa, punit, o gasgas sa balat o katawan.'],
+      ['Damdamin', 'Ang emosyon o nararamdaman ng isang tao.'],
+      ['Nahiya', 'Nakaramdam ng pagkailang.'],
+    ],
+
+    // Figma 4679:2974 (panel 4679:3157)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin kung bakit mahalagang ipakita ang tunay na damdamin at ang pagpapakita ng emosyon ay hindi tanda ng kahinaan.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang mga damdamin ng mga tauhan sa kuwento.</li>
+            <li>Ang aral ng kuwento na ang bawat isa ay may karapatang magpahayag ng kaniyang tunay na damdamin.</li>
+            <li>Ang mga dahilan ng mga damdamin batay sa mga pangyayari sa kuwento.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang batang ayaw maglaro dahil ayaw niyang matuto ng bisikleta.</li>
+            <li class="is-answer">Isang batang nasaktan, nagpakita ng emosyon, at may natutunan pagiging matapang.</li>
+            <li>Isang batang palaging umiiyak at hindi sumusubok gumawa ng bagay.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4679:3177 (panel 4679:3360)
+    basahin: [
+      {
+        title: 'Ang Matapang, Lumuluha Iyan', tone: 'green',
+        html: `<p>Masayang naglalaro ang mga bata sa kanto.</p>
+          <p>May naghahabulan at nagbibisikleta.</p>
+          <p>Nakikipag-unahan si Dos sa kaniyang kaibigan sa pagbibisikleta.</p>
+          <p>Dahil sa sobrang bilis, nadulas siya at nasugatan ang tuhod.</p>
+          <p>“Aray!” sigaw ni Dos habang umiiyak sa sakit.</p>
+          <p>“Saan ang masakit, iho?” tanong ng matanda.</p>
+          <p>Patuloy siya sa paghikbi ngunit may nagsabi, “Tigil mo iyan. Hindi umiiyak ang mga lalaki.”</p>
+          <p>Malungkot na pinunasan ni Dos ang kaniyang mga luha at nahiya dahil sa mga nakapaligid.</p>
+          <p>“Huwag mong pigilan ang nararamdaman mo,” sabi ni Lito.</p>
+          <p>“Hindi ka dapat mahiya.”</p>
+          <p><strong><em>Napangiti si Dos at nailabas ang tunay niyang damdamin.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4679:3369 (panel 4679:3552)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Emosyon #1</h4>
+          <ol start="1"><li>Naglalaro at nakikipag-unahan si Dos kasama ang kaniyang mga kaibigan.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Natutuwa”<br>Natutuwa si Dos dahil naglalaro siya kasama ang kaniyang mga kaibigan.</strong></p>
+          <h4>Emosyon #2</h4>
+          <ol start="2"><li>Nadulas at nasugatan ni Dos ang kaniyang tuhod dahil sa sobrang bilis niyang mag bisikleta.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Nasasaktan”<br>Nasasaktan si Dos dahil nadulas siya at nagkaroon ng sugat ang kaniyang tuhod.</strong></p>
+          <h4>Emosyon #3</h4>
+          <ol start="3"><li>Nasabihan si Dos ng isang lalaki na <em>“Tigil mo iyan. Hindi umiiyak ang mga lalaki.”</em></li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Nahihiya”<br>Nahihiya si Dos dahil iniisip niyang hindi dapat umiiyak ang mga lalaki.</strong></p>
+          <h4>Emosyon #4</h4>
+          <ol start="4"><li>Nang makita ni Dos ang kanyang sugat, patuloy lang ang kanyang pag-iyak at hikbi hanggang sa hindi na siya makapag-salita.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Nalulungkot”<br>Nalulungkot si Dos dahil nasugatan siya sa pagkadulas sa bisikleta.</strong></p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Nasasaktan</h4>
+          <ol start="1"><li>Bakit nasasaktan si Dos at napasabi ng “<em>Aray!</em>”?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nasasaktan si Dos dahil nagkaroon siya ng sugat sa kaniyang tuhod.</p>
+          <h4>Nalulungkot</h4>
+          <ol start="2"><li>Bakit nalulungkot si Dos at patuloy ang kaniyang pag-iyak?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nalulungkot si Dos dahil nadulas siya sa kaniyang bisikleta.</p>
+          <h4>Nahihiya</h4>
+          <ol start="3"><li>Bakit nahihiya si Dos at pinunasan bigla ang kaniyang mga luha?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nahihiya si Dos dahil nasabihan siya na hindi dapat umiiyak ang mga lalaki.</p>
+          <h4>Natutuwa</h4>
+          <ol start="4"><li>Bakit natutuwa si Dos pagkatapos siyang kausapin ni Lito?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuwa si Dos dahil pinayuhan siya ni Lito na ilabas ang kaniyang tunay na nararamdaman.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Ano ang nangyari kay Dos habang nagbibisikleta siya?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nadulas si Dos dahil sa sobrang bilis ng pagbibisikleta at nasugatan ang kaniyang tuhod.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang sinabi ng lalaki kay Dos kaya nahiya siyang umiyak?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Sinabi ng lalaki na tumigil siya sa pag-iyak dahil hindi raw umiiyak ang mga lalaki.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li>Ano ang natutuhan ni Dos sa payo ni Lito tungkol sa damdamin?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutunan ni Dos na hindi siya dapat mahiya sa pagpapahayag ng tunay niyang damdamin at hindi kahinaan ang pag-iyak.</p>
+          <h4>Kabuuan</h4>
+          <p>Habang nagbibisikleta sina Dos at kaniyang kaibigan, nadulas si Dos at nagkaroon ng sugat sa tuhod. Umiyak siya dahil sa sakit, ngunit pinigilan niya ang kaniyang mga luha matapos sabihang hindi umiiyak ang mga lalaki. Nahiya si Dos at sinubukang itago ang kaniyang nararamdaman. Pinayuhan siya ni Lito na huwag pansinin ang mga nagsasabi nito at ilabas ang tunay niyang damdamin. Sa huli, natutunan ni Dos na hindi kahinaan ang pag-iyak at hindi dapat ikahiya ang pagpapahayag ng tunay na damdamin.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">May nagsabi sa iyo na “Huwag kang umiyak, mahina ka.” Ano ang dapat mong isipin?</p>
+          <ul>
+            <li>Totoo iyon kaya dapat itago ang nararamdaman.</li>
+            <li>Hindi ako dapat malungkot kailanman.</li>
+            <li class="is-answer">Normal lang ang umiyak at magkaroon ng damdamin.</li>
+          </ul>
+          <p class="question">Nahihiya kang magsabi na ikaw ay nasaktan sa sinabi ng iyong kaibigan. Ano ang magandang gawin?</p>
+          <ul>
+            <li>Magtatanim nalang ako ng sama ng loob sa kanya.</li>
+            <li class="is-answer">Sasabihin ko ang aking totoong nararamdaman.</li>
+            <li>Hindi ko nalang papansinin ang aking kaibigan.</li>
+          </ul>
+          <p class="question">Nakita mong umiiyak nang malakas ang iyong kaibigan. Ano ang maaari mong gawin?</p>
+          <ul>
+            <li class="is-answer">Kukumustahin ko at sasamahan hanggang kumalma siya.</li>
+            <li>Sasabihin ko na masyado siyang nag-iinarte.</li>
+            <li>Tatawanan ko siya dahil umiiyak siya.</li>
+          </ul>`,
+      },
+    ],
+  },
 };
