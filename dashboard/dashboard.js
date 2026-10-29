@@ -1,26 +1,72 @@
-// Dashboard behaviour. Content comes from the Figma frame; there is no back end yet.
+// Dashboard behaviour. Content comes from the Figma frames; there is no back end yet.
 (() => {
   const $ = (id) => document.getElementById(id);
   const storage = {
     get(key) { try { return localStorage.getItem(key); } catch { return null; } },
     set(key, value) { try { localStorage.setItem(key, value); } catch { /* storage unavailable */ } },
   };
-  const escapeHtml = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  // ---------- Data (from the frame) ----------
-  const LESSONS = [
-    { id: 'ang-pamilyang-puno-ng-pagmamahal', tone: 'green', street: 'Masipag St.', title: 'Ang Pamilyang Puno ng Pagmamahal', part: 'Pagkatapos Basahin: Suriin', progress: 80 },
-    { id: 'ang-angking-galing-ni-ika', tone: 'yellow', street: 'Masipag St.', title: 'Ang Angking Galing ni Ika', part: 'Pagkatapos Basahin: Tuklasin', progress: 80 },
-    { id: 'ang-matapang-lumuluha-iyan', tone: 'red', street: 'Masipag St.', title: 'Ang Matapang, Lumuluha Iyan', part: 'Pagkatapos Basahin: Paglalagom', progress: 80 },
-    { id: 'ang-kendi-sa-sari-sari-store', tone: 'blue', street: 'Masipag St.', title: 'Ang Kendi sa Sari-Sari Store', part: 'Pagkatapos Basahin: Totoong Buhay', progress: 80 },
-  ];
-  const SCHEDULED_LESSON = { id: 'ang-piraso-ng-biyaya', street: 'Matiyaga St.', title: 'Ang Piraso ng Biyaya', minutes: 15, topic: 'Sanhi at Bunga' };
-  // The frame shows this lesson twice on the same day
-  const SCHEDULE = [
-    { date: '2026-10-15', lesson: SCHEDULED_LESSON },
-    { date: '2026-10-15', lesson: SCHEDULED_LESSON },
-  ];
-  const FIRST_WEEK = new Date(2026, 9, 12); // Monday, Oktubre 12, 2026 — the week shown in the frame
+  // ---------- Data (from the frames) ----------
+  // art: the characters drawn on the schedule card, with the frame's crop of each image
+  const LESSONS = {
+    'ang-pamilyang-puno-ng-pagmamahal': {
+      title: 'Ang Pamilyang Puno ng Pagmamahal', street: 'Masipag St.', topic: 'Detalye ng Kuwento', minutes: 15,
+      art: { src: 'kids-1.png', box: [174.7, -2.29, 106, 101], img: 'left:10.65%;top:2.86%;width:78.71%;height:259.85%' },
+    },
+    'ang-angking-galing-ni-ika': {
+      title: 'Ang Angking Galing ni Ika', street: 'Masipag St.', topic: 'Detalye ng Kuwento', minutes: 15,
+      art: { src: 'kids-2.png', box: [161.7, -4.29, 132, 103], img: 'left:-0.19%;top:0.47%;width:100.38%;height:100.99%' },
+    },
+    'ang-kendi-sa-sari-sari-store': {
+      title: 'Ang Kendi sa Sari-Sari Store', street: 'Masipag St.', topic: 'Damdamin ng Tauhan', minutes: 15,
+      art: { src: 'kids-3.png', box: [161.7, -8.29, 132, 107], img: 'left:14.28%;top:-0.11%;width:71.44%;height:103.96%' },
+    },
+    'ang-piraso-ng-biyaya': {
+      title: 'Ang Piraso ng Biyaya', street: 'Matiyaga St.', topic: 'Sanhi at Bunga', minutes: 15,
+      art: { src: 'kids-4.png', box: [138.7, -0.08, 180, 108], img: 'inset:0;width:100%;height:100%;object-fit:cover' },
+    },
+    'sa-likod-ng-kompyuter': {
+      title: 'Sa Likod ng Kompyuter', street: 'Matiyaga St.', topic: 'Problema at Solusyon', minutes: 15,
+      art: { src: 'kids-5.png', box: [161.7, 3.71, 132, 103], img: 'inset:0;width:100%;height:100%;object-fit:contain' },
+    },
+    'ang-kaniyang-munting-ngiti': { title: 'Ang Kaniyang Munting Ngiti', street: 'Masipag St.' },
+    'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Masipag St.' },
+    'ang-matapang-lumuluha-iyan': { title: 'Ang Matapang, Lumuluha Iyan', street: 'Masipag St.' },
+    'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Masipag St.' },
+  };
+
+  // Mga Aralin cards. Both frames label every card "Masipag St." and "Pagkatapos Basahin: Suriin".
+  const PART = 'Pagkatapos Basahin: Suriin';
+  const BADGES = { green: 'badge-star.png', yellow: 'badge-crown.png', red: 'badge-cup.png' };
+  const CARDS = {
+    naantala: [
+      { id: 'ang-pamilyang-puno-ng-pagmamahal', tone: 'green', progress: 80, wide: true },
+      { id: 'ang-kaniyang-munting-ngiti', tone: 'yellow', progress: 80 },
+      { id: 'ang-timpla-ng-taho', tone: 'red', progress: 80 },
+      { id: 'ang-kendi-sa-sari-sari-store', tone: 'green', progress: 80 },
+    ],
+    natapos: [
+      { id: 'ang-matapang-lumuluha-iyan', tone: 'green', progress: 100 },
+      { id: 'sa-likod-ng-kompyuter', tone: 'yellow', progress: 100 },
+      { id: 'ang-limampung-piso-ko', tone: 'red', progress: 100 },
+      { id: 'ang-piraso-ng-biyaya', tone: 'green', progress: 100 },
+    ],
+  };
+  const cardFor = (id) => [...CARDS.naantala, ...CARDS.natapos].find((c) => c.id === id);
+
+  // Iskedyul: date -> lesson id. Palitan changes are kept in this browser.
+  const DEFAULT_SCHEDULE = {
+    '2026-10-12': 'ang-pamilyang-puno-ng-pagmamahal',
+    '2026-10-13': 'ang-angking-galing-ni-ika',
+    '2026-10-14': 'ang-kendi-sa-sari-sari-store',
+    '2026-10-15': 'ang-piraso-ng-biyaya',
+    '2026-10-16': 'sa-likod-ng-kompyuter',
+  };
+  let schedule = { ...DEFAULT_SCHEDULE };
+  try { Object.assign(schedule, JSON.parse(storage.get('kuwenturo.schedule')) || {}); } catch { /* ignore bad data */ }
+  Object.keys(schedule).forEach((d) => { if (!LESSONS[schedule[d]]) schedule[d] = DEFAULT_SCHEDULE[d]; });
+  const FIRST_WEEK = new Date(2026, 9, 12); // Lunes, Oktubre 12, 2026 — the week shown in the frames
 
   const SECTIONS = {
     'gabay-aralin': 'Gabay Aralin',
@@ -29,42 +75,61 @@
     'guro-konek': 'Guro Konek',
   };
   const MONTHS = ['Enero', 'Pebrero', 'Marso', 'Abril', 'Mayo', 'Hunyo', 'Hulyo', 'Agosto', 'Setyembre', 'Oktubre', 'Nobyembre', 'Disyembre'];
-  const DAYS = ['Linggo', 'Lunes', 'Martes', 'Miyerkoles', 'Huwebes', 'Biyernes', 'Sabado'];
+  const DAYS = ['Linggo', 'Lunes', 'Martes', 'Miyerkules', 'Huwebes', 'Biyernes', 'Sabado'];
 
-  const allLessons = () => [...LESSONS, SCHEDULED_LESSON];
-  const findLesson = (id) => allLessons().find((l) => l.id === id);
-
-  function pill(tone, label, href, accessibleName, glossSet = 'gloss') {
-    return `<a class="pill pill-${tone}" href="${href}" aria-label="${escapeHtml(accessibleName)}">
-      <span class="pill-label">${label}</span>
-      <img class="gloss gloss-top" src="assets/${glossSet}-top.svg" alt="">
-      <img class="gloss gloss-bottom" src="assets/${glossSet}-bottom.svg" alt="">
-      <img class="gloss gloss-left" src="assets/${glossSet}-left.svg" alt="">
-      <img class="gloss gloss-dot" src="assets/${glossSet}-dot.svg" alt="">
-    </a>`;
+  // Glossy pill. Gloss sets: card buttons, navy (Aralin), light (Palitan).
+  const GLOSS = {
+    card: ['gloss-top', 'gloss-bottom', 'gloss-left', 'gloss-dot'],
+    navy: ['gloss-navy-top', 'gloss-navy-bottom', 'gloss-navy-left', 'gloss-navy-dot'],
+    light: ['gloss-top', 'gloss-bottom', 'gloss-left-light', 'gloss-dot-light'],
+  };
+  function pill({ tone, label, name, href, gloss = 'card', attrs = '' }) {
+    const [top, bottom, left, dot] = GLOSS[gloss];
+    const inner = `<span class="pill-label">${label}</span>
+      <img class="gloss gloss-top" src="assets/${top}.svg" alt="">
+      <img class="gloss gloss-bottom" src="assets/${bottom}.svg" alt="">
+      <img class="gloss gloss-left" src="assets/${left}.svg" alt="">
+      <img class="gloss gloss-dot" src="assets/${dot}.svg" alt="">`;
+    return href
+      ? `<a class="pill pill-${tone}" href="${href}" aria-label="${escapeHtml(name)}">${inner}</a>`
+      : `<button type="button" class="pill pill-${tone}" aria-label="${escapeHtml(name)}" ${attrs}>${inner}</button>`;
   }
 
-  function progressBar(lesson) {
+  function progressBar(title, progress) {
     return `<div class="lesson-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-      aria-valuenow="${lesson.progress}" aria-label="Progreso sa ${escapeHtml(lesson.title)}"><span style="width:${lesson.progress}%"></span></div>`;
+      aria-valuenow="${progress}" aria-label="Progreso sa ${escapeHtml(title)}"><span style="width:${progress}%"></span></div>`;
   }
 
   // ---------- Mga Aralin ----------
   let filter = 'naantala';
 
   function renderLessons() {
-    const list = LESSONS.filter((l) => (filter === 'natapos' ? l.progress >= 100 : l.progress < 100));
-    $('lessons').innerHTML = list.map((l) => `
-      <li class="lesson lesson-${l.tone}">
-        <img class="lesson-shape" src="assets/card-${l.tone}.svg" alt="">
-        <p class="lesson-street">${l.street}</p>
-        <h3 class="lesson-title">${l.title}</h3>
-        <p class="lesson-part">${l.part}</p>
-        ${progressBar(l)}
-        <p class="lesson-percent" aria-hidden="true">${l.progress}%</p>
-        ${pill(l.tone, 'Ituloy', `#/aralin/${l.id}`, `Ituloy: ${l.title}`)}
-        <img class="lesson-badge" src="assets/badge-${l.tone}.svg" alt="">
-      </li>`).join('');
+    const list = CARDS[filter];
+    $('lessons').innerHTML = list.map((c) => {
+      const l = LESSONS[c.id];
+      return `
+      <li class="lesson lesson-${c.tone}">
+        <img class="lesson-head" src="assets/card-head-${c.tone}.svg" alt="">
+        <img class="lesson-body" src="assets/card-body-${c.tone}.svg" alt="">
+        <div class="lesson-text">
+          <p class="lesson-street">Masipag St.</p>
+          <div class="lesson-info">
+            <div class="lesson-copy">
+              <div class="lesson-heading">
+                <h3 class="lesson-title"${c.wide ? ' style="--title-w:100%"' : ''}>${l.title}</h3>
+                <p class="lesson-part">${PART}</p>
+              </div>
+              ${progressBar(l.title, c.progress)}
+            </div>
+            <div class="lesson-row">
+              ${pill({ tone: c.tone, label: 'Ituloy', name: `Ituloy: ${l.title}`, href: `#/aralin/${c.id}` })}
+              <p class="lesson-percent" aria-hidden="true">${c.progress}%</p>
+            </div>
+          </div>
+        </div>
+        <img class="lesson-badge" src="assets/${BADGES[c.tone]}" alt="">
+      </li>`;
+    }).join('');
     const empty = $('lessons-empty');
     empty.hidden = list.length > 0;
     empty.textContent = filter === 'natapos' ? 'Wala ka pang natapos na aralin.' : 'Wala kang naantalang aralin.';
@@ -94,41 +159,87 @@
     return `${MONTHS[start.getMonth()]} ${start.getDate()}-${end.getDate()}, ${end.getFullYear()}`;
   }
 
+  function kidsArt(art) {
+    if (!art) return '';
+    const [right, top, w, h] = art.box;
+    return `<span class="sched-kids" style="right:${right}px;top:${top}px;width:${w}px;height:${h}px">
+      <img src="assets/${art.src}" alt="" style="${art.img}"></span>`;
+  }
+
   function renderSchedule() {
-    const from = isoDate(weekStart);
-    const to = isoDate(addDays(weekStart, 4));
-    const items = SCHEDULE.filter((s) => s.date >= from && s.date <= to);
+    const days = [0, 1, 2, 3, 4].map((n) => isoDate(addDays(weekStart, n))).filter((d) => schedule[d]);
     $('week-label').textContent = weekLabel(weekStart);
-    $('schedule').innerHTML = items.map(({ date, lesson }) => {
+    $('schedule').innerHTML = days.map((date) => {
+      const id = schedule[date];
+      const l = LESSONS[id];
       const d = new Date(`${date}T00:00:00`);
+      const meta = l.topic
+        ? `<p class="sched-meta"><span><img src="assets/icon-time.svg" alt="">${l.minutes} min</span><span><img src="assets/icon-star.svg" alt="">${l.topic}</span></p>`
+        : '';
       return `
       <li class="sched">
         <div class="sched-row">
+          <img class="sched-grass" src="assets/grass.png" alt="">
           <div class="sched-left">
             <time class="sched-date" datetime="${date}">
               <span class="sched-day">${DAYS[d.getDay()]}</span>
               <span class="sched-num">${d.getDate()}</span>
             </time>
             <div class="sched-body">
-              <p class="sched-street">${lesson.street}</p>
-              <h3 class="sched-title">${lesson.title}</h3>
-              <p class="sched-meta">
-                <span><img src="assets/icon-time.svg" alt="">${lesson.minutes} min</span>
-                <span><img src="assets/icon-star.svg" alt="">${lesson.topic}</span>
-              </p>
+              <p class="sched-street">${l.street}</p>
+              <h3 class="sched-title">${l.title}</h3>
+              ${meta}
             </div>
           </div>
-          ${pill('green', 'Aralin', `#/aralin/${lesson.id}`, `Buksan ang aralin: ${lesson.title}`, 'gloss2')}
-          <img class="sched-grass" src="assets/grass.png" alt="">
-          <img class="sched-kids" src="assets/kids.png" alt="">
+          <div class="sched-actions">
+            ${pill({ tone: 'navy', label: 'Aralin', name: `Buksan ang aralin: ${l.title}`, href: `#/aralin/${id}`, gloss: 'navy' })}
+            ${pill({ tone: 'light', label: 'Palitan', name: `Palitan ang aralin sa ${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`, gloss: 'light', attrs: `data-swap="${date}"` })}
+          </div>
+          ${kidsArt(l.art)}
         </div>
       </li>`;
     }).join('');
-    $('schedule-empty').hidden = items.length > 0;
+    $('schedule-empty').hidden = days.length > 0;
   }
 
   $('week-prev').addEventListener('click', () => { weekStart = addDays(weekStart, -7); renderSchedule(); });
   $('week-next').addEventListener('click', () => { weekStart = addDays(weekStart, 7); renderSchedule(); });
+
+  // ---------- Palitan ----------
+  const swapDialog = $('swap-dialog');
+  let swapDate = null;
+
+  $('schedule').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-swap]');
+    if (!button) return;
+    swapDate = button.dataset.swap;
+    const d = new Date(`${swapDate}T00:00:00`);
+    const current = schedule[swapDate];
+    $('swap-desc').textContent = `${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()} — kasalukuyan: ${LESSONS[current].title}`;
+    $('swap-list').querySelectorAll('label').forEach((el) => el.remove());
+    $('swap-list').insertAdjacentHTML('beforeend', Object.entries(LESSONS).map(([id, l]) => `
+      <label class="swap-option">
+        <input type="radio" name="swap" value="${id}"${id === current ? ' checked' : ''}>
+        <span>${l.title}<small>${l.street}${l.topic ? ` · ${l.topic}` : ''}</small></span>
+      </label>`).join(''));
+    button.focus(); // focus returns here when the dialog closes
+    swapDialog.showModal();
+    $('swap-list').querySelector('input:checked').focus();
+  });
+
+  $('swap-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const chosen = $('swap-form').querySelector('input[name="swap"]:checked').value;
+    const changed = chosen !== schedule[swapDate];
+    schedule[swapDate] = chosen;
+    const overrides = Object.fromEntries(Object.entries(schedule).filter(([d, id]) => DEFAULT_SCHEDULE[d] !== id));
+    storage.set('kuwenturo.schedule', JSON.stringify(overrides));
+    swapDialog.close();
+    renderSchedule();
+    const again = $('schedule').querySelector(`[data-swap="${swapDate}"]`);
+    if (again) again.focus();
+    if (changed) announce(`Napalitan: ${LESSONS[chosen].title}`);
+  });
 
   // ---------- Routing (#/, #/gabay-aralin, #/aralin/<id>) ----------
   function showPage({ kicker, title, body }) {
@@ -152,11 +263,13 @@
 
     if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
-    } else if (section === 'aralin' && findLesson(id)) {
-      const l = findLesson(id);
-      const details = l.progress != null
-        ? `<p>${l.part}</p><div class="page-progress lesson-${l.tone}">${progressBar(l)}<span>${l.progress}%</span></div>`
-        : `<p>${l.minutes} min · ${l.topic}</p>`;
+    } else if (section === 'aralin' && LESSONS[id]) {
+      const l = LESSONS[id];
+      const card = cardFor(id);
+      const details = [
+        card ? `<p>${PART}</p><div class="page-progress lesson-${card.tone}">${progressBar(l.title, card.progress)}<span>${card.progress}%</span></div>` : '',
+        l.topic ? `<p>${l.minutes} min · ${l.topic}</p>` : '',
+      ].join('');
       showPage({ kicker: l.street, title: l.title, body: `${details}<p>Malapit na ang nilalaman ng araling ito.</p>` });
     } else {
       const wasHidden = $('view-dashboard').hidden;
@@ -167,6 +280,16 @@
     }
     closeDrawer(false);
     window.scrollTo(0, 0);
+  }
+
+  // Screen-reader announcements
+  const live = document.createElement('p');
+  live.className = 'sr-only';
+  live.setAttribute('role', 'status');
+  document.body.appendChild(live);
+  function announce(message) {
+    live.textContent = '';
+    setTimeout(() => { live.textContent = message; }, 50);
   }
 
   // ---------- Sidebar: collapse (tablet/desktop) and drawer (mobile) ----------
@@ -279,11 +402,12 @@
   // ---------- Search ----------
   function renderSearch(query) {
     const q = query.trim().toLowerCase();
+    const all = Object.entries(LESSONS);
     const results = q
-      ? allLessons().filter((l) => [l.title, l.street, l.part, l.topic].some((f) => f && f.toLowerCase().includes(q)))
-      : allLessons();
-    $('search-results').innerHTML = results.map((l) => `
-      <li><a href="#/aralin/${l.id}">${l.title}<small>${l.street} · ${l.part || l.topic}</small></a></li>`).join('');
+      ? all.filter(([, l]) => [l.title, l.street, l.topic].some((f) => f && f.toLowerCase().includes(q)))
+      : all;
+    $('search-results').innerHTML = results.map(([id, l]) => `
+      <li><a href="#/aralin/${id}">${l.title}<small>${l.street}${l.topic ? ` · ${l.topic}` : ''}</small></a></li>`).join('');
     $('search-count').textContent = !q
       ? `${results.length} aralin`
       : results.length
