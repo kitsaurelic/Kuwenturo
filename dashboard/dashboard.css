@@ -248,13 +248,13 @@ main:focus { outline: none; }
 .lesson-head { position: absolute; left: 4.05px; top: 0; width: 238.89px; height: 220px; }
 .lesson-body { position: absolute; left: 0; top: 50.5px; width: 239px; height: 169.5px; }
 .lesson-badge { position: absolute; left: 170px; top: -23px; width: 104px; height: 122px; pointer-events: none; }
-.lesson-text { position: absolute; left: 36.47px; top: 14.19px; width: 173px; display: flex; flex-direction: column; gap: 40px; }
+.lesson-text { position: absolute; left: 36.47px; top: 14.19px; width: 173px; display: flex; flex-direction: column; gap: 35px; }
 .lesson-street { color: var(--cream); font-size: 24.85px; font-weight: 700; letter-spacing: -0.994px; text-align: center; white-space: nowrap; }
 .lesson-info { display: flex; flex-direction: column; gap: 13px; }
 .lesson-copy { display: flex; flex-direction: column; gap: 9px; }
 .lesson-heading { display: flex; flex-direction: column; gap: 5px; }
-.lesson-title { width: var(--title-w, 135px); font-size: 16px; line-height: 16px; font-weight: 700; color: var(--navy); }
-.lesson-part { width: 110px; font-size: 12px; line-height: 13px; color: var(--caption); }
+.lesson-title { width: var(--title-w, 135px); font-size: 16px; line-height: 15px; font-weight: 700; color: var(--navy); }
+.lesson-part { width: 110px; font-size: 12px; line-height: 12px; color: var(--caption); }
 .lesson-progress {
   position: relative; width: 100%; height: 14px;
   border-radius: 10.15px; background: var(--cream); overflow: hidden;
@@ -268,6 +268,9 @@ main:focus { outline: none; }
 .lesson-green  { --tone: rgb(12, 147, 88);  --shade: #04673C; }
 .lesson-yellow { --tone: rgb(255, 190, 51); --shade: #BE8A0F; }
 .lesson-red    { --tone: rgb(180, 34, 36);  --shade: #7B0D0D; }
+/* Per-card offsets from the frame */
+.lesson-yellow .lesson-badge { left: 174px; }
+.lesson-red .lesson-text { left: 33.47px; }
 
 /* Glossy pill (Component 92) */
 .pill {
@@ -422,6 +425,139 @@ button.pill { padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
 .search-results small { display: block; color: var(--caption); font-size: 14px; }
 .help-list { display: grid; gap: 10px; padding-left: 20px; list-style: disc; }
 
+/* ---------- Gabay Aralin (Figma 4553:8476) ---------- */
+#gabay-body { container-type: inline-size; }
+.gabay-head { padding-top: 33px; }
+.gabay-title {
+  color: #fff; font-family: var(--font-display); font-weight: 400;
+  font-size: 32px; line-height: 39px;
+  text-shadow: 0 1px 3px rgba(0, 19, 67, .55);
+}
+.gabay-title:focus { outline: none; }
+.gabay-sub { width: 269px; max-width: 100%; margin-top: 5px; color: #fff; font-size: 16px; line-height: 19px; text-shadow: 0 1px 3px rgba(0, 19, 67, .55); }
+.gabay-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 16px; margin-top: 13px; }
+.gabay-controls .segmented { margin-right: 0; }
+.gabay-controls .week-nav { margin-right: 3px; }
+.week-arrow:disabled { opacity: .45; cursor: default; filter: none; }
+
+/* Story card: the schedule card with the story picture in place of the date */
+.gabay-card { margin-top: 25px; }
+.gabay-thumb { flex: none; display: block; width: 134.23px; height: 98.35px; border-radius: 13px; object-fit: cover; }
+.gabay-thumb-empty {
+  display: grid; place-items: center;
+  border: 1px solid var(--navy); background: linear-gradient(90deg, #FFF3E2, #fff 51.4%, #FFF3E2 98%);
+  color: var(--navy); font-weight: 700;
+}
+
+/* Paksa / Aral / Salita (Frame 1518) + Bokabularyo on the left, the jeep on the right */
+.gabay-grid { display: grid; grid-template-columns: 558px 380px; justify-content: space-between; margin: 15px -24px 0 0; }
+.gabay-main { min-width: 0; }
+
+.info-cards { display: flex; gap: 7px; margin-left: -12px; }
+.info-card { position: relative; flex: none; width: 190px; height: 182px; }
+.info-green { width: 183px; }
+.info-head { position: absolute; inset: 0; width: 100%; height: 100%; }
+.info-body { position: absolute; left: 10px; top: 47px; width: 170px; height: 125px; }
+.info-green .info-body { width: 163px; }
+.info-text { position: absolute; left: 30px; top: 20px; width: 130px; display: flex; flex-direction: column; gap: 24px; color: var(--navy); }
+.info-title { font-size: 20px; line-height: 24px; font-weight: 700; }
+.info-red .info-title { color: var(--cream); } /* navy on the red header is 2.7:1; cream is 6.3:1 */
+.info-copy { font-size: 14px; line-height: 15px; }
+.info-number { align-self: center; font-size: 64px; line-height: 1.1; font-weight: 700; }
+
+.vocab {
+  position: relative; margin-top: 20px;
+  border: 4px solid #fff; border-radius: 13px;
+  background: linear-gradient(159.82deg, #FFFBF4 20.1%, #2478FF 123%);
+  box-shadow: 3px 4px 0 #0A4B95;
+  overflow: hidden;
+}
+.vocab-title { height: 30px; padding: 3px 13px 0; background: #2478FF; color: var(--navy); font-size: 20px; line-height: 24px; font-weight: 700; }
+.vocab-table { width: 100%; border-collapse: collapse; color: var(--navy); }
+.vocab-table tr { border-top: 4px solid #fff; }
+.vocab-table th, .vocab-table td { height: 49px; padding: 6px 12px 6px 13px; text-align: left; vertical-align: middle; }
+.vocab-table th { width: 126px; border-right: 4px solid #fff; font-size: 16px; font-weight: 700; }
+.vocab-table td { padding-left: 15px; font-size: 14px; line-height: 1.2; }
+
+/* JEEP 1 with the three signs as links (positions are the frame's, in % of the jeep) */
+.jeep { position: relative; align-self: start; width: 380px; aspect-ratio: 380 / 543.5; margin-top: 19px; }
+.jeep-art { width: 100%; height: 100%; }
+.jeep-sign { position: absolute; left: 5.53%; display: block; border-radius: 8px; transition: translate .15s ease, filter .15s ease; }
+.jeep-sign img { width: 100%; height: 100%; }
+.jeep-sign:hover { translate: 0 -3px; filter: brightness(1.05) drop-shadow(0 4px 6px rgba(0, 19, 67, .35)); }
+.jeep-sign:focus-visible { outline: 4px solid #fff; box-shadow: 0 0 0 8px var(--navy); }
+.jeep-sign-bago-basahin { top: 17.66%; width: 85%; height: 16.47%; }
+.jeep-sign-basahin { top: 36.98%; width: 84.47%; height: 15%; }
+.jeep-sign-pagkatapos-basahin { top: 54.83%; width: 84.74%; height: 15.73%; }
+
+@container (max-width: 939px) {
+  .gabay-grid { grid-template-columns: minmax(0, 1fr); justify-items: center; margin-right: 0; }
+  .gabay-main { width: min(558px, 100%); }
+  /* The jeep art is cut at its right side, so it bleeds off the right edge as in the frame */
+  .jeep { justify-self: end; width: min(380px, 100%); margin: 32px -24px 0 0; }
+}
+@container (max-width: 589px) {
+  .info-cards { flex-wrap: wrap; justify-content: center; margin-left: 0; row-gap: 12px; }
+  .vocab-table th { width: 104px; padding-left: 10px; }
+  .vocab-table td { padding-left: 10px; }
+}
+
+/* ---------- Gabay modal: Bago Basahin / Basahin / Pagkatapos Basahin ---------- */
+.guide-modal {
+  position: fixed; inset: 0 0 0 var(--stage-left, 0px);
+  width: auto; height: auto; max-width: none; max-height: none;
+  margin: 0; padding: 187px 24px 48px;
+  border: 0; background: transparent; color: var(--navy);
+  overflow-y: auto; overscroll-behavior: contain;
+}
+/* Rectangle 49: the frame dims the content column and leaves the sidebar clear */
+.guide-modal::backdrop { left: var(--stage-left, 0px); background: rgba(0, 19, 67, .25); backdrop-filter: blur(1px); }
+.guide-panel {
+  position: relative; max-width: 787px; margin: 0 auto;
+  padding: 74px 42px 41px 50px;
+  border: 4px solid #fff; border-radius: 13px;
+  background: linear-gradient(90deg, #FFF4C0, #fff 50%, #FFF4C0);
+  box-shadow: inset 0 30px 0 var(--navy), 3px 4px 0 var(--navy);
+}
+.guide-sign { position: absolute; left: calc(50% - 167.5px); top: -36px; width: 323px; height: 89.5px; margin: 0; line-height: 0; }
+.guide-sign img { width: 100%; height: 100%; }
+.guide-basahin .guide-sign img { width: 321px; height: 81.5px; margin: 4px 1px; rotate: -1.42deg; }
+.guide-pagkatapos-basahin .guide-sign img { width: 322px; height: 85.5px; margin-top: 2px; }
+.guide-close {
+  position: absolute; top: -18px; right: -18px; z-index: 1;
+  border: 3px solid var(--navy); background: var(--cream); color: var(--navy);
+}
+.guide-close:hover { background: #FFF3E2; }
+.guide-sections { display: grid; gap: 20px; }
+.guide-pagkatapos-basahin .guide-sections { gap: 25px; }
+
+.guide-section { border-radius: 13px; background: var(--cream); box-shadow: 5px 4px 0 var(--shade); }
+.guide-section.tone-green  { --tone: #0C9358; --shade: #066A3E; }
+.guide-section.tone-yellow { --tone: #FFBE33; --shade: #BE8A0F; }
+.guide-section.tone-red    { --tone: #B42224; --shade: #7B0D0D; --hl: #FFCDCD; }
+.guide-section.tone-blue   { --tone: #1346CE; --shade: #0A2F8F; --hl: #C2D9FF; }
+.guide-section-title {
+  min-height: 42px; padding: 9px 25px;
+  border-radius: 13px 13px 0 0;
+  background: linear-gradient(90deg, var(--tone), #fff);
+  color: var(--cream); font-size: 20px; line-height: 24px; font-weight: 700;
+}
+.tone-yellow .guide-section-title { color: var(--navy); } /* cream on yellow is 1.6:1 */
+/* Reading text: the frame's 12px is raised to 16px to follow design.md's reading sizes */
+.guide-text { padding: 25px 28px 26px 26px; color: var(--caption); font-size: 16px; line-height: 1.5; }
+.guide-text p, .guide-text ol, .guide-text ul { margin: 0; }
+.guide-text ol, .guide-text ul { padding-left: 1.5em; }
+.guide-text ul { list-style: disc; }
+.guide-text ol { list-style: decimal; }
+.guide-text h4 { margin: 0; font-size: inherit; font-weight: 700; text-transform: uppercase; }
+.guide-text p + ul, .guide-text ul + .question, .guide-text .answer + h4, .guide-text .answer + ol, .guide-text p + h4 { margin-top: 1.5em; }
+.guide-text .question { font-weight: 700; }
+.guide-text .is-answer { position: relative; isolation: isolate; font-weight: 700; }
+.guide-text .is-answer::before {
+  position: absolute; z-index: -1; inset: 0 -11px 0 calc(-1.5em - 10px);
+  border-radius: 13px; background: var(--hl, #E3F4EA); content: "";
+}
+
 /* ---------- Below the 1200px frame: top buttons get their own row so the sign never collides with them ---------- */
 @media (max-width: 1199px) {
   .topbar { position: static; display: flex; justify-content: flex-end; padding: 16px 24px 0; }
@@ -480,6 +616,20 @@ button.pill { padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
   .sched-title { font-size: 18px; line-height: 1.25; }
   .sched-actions { flex-direction: row; }
   .sched .pill { flex: 1; height: 36px; }
+  .gabay-head { padding-top: 16px; }
+  .gabay-title { font-size: 28px; line-height: 34px; }
+  .gabay-controls .segmented, .gabay-controls .week-nav { width: 100%; margin-right: 0; }
+  .gabay-controls .seg-btn { flex: 1; padding: 2px 6px; min-width: 0; }
+  .gabay-thumb { width: 100px; height: 80px; }
+  .jeep { margin-right: -16px; }
+  .guide-modal { padding: 72px 12px 32px; }
+  .guide-panel { padding: 60px 14px 20px; }
+  .guide-sign { left: 50%; translate: -50% 0; top: -32px; width: min(260px, 78%); height: auto; aspect-ratio: 323 / 89.5; }
+  .guide-basahin .guide-sign img { width: 99%; height: auto; margin: 2px auto; }
+  .guide-pagkatapos-basahin .guide-sign img { width: 100%; height: auto; margin: 0; }
+  .guide-close { top: -14px; right: -6px; }
+  .guide-section-title { padding: 9px 16px; font-size: 18px; }
+  .guide-text { padding: 18px 16px 20px; }
   #view-page { padding-top: 16px; }
   .page-card { padding: 24px 20px; }
   .page-title { font-size: 27px; }

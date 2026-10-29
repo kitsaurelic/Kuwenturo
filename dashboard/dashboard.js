@@ -241,10 +241,171 @@
     if (changed) announce(`Napalitan: ${LESSONS[chosen].title}`);
   });
 
+  // ---------- Gabay Aralin (#/gabay-aralin, #/gabay-aralin/<bago-basahin|basahin|pagkatapos-basahin>) ----------
+  const GUIDES = window.KUWENTURO_GUIDES || {};
+  const STREETS = ['Masipag St.', 'Matiyaga St.', 'Matatag St.'];
+  const GUIDE_PARTS = {
+    'bago-basahin': { label: 'Bago Basahin', sign: 'sign-bago.png' },
+    basahin: { label: 'Basahin', sign: 'sign-basahin.png' },
+    'pagkatapos-basahin': { label: 'Pagkatapos Basahin', sign: 'sign-pagkatapos.png' },
+  };
+  const INFO_TONES = [['paksa', 'Paksa', 'green'], ['aral', 'Aral', 'yellow'], ['salita', 'Salita', 'red']];
+  const gabay = { street: 0, story: 0 };
+  const storiesOn = (street) => Object.keys(LESSONS).filter((id) => LESSONS[id].street === STREETS[street]);
+  const currentStory = () => storiesOn(gabay.street)[gabay.story];
+
+  $('street-tabs').innerHTML = STREETS.map((s, i) =>
+    `<button type="button" class="seg-btn" data-street="${i}" aria-pressed="${i === 0}">${s}</button>`).join('');
+  $('street-tabs').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-street]');
+    if (!button) return;
+    gabay.street = Number(button.dataset.street);
+    gabay.story = 0;
+    renderGabay();
+  });
+  $('story-prev').addEventListener('click', () => { gabay.story -= 1; renderGabay(); });
+  $('story-next').addEventListener('click', () => { gabay.story += 1; renderGabay(); });
+
+  function gabayCard(id, number) {
+    const l = LESSONS[id];
+    const guide = GUIDES[id];
+    const thumb = guide && guide.thumb
+      ? `<img class="gabay-thumb" src="assets/${guide.thumb}" alt="">`
+      : `<span class="gabay-thumb gabay-thumb-empty" aria-hidden="true">Kuwento ${number}</span>`;
+    const meta = l.topic
+      ? `<p class="sched-meta"><span><img src="assets/icon-time.svg" alt="">${l.minutes} min</span><span><img src="assets/icon-star.svg" alt="">${l.topic}</span></p>`
+      : '';
+    return `
+      <article class="sched gabay-card" aria-labelledby="gabay-story-title">
+        <div class="sched-row">
+          <img class="sched-grass" src="assets/grass.png" alt="">
+          <div class="sched-left">
+            ${thumb}
+            <div class="sched-body">
+              <p class="sched-street">${l.street}</p>
+              <h2 class="sched-title" id="gabay-story-title">${l.title}</h2>
+              ${meta}
+            </div>
+          </div>
+          <div class="sched-actions">
+            ${pill({ tone: 'navy', label: 'Aralin', name: `Buksan ang aralin: ${l.title}`, href: `#/aralin/${id}`, gloss: 'navy' })}
+            ${pill({ tone: 'light', label: 'Palitan', name: 'Palitan ang kuwento', gloss: 'light', attrs: 'data-story-swap' })}
+          </div>
+          ${kidsArt(l.art)}
+        </div>
+      </article>`;
+  }
+
+  function guideBody(id) {
+    const g = GUIDES[id];
+    if (!g) return '<p class="empty">Malapit na ang gabay para sa kuwentong ito.</p>';
+    const info = INFO_TONES.map(([key, label, tone]) => `
+      <li class="info-card info-${tone}">
+        <img class="info-head" src="assets/info-head-${tone}.svg" alt="">
+        <img class="info-body" src="assets/info-body-${tone}.svg" alt="">
+        <div class="info-text">
+          <h3 class="info-title">${label}</h3>
+          ${key === 'salita'
+            ? `<p class="info-number"><span class="sr-only">Bilang ng salita: </span>${g.salita}</p>`
+            : `<p class="info-copy">${g[key]}</p>`}
+        </div>
+      </li>`).join('');
+    const rows = g.vocab.map(([word, meaning]) => `<tr><th scope="row">${word}</th><td>${meaning}</td></tr>`).join('');
+    const signs = Object.entries(GUIDE_PARTS).map(([key, part]) => `
+      <a class="jeep-sign jeep-sign-${key}" href="#/gabay-aralin/${key}">
+        <img src="assets/${part.sign}" alt="${part.label}">
+      </a>`).join('');
+    return `
+      <div class="gabay-grid">
+        <div class="gabay-main">
+          <ul class="info-cards">${info}</ul>
+          <section class="vocab" aria-labelledby="vocab-title">
+            <h2 class="vocab-title" id="vocab-title">Bokabularyong Makikita</h2>
+            <table class="vocab-table"><tbody>${rows}</tbody></table>
+          </section>
+        </div>
+        <nav class="jeep" aria-label="Mga bahagi ng aralin">
+          <img class="jeep-art" src="assets/gabay-jeep.png" alt="">
+          ${signs}
+        </nav>
+      </div>`;
+  }
+
+  function renderGabay() {
+    const stories = storiesOn(gabay.street);
+    gabay.story = Math.max(0, Math.min(gabay.story, stories.length - 1));
+    const id = stories[gabay.story];
+    $('street-tabs').querySelectorAll('[data-street]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(Number(b.dataset.street) === gabay.street)));
+    $('story-label').textContent = stories.length ? `Kuwento ${gabay.story + 1}` : 'Walang kuwento';
+    $('story-prev').disabled = gabay.story <= 0;
+    $('story-next').disabled = gabay.story >= stories.length - 1;
+    $('gabay-body').innerHTML = id
+      ? gabayCard(id, gabay.story + 1) + guideBody(id)
+      : `<p class="empty">Wala pang kuwento sa ${STREETS[gabay.street]}.</p>`;
+  }
+
+  // Palitan on the Gabay card: pick another story on this street
+  const storyDialog = $('story-dialog');
+  $('gabay-body').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-story-swap]');
+    if (!button) return;
+    const stories = storiesOn(gabay.street);
+    $('story-desc').textContent = `${STREETS[gabay.street]} — kasalukuyan: ${LESSONS[currentStory()].title}`;
+    $('story-list').querySelectorAll('label').forEach((el) => el.remove());
+    $('story-list').insertAdjacentHTML('beforeend', stories.map((sid, i) => `
+      <label class="swap-option">
+        <input type="radio" name="story" value="${i}"${i === gabay.story ? ' checked' : ''}>
+        <span>Kuwento ${i + 1}: ${LESSONS[sid].title}<small>${LESSONS[sid].street}${LESSONS[sid].topic ? ` · ${LESSONS[sid].topic}` : ''}</small></span>
+      </label>`).join(''));
+    button.focus();
+    storyDialog.showModal();
+    $('story-list').querySelector('input:checked').focus();
+  });
+  $('story-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const chosen = Number($('story-form').querySelector('input[name="story"]:checked').value);
+    const changed = chosen !== gabay.story;
+    gabay.story = chosen;
+    storyDialog.close();
+    renderGabay();
+    $('gabay-body').querySelector('[data-story-swap]')?.focus();
+    if (changed) announce(`Kuwento ${chosen + 1}: ${LESSONS[currentStory()].title}`);
+  });
+
+  // Guide modal
+  const guideDialog = $('guide-dialog');
+  function openGuide(key) {
+    const part = GUIDE_PARTS[key];
+    const g = GUIDES[currentStory()];
+    const sections = g && g[key] ? g[key] : [{ title: part.label, tone: 'green', html: '<p>Malapit na ang nilalamang ito.</p>' }];
+    guideDialog.className = `guide-modal guide-${key}`;
+    $('guide-sign').src = `assets/${part.sign}`;
+    $('guide-sign').alt = part.label;
+    $('guide-sections').innerHTML = sections.map((s) => `
+      <section class="guide-section tone-${s.tone}">
+        <h3 class="guide-section-title">${s.title}</h3>
+        <div class="guide-text">${s.html}</div>
+      </section>`).join('');
+    if (!guideDialog.open) guideDialog.showModal();
+    guideDialog.scrollTop = 0;
+    guideDialog.querySelector('.guide-close').focus();
+  }
+  // Closing (×, Esc, backdrop) returns to the Gabay Aralin URL
+  guideDialog.addEventListener('close', () => {
+    if (/^#\/gabay-aralin\/./.test(location.hash)) location.replace('#/gabay-aralin');
+  });
+
   // ---------- Routing (#/, #/gabay-aralin, #/aralin/<id>) ----------
+  const VIEWS = ['view-dashboard', 'view-gabay', 'view-page'];
+  function showView(viewId) {
+    const wasHidden = $(viewId).hidden;
+    VIEWS.forEach((v) => { $(v).hidden = v !== viewId; });
+    return wasHidden;
+  }
+
   function showPage({ kicker, title, body }) {
-    $('view-dashboard').hidden = true;
-    $('view-page').hidden = false;
+    showView('view-page');
     $('page-kicker').textContent = kicker;
     $('page-title').textContent = title;
     $('page-body').innerHTML = body;
@@ -260,8 +421,18 @@
       if (a.dataset.route === navKey) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
+    if (section !== 'gabay-aralin' || !GUIDE_PARTS[id]) {
+      if (guideDialog.open) guideDialog.close();
+    }
 
-    if (SECTIONS[section]) {
+    let keepScroll = false;
+    if (section === 'gabay-aralin') {
+      const wasHidden = showView('view-gabay');
+      keepScroll = !wasHidden;
+      document.title = 'Gabay Aralin — Kuwenturo';
+      if (wasHidden) $('gabay-title').focus();
+      if (GUIDE_PARTS[id] && currentStory()) openGuide(id);
+    } else if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
     } else if (section === 'aralin' && LESSONS[id]) {
       const l = LESSONS[id];
@@ -272,14 +443,12 @@
       ].join('');
       showPage({ kicker: l.street, title: l.title, body: `${details}<p>Malapit na ang nilalaman ng araling ito.</p>` });
     } else {
-      const wasHidden = $('view-dashboard').hidden;
-      $('view-page').hidden = true;
-      $('view-dashboard').hidden = false;
+      const wasHidden = showView('view-dashboard');
       document.title = 'Dashboard — Kuwenturo';
       if (wasHidden) $('main').focus();
     }
     closeDrawer(false);
-    window.scrollTo(0, 0);
+    if (!keepScroll) window.scrollTo(0, 0);
   }
 
   // Screen-reader announcements
@@ -310,6 +479,8 @@
     const expanded = mobile ? app.classList.contains('is-drawer-open') : !collapsed;
     collapseBtn.setAttribute('aria-expanded', String(expanded));
     $('collapse-label').textContent = mobile ? 'Isara ang menu' : (collapsed ? 'Palakihin ang sidebar' : 'Paliitin ang sidebar');
+    // The guide modal centres on the content column, not the whole window
+    requestAnimationFrame(() => document.documentElement.style.setProperty('--stage-left', `${stage.getBoundingClientRect().left}px`));
   }
 
   function openDrawer() {
@@ -420,6 +591,8 @@
   // ---------- Start ----------
   renderLessons();
   renderSchedule();
+  renderGabay();
+  window.addEventListener('resize', syncSidebar);
   syncSidebar();
   window.addEventListener('hashchange', route);
   route();

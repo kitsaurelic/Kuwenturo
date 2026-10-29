@@ -14,7 +14,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fredoka+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../design-system/tokens.css">
   <link rel="stylesheet" href="dashboard.css">
 </head>
@@ -207,6 +207,33 @@
           </section>
         </div>
 
+        <!-- Gabay Aralin view (Figma 4553:8476) -->
+        <div class="content gabay" id="view-gabay" hidden>
+          <header class="gabay-head">
+            <h1 class="gabay-title" id="gabay-title" tabindex="-1">Gabay Aralin</h1>
+            <p class="gabay-sub">Alamin ang mga gabay na kasagutan at nilalaman ng bawat aralin.</p>
+          </header>
+
+          <div class="gabay-controls">
+            <!-- Figma 4553:9114 CHOOSE LEVEL BUTTON -->
+            <div class="segmented" role="group" aria-label="Pumili ng kalye" id="street-tabs"></div>
+            <!-- Figma 4553:8947 SELECT STORY BUTTON -->
+            <div class="week-nav story-nav">
+              <button type="button" class="week-arrow week-prev" id="story-prev">
+                <img src="assets/chevron.svg" width="24" height="24" alt="">
+                <span class="sr-only">Nakaraang kuwento</span>
+              </button>
+              <p class="week-label" id="story-label" aria-live="polite"></p>
+              <button type="button" class="week-arrow week-next" id="story-next">
+                <img src="assets/chevron.svg" width="24" height="24" alt="">
+                <span class="sr-only">Susunod na kuwento</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="gabay-body"></div>
+        </div>
+
         <!-- Section and lesson pages -->
         <div class="content" id="view-page" hidden>
           <article class="page-card">
@@ -250,6 +277,33 @@
     </form>
   </dialog>
 
+  <!-- Gabay Aralin: Bago Basahin / Basahin / Pagkatapos Basahin (Figma 4590:20345, 4590:20603, 4591:20877) -->
+  <dialog class="guide-modal" id="guide-dialog" aria-labelledby="guide-title">
+    <div class="guide-panel">
+      <h2 class="guide-sign" id="guide-title"><img id="guide-sign" src="" alt=""></h2>
+      <button type="button" class="dialog-close guide-close" data-close aria-label="Isara">×</button>
+      <div class="guide-sections" id="guide-sections"></div>
+    </div>
+  </dialog>
+
+  <!-- Gabay Aralin Palitan: choose a different story -->
+  <dialog class="dialog" id="story-dialog" aria-labelledby="story-title" aria-describedby="story-desc">
+    <form method="dialog" id="story-form">
+      <div class="dialog-head">
+        <h2 class="dialog-title" id="story-title">Palitan ang kuwento</h2>
+        <button type="button" class="dialog-close" data-close aria-label="Isara">×</button>
+      </div>
+      <p class="search-count" id="story-desc"></p>
+      <fieldset class="swap-list" id="story-list">
+        <legend class="sr-only">Pumili ng kuwento</legend>
+      </fieldset>
+      <div class="dialog-actions">
+        <button type="button" class="btn-text" data-close>Kanselahin</button>
+        <button type="submit" class="btn-solid">Palitan</button>
+      </div>
+    </form>
+  </dialog>
+
   <!-- Help -->
   <dialog class="dialog" id="help-dialog" aria-labelledby="help-title">
     <div class="dialog-head">
@@ -262,10 +316,12 @@
       <li><strong>Ituloy</strong> — buksan ang aralin na sinimulan mo.</li>
       <li><strong>Aralin / Palitan</strong> — buksan ang naka-iskedyul na aralin, o pumili ng ibang aralin para sa araw na iyon.</li>
       <li><strong>Mga arrow sa Iskedyul</strong> — tingnan ang nakaraan o susunod na linggo.</li>
+      <li><strong>Gabay Aralin</strong> — pumili ng kalye at kuwento, saka pindutin ang Bago Basahin, Basahin, o Pagkatapos Basahin sa dyip.</li>
       <li><strong>Mga bilog na button sa itaas</strong> — maghanap, tingnan ang mga abiso, o mag-log out.</li>
     </ul>
   </dialog>
 
+  <script src="guides.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>
