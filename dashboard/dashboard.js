@@ -259,12 +259,25 @@
   $('street-tabs').addEventListener('click', (event) => {
     const button = event.target.closest('[data-street]');
     if (!button) return;
-    gabay.street = Number(button.dataset.street);
-    gabay.story = 0;
-    renderGabay();
+    goToStory(Number(button.dataset.street), 0);
   });
-  $('story-prev').addEventListener('click', () => { gabay.story -= 1; renderGabay(); });
-  $('story-next').addEventListener('click', () => { gabay.story += 1; renderGabay(); });
+  $('story-prev').addEventListener('click', () => goToStory(gabay.street, gabay.story - 1));
+  $('story-next').addEventListener('click', () => goToStory(gabay.street, gabay.story + 1));
+
+  // The URL names the story (#/gabay-aralin/<story id>), so each story and its guides can be linked to.
+  // The page updates right away; the hash change that follows finds nothing new to render.
+  function goToStory(street, index) {
+    gabay.street = street;
+    gabay.story = index;
+    renderGabay();
+    const id = currentStory();
+    const target = id ? `#/gabay-aralin/${id}` : '#/gabay-aralin';
+    if (location.hash !== target) location.hash = target;
+  }
+  function selectStory(id) {
+    gabay.street = STREETS.indexOf(LESSONS[id].street);
+    gabay.story = storiesOn(gabay.street).indexOf(id);
+  }
 
   function gabayCard(id, number) {
     const l = LESSONS[id];
@@ -312,7 +325,7 @@
       </li>`).join('');
     const rows = g.vocab.map(([word, meaning]) => `<tr><th scope="row">${word}</th><td>${meaning}</td></tr>`).join('');
     const signs = Object.entries(GUIDE_PARTS).map(([key, part]) => `
-      <a class="jeep-sign jeep-sign-${key}" href="#/gabay-aralin/${key}">
+      <a class="jeep-sign jeep-sign-${key}" href="#/gabay-aralin/${id}/${key}">
         <img src="assets/${part.sign}" alt="${part.label}">
       </a>`).join('');
     return `
@@ -331,10 +344,15 @@
       </div>`;
   }
 
+  let renderedGabay = null;
   function renderGabay() {
     const stories = storiesOn(gabay.street);
     gabay.story = Math.max(0, Math.min(gabay.story, stories.length - 1));
     const id = stories[gabay.story];
+    // Re-rendering would replace the focused sign or button, so only redraw when the story changes
+    const key = `${gabay.street}:${id}`;
+    if (key === renderedGabay) return;
+    renderedGabay = key;
     $('street-tabs').querySelectorAll('[data-street]').forEach((b) =>
       b.setAttribute('aria-pressed', String(Number(b.dataset.street) === gabay.street)));
     $('story-label').textContent = stories.length ? `Kuwento ${gabay.story + 1}` : 'Walang kuwento';
@@ -366,9 +384,8 @@
     event.preventDefault();
     const chosen = Number($('story-form').querySelector('input[name="story"]:checked').value);
     const changed = chosen !== gabay.story;
-    gabay.story = chosen;
     storyDialog.close();
-    renderGabay();
+    goToStory(gabay.street, chosen);
     $('gabay-body').querySelector('[data-story-swap]')?.focus();
     if (changed) announce(`Kuwento ${chosen + 1}: ${LESSONS[currentStory()].title}`);
   });
@@ -391,9 +408,11 @@
     guideDialog.scrollTop = 0;
     guideDialog.querySelector('.guide-close').focus();
   }
-  // Closing (×, Esc, backdrop) returns to the Gabay Aralin URL
+  // Closing (×, Esc, backdrop) returns to the story's URL
   guideDialog.addEventListener('close', () => {
-    if (/^#\/gabay-aralin\/./.test(location.hash)) location.replace('#/gabay-aralin');
+    const story = currentStory();
+    const back = story ? `#/gabay-aralin/${story}` : '#/gabay-aralin';
+    if (location.hash !== back && location.hash.startsWith('#/gabay-aralin')) location.replace(back);
   });
 
   // ---------- Routing (#/, #/gabay-aralin, #/aralin/<id>) ----------
@@ -415,23 +434,25 @@
 
   function route() {
     const path = location.hash.replace(/^#\/?/, '');
-    const [section, id] = path.split('/');
+    const [section, id, sub] = path.split('/');
+    // #/gabay-aralin/<story id>/<part>; the older #/gabay-aralin/<part> uses the current story
+    const guidePart = section !== 'gabay-aralin' ? null : (GUIDE_PARTS[id] ? id : (GUIDE_PARTS[sub] ? sub : null));
     const navKey = section === 'aralin' ? 'dashboard' : (SECTIONS[section] ? section : 'dashboard');
     document.querySelectorAll('.nav-link[data-route]').forEach((a) => {
       if (a.dataset.route === navKey) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
-    if (section !== 'gabay-aralin' || !GUIDE_PARTS[id]) {
-      if (guideDialog.open) guideDialog.close();
-    }
+    if (!guidePart && guideDialog.open) guideDialog.close();
 
     let keepScroll = false;
     if (section === 'gabay-aralin') {
       const wasHidden = showView('view-gabay');
       keepScroll = !wasHidden;
       document.title = 'Gabay Aralin — Kuwenturo';
+      if (LESSONS[id]) selectStory(id);
+      renderGabay();
       if (wasHidden) $('gabay-title').focus();
-      if (GUIDE_PARTS[id] && currentStory()) openGuide(id);
+      if (guidePart && currentStory()) openGuide(guidePart);
     } else if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
     } else if (section === 'aralin' && LESSONS[id]) {

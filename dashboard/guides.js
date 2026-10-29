@@ -142,4 +142,149 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Section 4646:1089, "Kuwento 2" (Gabay page 4646:2015)
+  'ang-angking-galing-ni-ika': {
+    thumb: 'thumb-ang-angking-galing-ni-ika.jpg',
+    paksa: 'Paggalang at Pagtanggap sa Pagkakaiba ng Bawat Isa',
+    aral: 'Mahalagang tanggapin ang pagkakaiba ng bawat isa, may kapansanan man o wala.',
+    salita: 223,
+    vocab: [
+      ['Wheelchair', 'Upuang may gulong na tumutulong sa isang tao na makagalaw.'],
+      ['Talento', 'Espesyal na galing o kakayahan ng isang tao.'],
+      ['Hadlang', 'Bagay o sitwasyon na nagpapahirap sa paggawa ng isang bagay.'],
+      ['Rosaryo', 'Kwintas na ginagamit ng ilang tao sa pagdarasal.'],
+      ['Paglikha', 'Paggawa ng isang bagay gamit ang ideya at talento.'],
+    ],
+
+    // Figma 4646:2197 (panel 4646:2380)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na bawat tao ay may kanya-kanyang espesyal na kakayahan at talento kahit may mga bagay na maaaring mahirap gawin.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang mga detalye ng kuwento na nagpapakita ng talento at kakayahan ni Ika.</li>
+            <li>Ang aral tungkol sa pagtanggap at pagpapahalaga sa kakayahan ng bawat isa.</li>
+            <li>Ang mga pangunahing tauhan, tagpuan, at mahahalagang pangyayari sa kuwento.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang batang ayaw subukan ang anumang gawain.</li>
+            <li class="is-answer">Isang batang gumagamit ng kaniyang talento upang gumawa ng mga likha at makatulong.</li>
+            <li>Isang batang ayaw makipagkaibigan sa kahit kaninong kapwa.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4646:2400 (panel 4646:2585)
+    basahin: [
+      {
+        title: 'Ang Angking Galing ni Ika', tone: 'green',
+        html: `<p>Maraming taong nakapula sa tapat ng simbahan.</p>
+          <p>May nakita akong lola at batang babae na naka-wheelchair sa tapat ng simbahan.</p>
+          <p>Maraming tao ang humihinto sa kanila.</p>
+          <p>Lumapit ako.</p>
+          <p>May mga rosaryo, bulaklak na gawa sa papel, at makukulay na dekorasyon sa mesa nila.</p>
+          <p>“Oh, iho, ano ang sa iyo?” tanong ng lola.</p>
+          <p>Hindi ako agad nakasagot.</p>
+          <p>Napatingin ako sa batang babae.</p>
+          <p>Napaisip ako.</p>
+          <p>Ano kaya ang pakiramdam na hindi makatakbo at makapaglaro tulad ng ibang bata?</p>
+          <p>“Ay, gusto ko lang po malaman kung sino ang gumawa ng mga ito,” sabi ko.</p>
+          <p>Ngumiti ang lola.</p>
+          <p>“Itong apo ko. Si Ika. Hilig at kasiyahan niya ito. Tumutulong siya tuwing Sabado upang may pandagdag baon.”</p>
+          <p>Napatingin ako kay Ika.</p>
+          <p>Abala siya sa paggupit ng papel at pagdikit ng mga bulaklak.</p>
+          <p>Napansin kong nakangiti siya habang gumagawa.</p>
+          <p>“Ang paglikha gamit ang kamay ay talento na ibinigay ng Diyos sa akin.” sabi ni Ika.</p>
+          <p>“Hindi ka ba naiinggit sa ibang bata?” tanong ko.</p>
+          <p>“Hindi man ako katulad nila, may kulang man, pero masaya ako sa kung ano ang meron ako.”</p>
+          <p>“Ang galing mo, Ika! Inspirasyon ka sa amin.”</p>
+          <p>Pag-alis ko, napaisip ako.</p>
+          <p>Iba-iba pala ang galing natin.</p>
+          <p>Ang madali sa iba ay maaaring mahirap sa atin.</p>
+          <p>Gaya ni Ika,</p>
+          <p>Hindi kailanman naging hadlang ang pagiging iba para sumaya.</p>
+          <p>May angking galing tayo</p>
+          <p><strong><em>At ito ang kumukumpleto sa atin.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4646:2592 (panel 4646:2778)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Tagpuan</h4>
+          <ol start="1"><li>Saang tagpuan nakita ni Biboy na nagtitinda si Ika, kung saan maraming tao?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Sa tapat ng simbahan ang tagpuan kung saan nagtitinda si Ika.</p>
+          <h4>Tauhan</h4>
+          <ol start="2"><li>Batay sa kuwentong nabasa, sino kayang tauhan ang kasama ni Ika sa pagtitinda?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Si lola ang tauhan na kasama ni Ika sa kuwento.</p>
+          <h4>Hilig</h4>
+          <ol start="3"><li>Ano kaya ang hilig o kasiyahan ni Ika na pinagkakakitaan niya?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang paglikha ang hilig at kasiyahan ni Ika na ginagawa niyang pagkakakitaan.</p>
+          <h4>Bagay</h4>
+          <ol start="4"><li>Anong bagay ang ginagawa ni Ika gamit ang papel at nagsisilbing kanyang paninda?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang mga puting bulaklak na gawa sa papel ang bagay na ginagawa ni Ika.</p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Bagay</h4>
+          <ol start="1"><li>Ano ang nililikha ni Ika upang maipakita ang kanyang husay?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Rosaryo, bulaklak at mga dekorasyon na gawa sa papel</p>
+          <h4>Pangyayari</h4>
+          <ol start="2"><li>Bakit kaya tumutulong si Ika sa pagtitinda?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Upang magkaroon si Ika ng dagdag baon sa kanyang pag-aaral</p>
+          <h4>Pangyayari</h4>
+          <ol start="3"><li>Ano kaya ang talento na ipinapakita ni Ika?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang paglikha ng mga paninda gamit ang kanyang mga kamay</p>
+          <h4>Aral</h4>
+          <ol start="4"><li>Ano ang natutuhan ni Biboy matapos makilala si Ika?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Iba-iba ang galing ng bawat tao / Hindi hadlang ang pagiging iba para sumaya</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Sino ang nakita ni Biboy sa tapat ng simbahan, at ano ang kanilang paninda?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nakita ni Biboy si Ika at ang kanyang lola sa tapat ng simbahan. Ang kanilang paninda ay bulaklak, rosaryo, at iba pang dekorasyon na gawa sa papel.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Paano ginagamit ni Ika ang kanyang talento upang makatulong sa kanyang lola?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ginagamit ni Ika ang kanyang talento sa paggawa ng mga paninda upang makatulong sa kanyang lola.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li>Ano ang natutuhan ni Biboy tungkol sa kakayahan ng bawat tao?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuhan ni Biboy na bawat tao ay may sariling kakayahan at dapat nating igalang at pahalagahan ang galing ng bawat isa.</p>
+          <h4>Kabuuan</h4>
+          <p>Habang papunta sa paaralan, nakita ni Biboy si Ika at ang kanyang lola sa tapat ng simbahan. Nalaman niyang si Ika ang gumagawa ng mga bulaklak na papel, rosaryo, at iba pang dekorasyon na kanilang binebenta. Kahit gumagamit siya ng wheelchair, hindi ito naging hadlang upang magamit niya ang kanyang talento at makatulong sa kanyang lola. Sa huli, nauunawaan ni Biboy na ang bawat tao ay may sariling kakayahan at dapat nating igalang at pahalagahan ang galing ng bawat isa.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">May kaklase kang gumagamit ng hearing aid dahil mahina ang kaniyang pandinig. Hindi niya narinig ang sinabi ng guro.</p>
+          <ul>
+            <li>Tatawanan ko siya dahil hindi niya narinig.</li>
+            <li>Hindi ko na lang muna siya kausapin.</li>
+            <li class="is-answer">Ulitin ko nang maayos ang sinabi ng guro.</li>
+          </ul>
+          <p class="question">Narinig mong may batang sinasabihan ng “Hindi mo kaya iyan” dahil may kapansanan siya. Ano ang gagawin mo?</p>
+          <ul>
+            <li>Sumang-ayon at sabihing hindi niya talaga kaya.</li>
+            <li class="is-answer">Sabihing kaya niya at suportahan siya.</li>
+            <li>Pagtawanan siya dahil may kapansanan siya.</li>
+          </ul>
+          <p class="question">May batang may kapansanan na gustong sumali sa paligsahan, pero natatakot siyang matalo dahil iba siya sa iba.</p>
+          <ul>
+            <li class="is-answer">“Subukan mo! Ipagmalaki mo ang iyong talento!”</li>
+            <li>“Huwag ka nang sumali dahil baka mapahiya ka pa.”</li>
+            <li>“Manood ka na lang at suportahan ang iba.”</li>
+          </ul>`,
+      },
+    ],
+  },
 };

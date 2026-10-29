@@ -53,7 +53,7 @@ a { color: inherit; }
 
 /* ---------- Shell ---------- */
 .app { display: flex; min-height: 100vh; }
-.stage { position: relative; flex: 1; min-width: 0; }
+.stage { position: relative; flex: 1; min-width: 0; overflow-x: clip; } /* the Gabay jeep runs off the right edge */
 main:focus { outline: none; }
 
 /* ---------- Sidebar (NAV BAR) ---------- */
@@ -450,7 +450,7 @@ button.pill { padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
 }
 
 /* Paksa / Aral / Salita (Frame 1518) + Bokabularyo on the left, the jeep on the right */
-.gabay-grid { display: grid; grid-template-columns: 558px 380px; justify-content: space-between; margin: 15px -24px 0 0; }
+.gabay-grid { display: grid; grid-template-columns: 558px 379px; justify-content: space-between; margin: 15px -24px 0 0; }
 .gabay-main { min-width: 0; }
 
 .info-cards { display: flex; gap: 7px; margin-left: -12px; }
@@ -479,22 +479,23 @@ button.pill { padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
 .vocab-table th { width: 126px; border-right: 4px solid #fff; font-size: 16px; font-weight: 700; }
 .vocab-table td { padding-left: 15px; font-size: 14px; line-height: 1.2; }
 
-/* JEEP 1 with the three signs as links (positions are the frame's, in % of the jeep) */
-.jeep { position: relative; align-self: start; width: 380px; aspect-ratio: 380 / 543.5; margin-top: 19px; }
-.jeep-art { width: 100%; height: 100%; }
-.jeep-sign { position: absolute; left: 5.53%; display: block; border-radius: 8px; transition: translate .15s ease, filter .15s ease; }
+/* Jeep 1 (4659:1802): a 379 × 562 window on the full jeep, which keeps going to the right edge of the window.
+   Positions are the frame's, in % of that window. */
+.jeep { position: relative; align-self: start; width: 379px; max-width: 100%; aspect-ratio: 379 / 562; margin-top: 16px; }
+.jeep-art { position: absolute; left: 0; top: 0; width: 407.52%; height: 100%; max-width: none; pointer-events: none; }
+.jeep-sign { position: absolute; left: 5.28%; display: block; border-radius: 8px; transition: translate .15s ease, filter .15s ease; }
 .jeep-sign img { width: 100%; height: 100%; }
 .jeep-sign:hover { translate: 0 -3px; filter: brightness(1.05) drop-shadow(0 4px 6px rgba(0, 19, 67, .35)); }
 .jeep-sign:focus-visible { outline: 4px solid #fff; box-shadow: 0 0 0 8px var(--navy); }
-.jeep-sign-bago-basahin { top: 17.66%; width: 85%; height: 16.47%; }
-.jeep-sign-basahin { top: 36.98%; width: 84.47%; height: 15%; }
-.jeep-sign-pagkatapos-basahin { top: 54.83%; width: 84.74%; height: 15.73%; }
+.jeep-sign-bago-basahin { top: 17.62%; width: 85.22%; height: 15.93%; }
+.jeep-sign-basahin { top: 36.3%; width: 84.7%; height: 14.5%; }
+.jeep-sign-pagkatapos-basahin { top: 53.56%; width: 84.96%; height: 15.21%; }
 
 @container (max-width: 939px) {
   .gabay-grid { grid-template-columns: minmax(0, 1fr); justify-items: center; margin-right: 0; }
   .gabay-main { width: min(558px, 100%); }
-  /* The jeep art is cut at its right side, so it bleeds off the right edge as in the frame */
-  .jeep { justify-self: end; width: min(380px, 100%); margin: 32px -24px 0 0; }
+  /* Keep the jeep against the right edge so it runs off the window as in the frame */
+  .jeep { justify-self: end; margin: 32px -24px 0 0; }
 }
 @container (max-width: 589px) {
   .info-cards { flex-wrap: wrap; justify-content: center; margin-left: 0; row-gap: 12px; }
