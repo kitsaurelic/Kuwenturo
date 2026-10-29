@@ -35,12 +35,12 @@
       title: 'Sa Likod ng Kompyuter', street: 'Matiyaga St.', topic: 'Problema at Solusyon', minutes: 15,
       art: { src: 'kids-5.png', box: [161.7, 3.71, 132, 103], img: 'inset:0;width:100%;height:100%;object-fit:contain' },
     },
-    'ang-kaniyang-munting-ngiti': { title: 'Ang Kaniyang Munting Ngiti', street: 'Masipag St.' },
-    'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Masipag St.' },
-    'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Masipag St.' },
+    'ang-kaniyang-munting-ngiti': { title: 'Ang Kaniyang Munting Ngiti', street: 'Matiyaga St.' },
+    'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Matatag St.' },
+    'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Matatag St.' },
   };
 
-  // Mga Aralin cards. Both frames label every card "Masipag St." and "Pagkatapos Basahin: Suriin".
+  // Mga Aralin cards show the story's street (yellow cards are Matiyaga St., red cards Matatag St.). Both frames label every card "Pagkatapos Basahin: Suriin".
   const PART = 'Pagkatapos Basahin: Suriin';
   const BADGES = { green: 'badge-star.png', yellow: 'badge-crown.png', red: 'badge-cup.png' };
   const CARDS = {
@@ -116,7 +116,7 @@
         <img class="lesson-head" src="assets/card-head-${c.tone}.svg" alt="">
         <img class="lesson-body" src="assets/card-body-${c.tone}.svg" alt="">
         <div class="lesson-text">
-          <p class="lesson-street">Masipag St.</p>
+          <p class="lesson-street">${l.street}</p>
           <div class="lesson-info">
             <div class="lesson-copy">
               <div class="lesson-heading">
