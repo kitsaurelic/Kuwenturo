@@ -11,67 +11,63 @@
   <link rel="stylesheet" href="login.css">
 </head>
 <body>
-  <div class="layout">
-    <!-- Figma 4496:1043 (illustration) + 4496:1039 (logo) -->
-    <header class="hero">
-      <div class="hero-crop">
-        <img class="hero-img" src="assets/scene.png" width="1457" height="1800"
-             alt="Children running and biking down a street, one waving the Philippine flag.">
+  <!-- Figma 4582:748: the street scene fills the page (scene.jpg is the frame exported at 2x without the wash, logo and form); a white wash (Rectangle 4244) fades in behind the form -->
+  <div class="scene" aria-hidden="true">
+    <div class="scene-stage">
+      <img class="scene-art" src="assets/scene.jpg" width="2400" height="1800" alt="">
+    </div>
+  </div>
+  <img class="logo" src="assets/logo.svg" width="87" height="45" alt="Kuwenturo">
+
+  <!-- Figma 4618:3546 -->
+  <main class="panel">
+    <div class="panel-inner">
+      <h1 class="title">Welcome back</h1>
+
+      <button type="button" class="btn btn-google" id="google-signin">
+        <img src="assets/google.svg" width="14" height="15" alt="" class="google-icon">
+        Continue with Google
+      </button>
+
+      <div class="divider" role="separator" aria-label="or use your email">
+        <span aria-hidden="true">or use your email</span>
       </div>
-      <img class="logo" src="assets/logo.svg" width="155" height="80" alt="Kuwenturo">
-    </header>
 
-    <!-- Figma 4496:1001 -->
-    <main class="panel">
-      <div class="panel-inner">
-        <h1 class="title">Welcome back</h1>
-        <p class="subtitle">Sign in to reach your files, guidelines and tasks.</p>
-
-        <button type="button" class="btn btn-google" id="google-signin">
-          <img src="assets/google.svg" width="14" height="15" alt="" class="google-icon">
-          Continue with Google
-        </button>
-
-        <div class="divider" role="separator" aria-label="or use your email">
-          <span aria-hidden="true">or use your email</span>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email"
+                 placeholder="name@work-email.com" required aria-describedby="email-error">
+          <p class="error" id="email-error"></p>
         </div>
 
-        <form id="login-form" novalidate>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" inputmode="email"
-                   placeholder="name@work-email.com" required aria-describedby="email-error">
-            <p class="error" id="email-error"></p>
+        <div class="field">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <button type="button" class="link" data-open="forgot-dialog">Forgot password?</button>
           </div>
-
-          <div class="field">
-            <div class="label-row">
-              <label for="password">Password</label>
-              <button type="button" class="link" data-open="forgot-dialog">Forgot password?</button>
-            </div>
-            <div class="password-wrap">
-              <input id="password" name="password" type="password" autocomplete="current-password"
-                     placeholder="At least 8 characters" required minlength="8"
-                     aria-describedby="password-error">
-              <button type="button" class="toggle-password" aria-controls="password" aria-label="Show password">Show</button>
-            </div>
-            <p class="error" id="password-error"></p>
+          <div class="password-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password"
+                   placeholder="At least 8 characters" required minlength="8"
+                   aria-describedby="password-error">
+            <button type="button" class="toggle-password" aria-controls="password" aria-label="Show password">Show</button>
           </div>
+          <p class="error" id="password-error"></p>
+        </div>
 
-          <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
 
-        <p class="terms">By continuing you agree to how we handle your project data, set out in our terms.</p>
+      <p class="terms">By continuing, you agree to how Kuwenturo handles your information, as explained in our Terms of Use and Privacy Policy.</p>
 
-        <p class="signup">
-          No account yet?
-          <button type="button" class="link link-strong" data-open="signup-dialog">Create one</button>
-        </p>
+      <p class="signup">
+        No account yet?
+        <button type="button" class="link link-strong" data-open="signup-dialog">Create one</button>
+      </p>
 
-        <p class="sr-only" id="status" role="status" aria-live="polite"></p>
-      </div>
-    </main>
-  </div>
+      <p class="sr-only" id="status" role="status" aria-live="polite"></p>
+    </div>
+  </main>
 
   <!-- Forgot password -->
   <dialog id="forgot-dialog" class="dialog" aria-labelledby="forgot-title">

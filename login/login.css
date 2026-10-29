@@ -1,21 +1,23 @@
-/* Sign-in page, from Figma node 4496:999 (KUWENTURO FILE).
-   The frame is drawn at ~0.82x; sizes here are the 1x values (Figma px / 0.82).
-   Low-contrast text and borders from the frame are raised to meet WCAG AA. */
+/* Sign-in page, from Figma node 4582:748 (KUWENTURO FILE).
+   The street scene is drawn at 1x (1200 × 900). The form card is drawn at ~0.82x, so its
+   sizes here are the 1x values (Figma px / 0.82). Low-contrast text and borders from the
+   frame are raised to meet WCAG AA. */
 :root {
-  --panel-bg: var(--color-dark-blue);          /* #001343 */
-  --text: #F8F8F8;
-  --text-muted: rgba(248, 248, 248, 0.72);     /* frame: .55 / .40 */
-  --text-placeholder: rgba(248, 248, 248, 0.6);/* frame: .35 */
-  --field-bg: rgba(248, 248, 248, 0.05);
-  --field-border: rgba(248, 248, 248, 0.45);   /* frame: .12, raised for 3:1 */
-  --divider: rgba(248, 248, 248, 0.2);
-  --primary: #062AEB;
-  --primary-hover: #2A4BF5;
-  --primary-pressed: #0420B8;
-  --focus: var(--color-amber);                 /* #FFBE33, 10:1 on navy */
-  --error: #FF9A9A;                            /* coral tint, 8:1 on navy */
+  --navy: var(--color-dark-blue);              /* #001343 */
+  --text: var(--navy);
+  --text-muted: #4A5068;                       /* frame: rgba(0,0,0,.58) */
+  --text-placeholder: #6B6B6B;                 /* frame: #7E7E7E, 4.0:1 → 5.3:1 */
+  --field-bg: #FFFFFF;
+  --field-border: rgba(0, 19, 67, 0.6);        /* frame: .44, raised for 3:1 */
+  --divider: rgba(0, 19, 67, 0.44);
+  --primary: var(--navy);
+  --primary-hover: #0A2A7A;
+  --primary-pressed: #000B29;
+  --focus: #336DFF;                            /* --color-royal-blue, 4.5:1 on white */
+  --error: #B42224;                            /* --color-main-red, 6.4:1 on white */
   --radius: 24px;
   --control-h: 48px;
+  --card-center: 74.33%;                       /* frame: card spans x 696–1088 of 1200 */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -24,7 +26,7 @@ html, body { margin: 0; }
 
 body {
   min-height: 100vh;
-  background: var(--panel-bg);
+  background: #FFFFFF;
   color: var(--text);
   font-family: 'Inter', system-ui, 'Segoe UI', Arial, sans-serif;
   font-size: 16px;
@@ -43,44 +45,55 @@ button, input { font: inherit; color: inherit; }
   white-space: nowrap;
 }
 
-/* ---------- Layout: desktop split 583 / 617 ---------- */
-.layout {
-  display: grid;
-  grid-template-columns: 583fr 617fr;
-  min-height: 100vh;
+/* ---------- Scene ---------- */
+/* The 4:3 stage covers the window and stays pinned bottom-left, so the children and the
+   road are always in view; extra sky is trimmed from the top on wide screens. */
+.scene { position: fixed; inset: 0; overflow: hidden; }
+.scene-stage {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: max(100vw, 133.334vh);
+  aspect-ratio: 4 / 3;
+  background: #9CCBF5; /* sky tone while the picture loads */
 }
+.scene-art { display: block; width: 100%; height: 100%; }
+/* Very wide windows show more sky than the picture has; continue its top colour */
+.scene { background: #4AA3F2; }
 
-/* ---------- Illustration ---------- */
-.hero { position: relative; overflow: hidden; background: #2B8CF5; }
-
-/* Figma shows the left 80% of the image (img width 124.96%) — the rest is a black edge. */
-.hero-crop { position: absolute; top: 0; bottom: 0; left: 0; width: 124.96%; }
-.hero-img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 0 62%;
+/* Rectangle 4244: white from the right edge, clear by 63% across */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left,
+    rgba(255, 255, 255, 1) -24.5%, rgba(191, 249, 255, .75) -2.6%, rgba(128, 202, 255, .5) 19.3%,
+    rgba(64, 176, 255, .25) 41.25%, rgba(0, 149, 255, 0) 63.25%);
 }
 
 .logo {
   position: absolute;
-  top: 43px;
-  left: 44px;
-  width: 155px;
+  z-index: 1;
+  top: 41px;
+  left: 41px;
+  width: 87px;
   height: auto;
 }
 
 /* ---------- Panel ---------- */
 .panel {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 48px 32px;
+  min-height: 100vh;
+  padding: 48px 0;
 }
 .panel-inner {
-  width: 100%;
-  max-width: 400px;
+  width: 464px;
+  margin-left: min(calc(var(--card-center) - 232px), calc(100% - 480px));
+  padding: 32px;
+  border-radius: 21px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,13 +105,6 @@ button, input { font: inherit; color: inherit; }
   line-height: 1.25;
   font-weight: 700;
   letter-spacing: -0.03em;
-}
-.subtitle {
-  margin-top: 12px;
-  max-width: 280px;
-  color: var(--text-muted);
-  font-size: 15px;
-  line-height: 1.45;
 }
 
 /* ---------- Buttons ---------- */
@@ -113,21 +119,22 @@ button, input { font: inherit; color: inherit; }
   border: 0;
   border-radius: var(--radius);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); /* frame: card drop shadow */
 }
-.btn-google { margin-top: 28px; background: #F8F8F8; color: #000; }
-.btn-google:hover { background: #E8E8EC; }
-.btn-google:active { background: #D6D6DC; }
+.btn-google { margin-top: 28px; background: #FFFFFF; color: #000; }
+.btn-google:hover { background: #F1F3F8; }
+.btn-google:active { background: #E2E6EF; }
 .google-icon { width: 18px; height: auto; }
 
-.btn-primary { margin-top: 8px; background: var(--primary); color: var(--text); }
+.btn-primary { margin-top: 8px; background: var(--primary); color: #FFFFFF; }
 .btn-primary:hover { background: var(--primary-hover); }
 .btn-primary:active { background: var(--primary-pressed); }
 .btn-primary:disabled { opacity: .6; cursor: progress; }
 
 .btn-ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--field-border); }
-.btn-ghost:hover { background: rgba(248, 248, 248, 0.08); }
+.btn-ghost:hover { background: rgba(0, 19, 67, 0.06); }
 
 .link {
   padding: 4px 2px;
@@ -140,7 +147,7 @@ button, input { font: inherit; color: inherit; }
   cursor: pointer;
 }
 .link:hover { color: var(--text); }
-.link-strong { color: var(--text); font-weight: 500; }
+.link-strong { color: var(--text); }
 
 :is(.btn, .link, .toggle-password, input):focus-visible {
   outline: 3px solid var(--focus);
@@ -154,19 +161,19 @@ button, input { font: inherit; color: inherit; }
   gap: 16px;
   width: 100%;
   margin: 20px 0;
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 13px;
 }
 .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--divider); }
 
 /* ---------- Form ---------- */
-#login-form { width: 100%; display: flex; flex-direction: column; gap: 16px; text-align: left; }
+#login-form { width: 100%; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+#login-form .btn-primary { margin-top: 20px; }
 
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label {
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 13px;
-  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -183,7 +190,7 @@ button, input { font: inherit; color: inherit; }
   font-size: 16px; /* 16px stops iOS zoom on focus */
 }
 .field input::placeholder { color: var(--text-placeholder); opacity: 1; }
-.field input:hover { border-color: rgba(248, 248, 248, 0.7); }
+.field input:hover { border-color: var(--navy); }
 .field input[aria-invalid="true"] { border-color: var(--error); border-width: 2px; }
 
 .password-wrap { position: relative; }
@@ -204,7 +211,7 @@ button, input { font: inherit; color: inherit; }
   font-weight: 500;
   cursor: pointer;
 }
-.toggle-password:hover { background: rgba(248, 248, 248, 0.1); }
+.toggle-password:hover { background: rgba(0, 19, 67, 0.08); }
 
 .error { color: var(--error); font-size: 14px; line-height: 1.4; }
 .error:empty { display: none; }
@@ -212,7 +219,7 @@ button, input { font: inherit; color: inherit; }
 
 .terms {
   margin-top: 16px;
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -224,35 +231,45 @@ button, input { font: inherit; color: inherit; }
   max-height: calc(100vh - 32px);
   overflow-y: auto;
   padding: 32px;
-  background: var(--panel-bg);
+  background: #FFFFFF;
   color: var(--text);
-  border: 1px solid var(--field-border);
-  border-radius: 24px;
+  border: 0;
+  border-radius: 21px;
+  box-shadow: 0 8px 24px rgba(0, 19, 67, 0.3);
 }
-.dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+.dialog::backdrop { background: rgba(0, 19, 67, 0.45); }
 .dialog [data-step] { display: flex; flex-direction: column; gap: 16px; }
 .dialog [data-step][hidden] { display: none; }
-.dialog .subtitle { margin-top: 0; max-width: none; }
+.dialog .subtitle { color: var(--text-muted); font-size: 15px; line-height: 1.45; }
 .dialog-title { font-size: 24px; line-height: 1.3; font-weight: 700; letter-spacing: -0.02em; }
 .dialog-title:focus { outline: none; }
 .dialog-actions { display: flex; gap: 12px; margin-top: 8px; }
 .dialog-actions .btn { margin-top: 0; }
+.dialog .btn { box-shadow: none; }
+.dialog .btn-ghost { box-shadow: inset 0 0 0 1px var(--field-border); }
 
-/* ---------- Tablet: 641–1023px — illustration becomes a banner ---------- */
+/* ---------- Tablet: ≤1023px — the form sits on a frosted card over the scene ---------- */
 @media (max-width: 1023px) {
-  .layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-  .hero { aspect-ratio: 768 / 440; max-height: 480px; } /* scales with width so the framing stays the same */
-  .hero-img { object-position: 0 59%; }
-  .logo { top: 28px; left: 32px; width: 130px; }
-  .panel { align-items: flex-start; padding: 48px 32px 64px; }
+  .scene::after { background: rgba(255, 255, 255, 0.35); }
+  .panel { justify-content: center; padding: 104px 16px 48px; }
+  .panel-inner {
+    width: min(464px, 100%);
+    margin-left: 0;
+    background: rgba(255, 255, 255, 0.9);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  }
 }
 
-/* ---------- Mobile: ≤640px ---------- */
+/* ---------- Mobile: ≤640px — the scene becomes a banner above the form ---------- */
 @media (max-width: 640px) {
-  .hero { aspect-ratio: 375 / 232; }
-  .hero-img { object-position: 0 56%; }
-  .logo { top: 16px; left: 16px; width: 100px; }
-  .panel { padding: 32px 16px 48px; }
+  .scene { position: relative; }
+  .scene-stage { position: relative; width: 100%; } /* the whole 4:3 scene, logo on the sky */
+  .scene::after { background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, #FFFFFF); }
+  .logo { top: 16px; left: 16px; width: 72px; }
+  .panel { min-height: 0; padding: 0 16px 48px; }
+  .panel-inner { padding: 8px 0 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .title { font-size: 28px; }
   .dialog { padding: 24px 16px; }
   .dialog-actions { flex-direction: column-reverse; }
@@ -265,4 +282,14 @@ button, input { font: inherit; color: inherit; }
 /* Windows High Contrast: keep control edges visible */
 @media (forced-colors: active) {
   .btn, .field input { border: 1px solid ButtonText; }
+}
+
+/* Over the scene the frame's grey (#7E7E7E / 58% black) drops below 3:1 where the road shows
+   through, so everything on the card is navy; the dialogs (white) keep the muted grey. */
+.panel .link, .panel .signup { color: var(--text); }
+
+/* The frame's card has no fill, but navy text over the grass and road then falls to 3.2–3.4:1.
+   A light (25%) white wash on the card (frame radius 21px) keeps every line above 4.5:1. */
+@media (min-width: 1024px) {
+  .panel-inner { background: rgba(255, 255, 255, 0.25); }
 }
