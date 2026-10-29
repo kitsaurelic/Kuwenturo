@@ -416,4 +416,161 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Section 4728:3652, "Kuwento 4" (Gabay page 4728:4523)
+  'ang-kendi-sa-sari-sari-store': {
+    thumb: 'thumb-ang-kendi-sa-sari-sari-store.jpg',
+    paksa: 'Pagtanggap sa Sariling Pagkakakilanlan at Pagkakaiba ng Bawat Isa',
+    aral: 'Mahalagang maging totoo sa sarili at igalang ang pagkakakilanlan ng bawat isa.',
+    salita: 257,
+    vocab: [
+      ['Mapabilang', 'Maging bahagi o tanggapin sa isang grupo.'],
+      ['Mahinhin', 'Kumikilos o nagsasalita nang maayos.'],
+      ['Pagmasdan', 'Tinitingnan o inoobserbahan nang mabuti ang isang bagay o tao.'],
+      ['Garapon', 'Uri ng lalagyan na karaniwang gawa sa babasagin o plastik.'],
+      ['Istante', 'Patungan ng mga bagay.'],
+    ],
+
+    // Figma 4728:4705 (panel 4728:4888)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na bawat tao ay may sariling kakayahan at katangian, at tuklasin ang kahalagahan ng pagtanggap at pagmamahal sa sarili.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang emosyon ng mga tauhan sa iba’t ibang bahagi ng kuwento.</li>
+            <li>Ang aral ng kuwento tungkol sa pagtanggap at pagmamahal sa sarili.</li>
+            <li>Ang mga dahilan sa nararamdaman ng tauhan batay sa mga pangyayari.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang bata na nawawala sa sari-sari store.</li>
+            <li class="is-answer">Isang bata na natututo na tanggapin ang kanyang sarili.</li>
+            <li>Isang bata nagnakaw ng kendi sa sari-sari store.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4728:4908 (panel 4728:5091)
+    basahin: [
+      {
+        title: 'Ang Kendi sa Sari-Sari Store', tone: 'green',
+        html: `<p>“Pabili poooo ng kendi!” masaya kong sabi habang itinuturo ang garapon sa istante.</p>
+          <p>Inabot ko ang aking bayad at ibinigay naman ni Lola Nena ang napili kong kendi.</p>
+          <p>Habang binubuksan ko ito, napansin kong nakatingin ang apo niyang si Carlo sa mga kendi.</p>
+          <p>“Lola, may kwento po ako,” sabi ni Carlo.</p>
+          <p>“Ano iyon, apo?” tanong ni Lola.</p>
+          <p>Habang kumakain ako, nakinig ako sa kanilang usapan.</p>
+          <p>“Nasa itaas ng istante ang mga chichirya,” simula ni Carlo.</p>
+          <p>“Matapang at malakas. Lalaking-lalaki.”</p>
+          <p>“Nasa kabilang istante naman ang mga tsokolate.”</p>
+          <p>“Mahinhin at matamis magsalita. Babaeng-babae.”</p>
+          <p>“At may isang kendi na sinubukang magbago.”</p>
+          <p>“Pero kahit anong gawin niya, hindi siya mapabilang.”</p>
+          <p>Yumuko si Carlo.</p>
+          <p>“Kawawa naman ako..este…kawawa naman po ang kendi.”</p>
+          <p>Kumuha si lola ng isang kendi mula sa istante at ipinakita ito kay Carlo.</p>
+          <p>“Apo, wala ka naman ginagawang masama ah,” sabi niya.</p>
+          <p>Kumunot ang noo ni Carlo.</p>
+          <p>“Hindi ko po maintindihan.”</p>
+          <p>“Kung wala po akong ginagawang masama, bakit parang ayaw po nila sa akin?”</p>
+          <p>Ngumiti si Lola at itinuro ang mga paninda sa tindahan.</p>
+          <p>“Lahat ng tao ay magkakaiba ngunit may lugar para sa lahat.”</p>
+          <p>Napatingin si Carlo sa kanyang lola.</p>
+          <p>“Pati po sa mga katulad ko?”</p>
+          <p>“Oo naman apo,” sagot ni lola.</p>
+          <p>“Hindi mo kailangan mapabilang dahil kailangan mo lang maging totoo sa sarili mo.”</p>
+          <p>Unti-unting ngumiti si Carlo.</p>
+          <p>“Walang mali sa pagiging ako.”</p>
+          <p>Nginitian ko si Carlo at inalok siya ng kendi.</p>
+          <p>Magkaiba man kami, pareho pa rin kaming mahalaga.</p>
+          <p>Dahil ang bawat isa ay may sariling lugar sa mundo.</p>
+          <p><strong><em>Tulad ng mga kendi sa sari-sari store.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4728:5100 (panel 4728:5283)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Emosyon #1</h4>
+          <ol start="1"><li>“May isang kendi na sinubukang magbago. Pero kahit ano gawin niya, hindi siya mapabilang.”</li></ol>
+          <p class="answer"><strong>SAGOT:<br>Piliin ang “Malungkot”<br>Nalulungkot si Carlo dahil hindi niya kaya maging katulad ng iba.</strong></p>
+          <h4>Emosyon #2</h4>
+          <ol start="2"><li>Yumuko si Carlo, “Kawawa naman ako..este…kawawa naman po ang kendi.”</li></ol>
+          <p class="answer"><strong>SAGOT:<br>Piliin ang “Malungkot”<br>Nalulungkot si Carlo dahil iniisip niya na kawawa siya.</strong></p>
+          <h4>Emosyon #3</h4>
+          <ol start="3"><li>Kumunot ang noo ni Carlo, “Hindi ko po maintindihan.”</li></ol>
+          <p class="answer"><strong>SAGOT:<br>Piliin ang “Nalilito”<br>Nalilito si Carlo dahil hindi niya maintindihan ang sitwasyon niya.</strong></p>
+          <h4>Emosyon #4</h4>
+          <ol start="4"><li>“Kung wala po akong ginagawang masama, bakit parang may mali po sa akin?”</li></ol>
+          <p class="answer"><strong>SAGOT:<br>Piliin ang “Nag-alala”<br>Nag-alala si Carlo dahil iniisip niya na baka may mali sa kanya.</strong></p>
+          <h4>Emosyon #5</h4>
+          <ol start="5"><li>Unti-unting ngumiti si Carlo, “Walang mali sa pagiging ako.”</li></ol>
+          <p class="answer"><strong>SAGOT:<br>Piliin ang “Masaya”<br>Masaya si Carlo dahil naintindihan niya na walang mali sa kanya.</strong></p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Damdamin #1</h4>
+          <ol start="1"><li>Yumuko si Carlo at sinabi na kawawa naman siya.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Mapait na damdamin”<br>Malungkot si Carlo dahil sa tingin niya ay nakaaawa ang sitwasyon niya.</strong></p>
+          <h4>Damdamin #2</h4>
+          <ol start="2"><li>Hindi maintindihan ni Carlo si Lola Nena kaya kumunot ang noo niya.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Mapait na damdamin”<br>Nalilito si Carlo dahil nalilito siya sa mga pahayag ni Lola Nena.</strong></p>
+          <h4>Damdamin #3</h4>
+          <ol start="3"><li>Sinabi ni Lola na kailangan lang ni Carlo maging totoo sa sarili niya.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Matamis na damdamin”<br>Masaya si Carlo nalaman niya na hindi niya kailangan magbago o mapabilang.</strong></p>
+          <h4>Damdamin #4</h4>
+          <ol start="4"><li>Sinabi ni Lola kay Carlo na wala naman siyang ginagawang masama.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Matamis na damdamin”<br>Masaya si Carlo dahil nalaman niya na walang mali sa kanya.</strong></p>
+          <h4>Damdamin #5</h4>
+          <ol start="5"><li>Sinabi ni Carlo na kahit anong gawin niya, hindi siya mapabilang.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Piliin ang “Mapait na damdamin”<br>Malungkot si Carlo dahil pinipilit niyang maging katulad ng iba para mapabilang.</strong></p>`,
+      },
+      {
+        // The frame's Paglalagom is Kuwento 1's text (Biboy and Popoy); kept as drawn until the frame is updated
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Ano ang unang nalaman ni Biboy tungkol sa pamilya ni Popoy na ikinagulat niya?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nalaman ni Popoy na may dalawang mama si Biboy. Nagtaka siya dahil iba ito sa kaniyang inaasahang pamilya.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li><strong>Paano ipinaliwanag ni Popoy na pamilya pa rin ang may dalawang mama?</strong></li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ipinaliwanag ni Biboy na tulad din ng ibang pamilya, niyayakap, inaalagaan, tinutulungan, at mahal siya ng kaniyang dalawang mama.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li><strong>Ano ang natutuhan ni Biboy tungkol sa tunay na pamilya?</strong></li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuhan ni Biboy na maaaring magkakaiba ang anyo ng pamilya. Ang tunay na pamilya ay may pagmamahal, pag-aalaga, at pagtanggap sa isa't isa.</p>
+          <h4>Kabuuan</h4>
+          <p>Nakita ni Biboy si Popoy habang naglalakad sa kanilang barangay. Nalaman niya na may dalawang mama si Popoy kaya siya ay nagtaka. Ikinuwento ni Popoy na siya ay minamahal, inaalagaan, at tinutulungan ng kanyang mga mama sa iba’t ibang pagkakataon. Habang nakikilala ni Biboy ang pamilya ni Popoy, nakita niya na ang pagmamahal at pag-aalaga ang mahalagang bahagi ng isang pamilya. Sa huli, natutunan ni Biboy na maaaring magkakaiba ang uri ng pamilya, ngunit ang bawat pamilya ay maaaring maging puno ng pagmamahal.</p>`,
+      },
+      {
+        // The frame highlights “Gagayahin ko…” as the second answer; kept as drawn
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">Mahilig kang gumuhit habang ang ibang kaklase mo ay mahilig maglaro ng sports. Sinabi nila na dapat gayahin mo sila.</p>
+          <ul>
+            <li>Itigil ang pagguhit para matanggap ng iba.</li>
+            <li>Tatalikuran ko ang pagguhit at gagawin ko ang gusto nila.</li>
+            <li class="is-answer">Ipagpapatuloy ko ang pagguhit dahil ito ang gusto ko.</li>
+          </ul>
+          <p class="question">Gusto mong magsuot ng damit o gamit na paborito mong kulay kahit iba ito sa ginagamit ng iyong mga kaibigan.</p>
+          <ul>
+            <li>Hindi ko na ito gagamitin para hindi matukso ng iba.</li>
+            <li>Susuotin ko pa rin dahil ito ang magpapasaya sa akin.</li>
+            <li class="is-answer">Gagayahin ko ang aking mga kaibigan para mapabilang.</li>
+          </ul>
+          <p class="question">Mas tahimik ka kaysa sa ibang bata. Mas gusto mong makinig, magbasa, o mag-isip muna bago magsalita.</p>
+          <ul>
+            <li class="is-answer">Tanggapin ko ang aking sarili dahil ito ang tunay na ako.</li>
+            <li>Babaguhin ko agad ang aking sarili upang mapansin ng iba.</li>
+            <li>Hahayaan ko na asarin nila ako dahil ito ang tunay na ako.</li>
+          </ul>`,
+      },
+    ],
+  },
 };
