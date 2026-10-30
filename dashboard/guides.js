@@ -573,4 +573,144 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Matiyaga St.: section 4793:8916, "Kuwento 1" (Gabay page 4801:1542)
+  'ang-piraso-ng-biyaya': {
+    thumb: 'thumb-ang-piraso-ng-biyaya.jpg',
+    paksa: 'Pagpapahalaga sa Pagkain at Munting Biyaya',
+    aral: 'Mahalagang pahalagahan ang biyaya dahil kahit ang maliliit na bagay ay may halaga.',
+    salita: 104,
+    vocab: [
+      ['Panaderya', 'Lugar kung saan gumagawa at nagtitinda ng tinapay.'],
+      ['Biyaya', 'Magandang bagay o tulong na binigay sa atin.'],
+      ['Pinagpag', 'Inalis ang dumi sa isang bagay.'],
+      ['Dismaya', 'Pakiramdam ng lungkot o inis dahil sa hindi inaasahang pangyayari.'],
+      ['Piraso', 'Isang maliit na bahagi o parte ng isang buong bagay.'],
+    ],
+
+    // Figma 4801:1724 (panel 4801:1907)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na ang mga bagay na tila maliit ay malaking biyaya sa iba, kaya mahalagang pahalagahan ang pagkain at huwag sayangin ito.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang mga pangyayari sa kuwento na nagpapakita ng sanhi at bunga.</li>
+            <li>Ang aral ng kuwento tungkol sa pagpapahalaga sa pagkain at pag-iwas sa pag-aaksaya.</li>
+            <li>Ang ugnayan ng sanhi at bunga sa mga kilos at desisyon ng mga tauhan.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang batang nag-aksaya ng lahat ng pagkain.</li>
+            <li class="is-answer">Natutunan ni Biboy pahalagahan ang isang maliit na piraso ng tinapay.</li>
+            <li>Isang panadero na nagsara ng kaniyang panaderya dahil kay Biboy.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4801:1927 (panel 4801:2110)
+    basahin: [
+      {
+        title: 'Ang Piraso ng Biyaya', tone: 'green',
+        html: `<p>Sa tuwing papasok ako sa paaralan, naaamoy ko agad mula sa malayo ang matamis at mabangong bagong lutong tinapay sa panaderya.</p>
+          <p>May dalawang bata ang nakaupo sa gilid nito.</p>
+          <p>Tila nakatulala at naghihintay ng biyaya.</p>
+          <p>“Gaano naman kaya katagal ang biyaya ngayong araw?” tanong ng isang bata.</p>
+          <p>“Kuya, wala pa ba?” tanong niya muli.</p>
+          <p>“Titignan ko kung ano magagawa ko” sagot ng kuya.</p>
+          <p>“Gutom na ako.”</p>
+          <p>Maya-maya, may batang bumili ng tinapay.</p>
+          <p>Kinagatan niya ito.</p>
+          <p>Ngunit, tinapon niya agad ito sa sahig.</p>
+          <p>Napansin kong nalungkot ang maliit na bata.</p>
+          <p>Ngunit ang Kuya ay biglang ngumiti.</p>
+          <p>“Ito na ang biyayang hinihintay natin!”</p>
+          <p>Mabilis niyang pinulot ang tinapay at pinagpag ito.</p>
+          <p>Napaisip ako.</p>
+          <p>Paano naging biyaya iyon?</p>
+          <p>Akala ko kasi, hindi na mahalaga ang maliliit na piraso.</p>
+          <p>Ang mga kaklase ko kasi, hindi inuubos ang baon nila at tinatapon na lamang.</p>
+          <p>Pero para sa dalawang bata, binuo ng mga pirasong ito ang araw nila.</p>
+          <p>“Oh, ito naman ang inumin. Biyaya ni Aling Martha.” sabi ng isa.</p>
+          <p>Habang naglalakad ako, napatingin ako ulit sa mga piraso ng tinapay.</p>
+          <p>Kanina, piraso lang ang tingin ko rito.</p>
+          <p>Para pala sa iba, ang maliit na piraso ay mahalaga.</p>
+          <p>At sa munting piraso ng biyaya,</p>
+          <p><strong><em>May mga batang lumigaya.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4801:2119 (panel 4801:2302)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Pangyayari #1</h4>
+          <ol start="1"><li>May tinapay na nakita sa sahig.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Sanhi:</strong> Itinapon ito ng isang bata pagkatapos ito kagatin.<br><strong>Bunga:</strong> Mabilis na pinulot ni Kuya ang tinapay at pinagpag ito.</p>
+          <h4>Pangyayari #2</h4>
+          <ol start="2"><li>May dalawang batang naghihintay sa gilid ng panaderya.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Sanhi:</strong> Nagugutom na ang dalawa kaya naghihintay sila ng biyaya.<br><strong>Bunga:</strong> Nakatanggap sila ng biyaya na tinapay at inumin.</p>
+          <h4>Pangyayari #3</h4>
+          <ol start="3"><li>Nagbago ang pananaw ni Biboy tungkol sa piraso ng tinapay.</li></ol>
+          <p class="answer"><strong>SAGOT<br>Sanhi:</strong> Nakita ni Biboy na mahalaga ang pagkain sa dalawang bata.<br><strong>Bunga:</strong> Napagtanto ni Biboy ang kahalagahan ng pagkain.</p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Sanhi #1</h4>
+          <ol start="1"><li>Ano ang sanhi ng paghihintay dalawang bata sa panaderya?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay naghihintay sila ng pagkain o biyaya dahil sila ay nagugutom.</p>
+          <h4>Sanhi #2</h4>
+          <ol start="2"><li>Ano ang sanhi ng pagkatuwa ni Kuya nang makita ang tinapay?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay itinuturing ni Kuya na biyaya ang tinapay.</p>
+          <h4>Bunga #1</h4>
+          <ol start="3"><li>Ano ang bunga ng pagkakita ni Kuya sa tinapay sa sahig?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang bunga nito ay mabilis na pinulot at pinagpag ni Kuya ang tinapay upang makain nilang magkapatid.</p>
+          <h4>Bunga #2</h4>
+          <ol start="4"><li>Ano ang bunga ng pagkaunawa ni Biboy sa halaga ng tinapay?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang bunga nito ay natutuhan ni Biboy na mahalaga ang bawat piraso ng pagkain.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Bakit naghihintay ang dalawang bata sa tabi ng panaderya?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Naghihintay ang dalawang bata ng biyaya dahil sila ay nagugutom.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang ginawa ni Kuya sa tinapay na itinapon sa sahig?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Pinulot at pinagpag ni Kuya ang tinapay na itinapon sa sahig upang makain nilang magkapatid.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li><strong>Ano ang natutuhan ni Biboy tungkol sa halaga ng bawat piraso ng tinapay?</strong></li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuhan ni Biboy na mahalaga ang bawat piraso ng pagkain dahil biyaya ito.</p>
+          <h4>Kabuuan</h4>
+          <p>Habang papunta sa paaralan, nakita ni Biboy ang dalawang batang naghihintay ng biyaya sa tabi ng panaderya. Nang may batang magtapon ng tinapay sa sahig, pinulot at pinagpag ito ni Kuya upang makain nila. Binigyan din sila ni Aling Martha ng inumin. Natutuhan ni Biboy na mahalaga ang bawat piraso ng pagkain kaya hindi ito dapat sayangin.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">Hindi mo nagustuhan ang ulam na niluto sa bahay dahil hindi ito ang paborito mo. Ano ang tamang gawin?</p>
+          <ul>
+            <li>Itatapon ko ang pagkain dahil hindi ko ito gusto.</li>
+            <li>Hindi ko ito kakainin at hihingi nalang ako ng ibang ulam.</li>
+            <li class="is-answer">Titikman ko muna dahil hindi lahat ay may makain.</li>
+          </ul>
+          <p class="question">Sinabi ng kaklase mo, “Kaunti lang naman ang natira, okay lang na hindi ko ubusin.” Ano ang dapat mong gawin?</p>
+          <ul>
+            <li>Hahayaan ko nalang siya na itapon niya ang pagkain.</li>
+            <li class="is-answer">Sasabihin ko na huwag magsayang ng pagkain.</li>
+            <li>Hindi ko siya papansinin dahil hindi ko naman pagkain iyon.</li>
+          </ul>
+          <p class="question">May kaklase kang nagugutom at walang baon dahil naiwan niya ito sa bahay. Ano ang gagawin mo?</p>
+          <ul>
+            <li class="is-answer">Magbabahagi ako ng pagkain kung mayroon akong sobra.</li>
+            <li>Hindi ko siya papansinin dahil hindi ko problema iyon.</li>
+            <li>Sasabihin kong huwag na lang niyang kalimutan sa susunod.</li>
+          </ul>`,
+      },
+    ],
+  },
 };
