@@ -1105,4 +1105,142 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Matatag St.: section 4801:7454, "Kuwento 1" (Gabay page 4801:10834)
+  'ang-limampung-piso-ko': {
+    thumb: 'thumb-ang-limampung-piso-ko.jpg',
+    // "Pagtanggap sa" is in the frame; kept as drawn
+    paksa: 'Pagtanggap sa Pagpapahalaga sa Pera at Matalinong Pagbili',
+    aral: 'Mahalagang gamitin nang wasto ang pera at maging wais sa paggastos.',
+    salita: 142,
+    vocab: [
+      ['Minamata', 'Tinitingnan nang mabuti.'],
+      ['Presyo', 'Halaga ng perang kailangang bayaran.'],
+      ['Kumikinang', 'Nagbibigay ng liwanag o ilaw.'],
+      ['Nadismaya', 'Nakaramdam ng lungkot dahil sa hindi inaasahan.'],
+      ['Barya', 'Pera na pabilog at karaniwang gawa sa metal.'],
+    ],
+
+    // Figma 4801:11017 (panel 4801:11201)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na mahalagang tanggapin ang mga bagay na hindi natin kayang baguhin at piliin nang wasto kung paano gamitin ang ating pera.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang tamang pagkasunod-sunod ng mga mahahalagang pangyayari sa kuwento.</li>
+            <li>Ang aral ng kuwento tungkol sa pagpapahalaga at wastong paggamit ng pera.</li>
+            <li>Ang mga pangyayari na naganap sa simula, gitna, at wakas ng kuwento.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang batang nawalan ng limampung piso habang namimili.</li>
+            <li class="is-answer">Isang batang nakabili ng laruan na para sa kaniya.</li>
+            <li>Isang bata na nagsayang ng pera sa isang genie.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4801:11221 (panel 4801:11405)
+    basahin: [
+      {
+        title: 'Ang Limampung Piso Ko', tone: 'green',
+        html: `<p>Dumaan ako sa paborito kong tindahan ng mga laruan.</p>
+          <p>Kabisado ko na ang superhero na matagal ko nang gusto.</p>
+          <p>“Hintayin mo ako,” ang lagi kong sinasabi.</p>
+          <p>Ngayon, dala ko na ang mga baryang inipon ko.</p>
+          <p>“YEHEY, limampung piso!”</p>
+          <p>Hinanap ko ulit ang laruan.</p>
+          <p>“HA?! Limampung piso lang ito dati!”</p>
+          <p>Nadismaya ako.</p>
+          <p>Sa malayo, may nakita akong kumikinang.</p>
+          <p>Isa itong genie.</p>
+          <p>“Sabi sa palabas, may tatlong wish kapag may genie.”</p>
+          <p>Hinawakan ko siya at pumikit.</p>
+          <p>“Una, sana bumalik sa 50 pesos ang presyo.”</p>
+          <p>“Pangalawa, sana maging sapat ang pera ko.”</p>
+          <p>“Pangatlo, sana mabili ko ang laruan para sa akin.”</p>
+          <p>Walang nangyari at hawak ko pa rin ang genie.</p>
+          <p>Binaliktad ko ito at nakita:</p>
+          <p>“ANG LARUANG PARA SA IYO — 50 PESOS.”</p>
+          <p>Ito pala ang hinihiling ko.</p>
+          <p>Hindi ko nakontrol ang presyo pero masaya naman ako</p>
+          <p><strong><em>Dahil nagamit ko nang tama ang Limampung Piso ko.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4801:11414 (panel 4801:11598)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Pangyayari</h4>
+          <ol start="1"><li>Ano ang unang ginawa ni Biboy sa kuwento?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“DINALA NI BIBOY ANG NAIPONG 50 PESOS SA TINDAHAN”</strong> Ito ang unang pangyayari dahil balak bilhin ni Biboy ang laruan na gusto niya.</p>
+          <ol start="2"><li>Ano ang sumunod na nangyari matapos pumunta ni Biboy sa tindahan?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“NADISMAYA DAHIL 100 PESOS NA ANG PRESYO NG LARUAN”</strong> Ito ang ikalawang pangyayari dahil nadismaya si Biboy na nagbago bigla ang presyo.</p>
+          <ol start="3"><li>Ano ang nangyari matapos madismaya si Biboy sa presyo ng laruan?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“NAKAKITA SIYA NG GENIE AT GUMAWA NG TATLONG WISH”</strong> Ito ang ikatlong pangyayari dahil nakita niya na kumikinang ang genie mula sa malayo.</p>
+          <ol start="4"><li>Ano ang nangyari nang hindi natupad ang mga hiling ni Biboy?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“BINALIKTAD NIYA ANG GENIE AT NABASA ANG NAKASULAT”</strong> Ito ang ikaapat na pangyayari dahil walang nangyari matapos ng tatlong hiling.</p>
+          <ol start="5"><li>Ano ang huling nangyari sa kuwento?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“NALAMAN NI BIBOY NA ANG GENIE AY PARA SA KANIYA”</strong> Ito ang huling pangyayari dahil natutunan niyang gamitin nang wasto ang kaniyang pera.</p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Pangyayari</h4>
+          <ol start="1"><li>Dinala ni _ _ _ _ _ ang kaniyang naipong ₱_ _ sa tindahan.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang unang nangyari ay dinala ni BIBOY ang kaniyang naipong ₱50 sa tindahan.</p>
+          <ol start="2"><li>Nadismaya si Biboy dahil ₱_ _ _ na ang presyo ng l _ r _ _ n.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang ikalawang nangyari ay nadismaya si Biboy dahil ₱100 na ang presyo ng LARUAN.</p>
+          <ol start="3"><li>Nakakita siya ng isang g _ _ _ _ at gumawa ng t _ _ _ _ _ g wish.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang ikatlong nangyari ay nakakita si Biboy ng isang GENIE at gumawa ng TATLONG wish.</p>
+          <ol start="4"><li>B _ n _ l _ k _ _ d niya ang genie at n _ b _ s _ ang nakasulat.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang ikaapat na nangyari ay BINALIKTAD ni Biboy ang genie at NABASA ang nakasulat.</p>
+          <ol start="5"><li>Nalaman ni Biboy na ang _ _ _ _ _ ay ang laruan na para sa k _ _ _ y a.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang huling nangyari ay nalaman ni Biboy na ang GENIE ay ang laruan na para sa KANIYA.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Ano ang nangyari kay Biboy nang dalhin niya ang ₱50 sa tindahan?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nadismaya si Biboy dahil ₱100 na ang presyo ng laruan.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang ginawa ni Biboy nang makakita siya ng genie?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Gumawa si Biboy ng tatlong wish sa genie ngunit walang nangyari.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li>Ano ang natutunan ni Biboy nang binaliktad niya ang genie?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuhan niyang ang genie ang laruan para sa kaniya at mahalagang gamitin sa tama ang pera.</p>
+          <h4>Kabuuan</h4>
+          <p>Nag-ipon si Biboy ng ₱50 upang bilhin ang superhero na gusto niya. Nadismaya siya nang malaman na ₱100 na ang presyo nito. Nakakita siya ng genie at gumawa ng tatlong wish. Nang binaliktad niya ito, nalaman niyang ang genie pala ang laruan para sa kaniya. Natutunan ni Biboy na pahalagahan ang pera at gamitin ito nang tama.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">Gusto mong bumili ng laruan, pero kailangan mo rin ng gamit sa klase. Ano ang dapat mong gawin?</p>
+          <ul>
+            <li>Bibilhin ko ang laruan dahil mas importante ito.</li>
+            <li>Hindi ko nalang gagastusin ang pera ko.</li>
+            <li class="is-answer">Bibilhin ko ang kailangan na gamit dahil mas mahalaga ito.</li>
+          </ul>
+          <p class="question">Mayroon kang ₱50 at gusto mong bumili ng kendi at mag-ipon. Ano ang gagawin mo?</p>
+          <ul>
+            <li>Bibilhin ko lahat ng kendi na gusto ko.</li>
+            <li class="is-answer">Bibili ako ng kaunting kendi at itabi ang natitirang pera.</li>
+            <li>Hihingi nalang ako ng dagdag pera sa mga magulang ko.</li>
+          </ul>
+          <p class="question">Gusto mong bumili ng bagong laruan, pero sinabi ng mga magulang mo na marami ka pang laruan sa bahay.</p>
+          <ul>
+            <li class="is-answer">Gagamitin ko nalang ang pera ko sa ibang bagay.</li>
+            <li>Pipilitin ko sila at sabihing huling beses na ito.</li>
+            <li>Magtatampo ako sa aking mga magulang.</li>
+          </ul>`,
+      },
+    ],
+  },
 };

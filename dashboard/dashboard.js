@@ -45,8 +45,12 @@
       title: 'Ang Guhit na Hindi Nakikita', street: 'Matiyaga St.', topic: 'Problema at Solusyon', minutes: 15,
       art: { src: 'kids-8.png', box: [151.71, -2.29, 152, 114], img: 'left:-0.21%;top:7.46%;width:100.42%;height:87.77%' },
     },
+    // Kuwento 1 of Matatag St. (Figma 4801:10834)
+    'ang-limampung-piso-ko': {
+      title: 'Ang Limampung Piso Ko', street: 'Matatag St.', topic: 'Pagkakasunod ng Pangyayari', minutes: 15,
+      art: { src: 'kids-9.png', box: [174.71, -9.29, 106, 115], img: 'left:13.3%;top:-0.06%;width:73.42%;height:100.12%' },
+    },
     'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Matatag St.' },
-    'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Matatag St.' },
   };
 
   // Mga Aralin cards show the story's street (yellow cards are Matiyaga St., red cards Matatag St.). Both frames label every card "Pagkatapos Basahin: Suriin".
