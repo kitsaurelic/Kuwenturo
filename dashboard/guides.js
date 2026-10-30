@@ -970,4 +970,139 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Matiyaga St.: section 4801:5776, "Kuwento 4" (Gabay page 4801:6628)
+  'ang-guhit-na-hindi-nakikita': {
+    thumb: 'thumb-ang-guhit-na-hindi-nakikita.jpg',
+    paksa: 'Paggalang sa Personal na Hangganan ng Katawan',
+    aral: 'Mahalagang igalang ang hangganan ng bawat isa at humingi ng pahintulot.',
+    salita: 187,
+    vocab: [
+      ['Hangganan', 'Limitasyon na dapat igalang ng bawat isa.'],
+      ['Panig', 'Bahagi o puwesto sa isang lugar.'],
+      ['Komportable', 'Pakiramdam na maayos at ligtas.'],
+      ['Natapik', 'Nahawakan nang bahagya o kaunti.'],
+      ['Tumango', 'Paggalaw ng ulo pataas at pababa bilang sang-ayon.'],
+    ],
+
+    // Figma 4801:6811 (panel 4801:6994)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na mahalagang igalang ang personal na hangganan at damdamin ng bawat isa upang maging komportable ang lahat.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang mga pangyayari sa kuwento na nagpapakita ng problema at solusyon.</li>
+            <li>Ang aral ng kuwento tungkol sa paggalang sa personal na hangganan ng bawat isa.</li>
+            <li>Ang suliranin sa kuwento at kung paano ito nalutas ng mga tauhan.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang bata na nakikipag-away sa kaniyang mga kaibigan.</li>
+            <li class="is-answer">Isang bata na natutong igalang ang hangganan ng kaibigan.</li>
+            <li>Isang bata na hindi marunong makinig sa kaniyang kaibigan.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4801:7014 (panel 4801:7197)
+    basahin: [
+      {
+        title: 'Ang Guhit na Hindi Nakikita', tone: 'green',
+        html: `<p>Habang naglalakad, nakasalubong ko ang aking mga kaibigan.</p>
+          <p>“Biboy, Tara, Patintero!” masayang sigaw ni Mia.</p>
+          <p>Agad kong ibinaba ang bag ko.</p>
+          <p>“Talo na agad kayo!” pabirong sabi ni Mia.</p>
+          <p>“Lagot ka! Mas magaling na ako ngayon!” sagot ko.</p>
+          <p>Pumwesto ang grupo ko sa mga guhit sa kalsada</p>
+          <p>Habang ang grupo naman ni Mia ay nasa kabilang panig.</p>
+          <p>Mabilis tumakbo si Mia at hindi siya matapik.</p>
+          <p>Bago pa siya makalampas, mabilis akong humabol.</p>
+          <p>Ngunit hindi balikat ang nahawakan ko.</p>
+          <p>“Yeheyyy! Panalo kami!” sigaw ko.</p>
+          <p>Tumalon ako sa tuwa at masaya ang lahat.</p>
+          <p>Ngunit isa lang ang hindi… si Mia.</p>
+          <p>“May problema ba, Mia?” nag-aalala na tanong ko.</p>
+          <p>“Biboy... hindi mo ako pwedeng hawakan doon,” nakayuko niyang sabi.</p>
+          <p>“Wala naman sa rules na bawal” sagot ko.</p>
+          <p>“Pero hindi ako komportable... hindi lahat ay nakasulat sa rules.”</p>
+          <p>Napayuko ako.</p>
+          <p>“Pasensya na, Mia at salamat dahil sinabi mo”</p>
+          <p>Tumango siya.</p>
+          <p>“Sa balikat lang ha” nakangiting paalala niya.</p>
+          <p>Ngumiti rin ako.</p>
+          <p>Muli kaming naglaro at mas maingat na ako ngayon.</p>
+          <p>Dahil ang tunay na panalo ay hindi sa laro</p>
+          <p>kundi sa paggalang sa hangganan ng bawat isa</p>
+          <p><strong><em>Kahit walang guhit na nakikita.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4801:7206 (panel 4801:7389)
+    'pagkatapos-basahin': [
+      {
+        // The frame gives answer 3 the same reason as answer 2; kept as drawn
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Pangyayari</h4>
+          <ol start="1"><li>Hindi naging masaya si Mia pagkatapos maglaro. (Ano kaya ito?)</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“PROBLEMA”</strong> at <strong>“HINDI SIYA KOMPORTABLE SA PAGHAWAK NI BIBOY”</strong> dahil ito ang naging problema o dahilan kung bakit hindi naging masaya si Mia.</p>
+          <ol start="2"><li>Tinanong ni Biboy si Mia kung mayroon ba siyang problema. (Ano kaya ito?)</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“SOLUSYON”</strong> at <strong>“NAKIPAG-USAP SIYA NANG MAAYOS KAY MIA”</strong> dahil ito ang paraan upang malaman ni Biboy kung ano ang nararamdaman ni Mia.</p>
+          <ol start="3"><li>Humingi ng tawad si Biboy kay Mia nang malaman ang kaniyang mali. (Ano kaya ito?)</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“SOLUSYON”</strong> at <strong>“IGAGALANG NIYA ANG PERSONAL NA HANGGANAN”</strong> dahil ito ang paraan upang malaman ni Biboy kung ano ang nararamdaman ni Mia.</p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Solusyon</h4>
+          <ol start="1"><li>Hindi naging masaya si Mia pagkatapos maglaro kahit masaya ang ibang mga kaibigan.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang solusyon ay <strong>TINANONG NI BIBOY SI MIA</strong> upang malaman kung bakit hindi siya masaya.</p>
+          <ol start="2"><li>Hindi naintindihan ni Biboy ang personal na hangganan ni Mia.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang solusyon ay <strong>NAG-USAP SINA BIBOY AT MIA</strong> upang magkaintindihan tungkol sa personal na hangganan.</p>
+          <ol start="3"><li>Hindi naging komportable si Mia nang hawakan siya ni Biboy sa bahaging ayaw niya.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang solusyon ay <strong>HUMINGI NG TAWAD SI BIBOY</strong> kay Mia at nagpasalamat na sinabihan siya ni Mia.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Ano ang ginawa ni Biboy kaya hindi naging masaya si Mia?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Hindi komportable si Mia sa maling paghawak ni Biboy.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang ginawa nina Biboy at Mia upang magkaintindihan sila?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nag-usap sina Biboy at Mia tungkol sa paggalang sa personal na hangganan.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li>Ano ang natutuhan ni Biboy sa naranasan ni Mia?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuhan ni Biboy na dapat igalang ang personal na hangganan ng bawat isa.</p>
+          <h4>Kabuuan</h4>
+          <p>Habang naglalaro ng patintero, hinawakan ni Biboy si Mia sa bahaging ayaw niyang hawakan. Nag-usap sila at ipinaliwanag ni Mia na hindi siya komportable. Nakinig si Biboy, humingi ng tawad, at nangakong sa balikat na lamang siya tatapik kay Mia. Natutunan ni Biboy na mahalagang igalang ang hangganan ng bawat isa.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">Gusto mong yakapin ang kaibigan mo dahil masaya kang nakita siya. Napansin mong tahimik siya at hindi lumalapit.</p>
+          <ul>
+            <li>Yayakapin ko nalang siya bigla.</li>
+            <li>Magagalit ako sa kaniya dahil hindi siya lumalapit.</li>
+            <li class="is-answer">Tatanungin ko muna kung komportable siya sa yakap.</li>
+          </ul>
+          <p class="question">May kaibigan kang hindi sumagot nang tanungin mo siya tungkol sa isang bagay na personal. Ano ang gagawin mo?</p>
+          <ul>
+            <li>Magtanong ako nang paulit-ulit hanggang sa masabi niya.</li>
+            <li class="is-answer">Tatanggapin ko na ayaw niya sabihin at hindi ko na pipilitin.</li>
+            <li>Sa ibang tao ko nalang tatanungin.</li>
+          </ul>
+          <p class="question">Napansin mong naiwan ng kaklase mo ang kaniyang bag na bukas. Gusto mong tignan ang loob nito. Ano gagawin mo?</p>
+          <ul>
+            <li class="is-answer">Magpapaalam muna ako sa kaklase ko.</li>
+            <li>Silipin ko ang loob ng bag dahil bukas naman ito.</li>
+            <li>Kukuhanan ko ng larawan ang laman ng bag.</li>
+          </ul>`,
+      },
+    ],
+  },
 };

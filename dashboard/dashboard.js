@@ -40,6 +40,11 @@
       title: 'Sa Likod ng Kompyuter', street: 'Matiyaga St.', topic: 'Problema at Solusyon', minutes: 15,
       art: { src: 'kids-5.png', box: [161.7, 3.71, 132, 103], img: 'inset:0;width:100%;height:100%;object-fit:contain' },
     },
+    // Kuwento 4 of Matiyaga St. (Figma 4801:6628)
+    'ang-guhit-na-hindi-nakikita': {
+      title: 'Ang Guhit na Hindi Nakikita', street: 'Matiyaga St.', topic: 'Problema at Solusyon', minutes: 15,
+      art: { src: 'kids-8.png', box: [151.71, -2.29, 152, 114], img: 'left:-0.21%;top:7.46%;width:100.42%;height:87.77%' },
+    },
     'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Matatag St.' },
     'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Matatag St.' },
   };
