@@ -50,7 +50,11 @@
       title: 'Ang Limampung Piso Ko', street: 'Matatag St.', topic: 'Pagkakasunod ng Pangyayari', minutes: 15,
       art: { src: 'kids-9.png', box: [174.71, -9.29, 106, 115], img: 'left:13.3%;top:-0.06%;width:73.42%;height:100.12%' },
     },
-    'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Matatag St.' },
+    // Kuwento 2 of Matatag St. (Figma 4801:11671)
+    'ang-timpla-ng-taho': {
+      title: 'Ang Timpla ng Taho', street: 'Matatag St.', topic: 'Pagkakasunod ng Pangyayari', minutes: 15,
+      art: { src: 'kids-10.png', box: [174.71, -9.29, 106, 115], img: 'left:12.95%;top:-0.06%;width:74.11%;height:100.12%' },
+    },
   };
 
   // Mga Aralin cards show the story's street (yellow cards are Matiyaga St., red cards Matatag St.). Both frames label every card "Pagkatapos Basahin: Suriin".

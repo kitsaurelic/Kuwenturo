@@ -1243,4 +1243,144 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Matatag St.: section 4801:8247, "Kuwento 2" (Gabay page 4801:11671)
+  'ang-timpla-ng-taho': {
+    thumb: 'thumb-ang-timpla-ng-taho.jpg',
+    paksa: 'Pagdadalamhati sa Pagkawala ng Taong Malapit sa Atin',
+    aral: 'Mahalagang pahalagahan ang mga taong nagiging bahagi ng ating buhay.',
+    salita: 179,
+    vocab: [
+      ['Arnibal', 'Matamis na sarsa na inilalagay sa taho.'],
+      ['Naglalako', 'Nagbebenta ng mga paninda habang naglalakad.'],
+      ['Dalas', 'Kung ilang beses inuulit o ginagawa ang isang bagay o pangyayari.'],
+      ['Tarpaulin', 'Malaking materyal na may nakasulat na mensahe.'],
+      ['Inatake', 'Biglang nakaranas ng matinding sakit.'],
+    ],
+
+    // Figma 4801:11854 (panel 4801:12038)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na ang pagmamahal at mga ala-ala sa isang tao ay mananatili habangbuhay sa ating puso kahit wala na sila sa ating piling.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang tamang pagkasunod-sunod ng mga mahahalagang pangyayari sa kuwento.</li>
+            <li>Ang aral ng kuwento tungkol sa pagmamahal at pag-alala sa taong wala na.</li>
+            <li>Ang mga pangyayari na naganap sa simula, gitna, at wakas ng kuwento.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang bata na tumutulong kay Mang Pedro na magbenta ng taho.</li>
+            <li>Isang bata na nagpaturo na gumawa ng taho.</li>
+            <li class="is-answer">Isang bata at isang magtataho na nagkaroon ng espesyal na samahan.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4801:12058 (panel 4801:12242)
+    basahin: [
+      {
+        title: 'Ang Timpla ng Taho', tone: 'green',
+        html: `<p>“Tahoooo!” Araw-araw, iyan ang unang naririnig ko sa umaga.</p>
+          <p>Malayo pa lang, dinig ko na ang boses ni Mang Pedro.</p>
+          <p>Nakangiti siya kahit mabigat ang dala sa balikat.</p>
+          <p>Lagi akong bumibili sa kaniya.</p>
+          <p>Sa sobrang dalas, alam na niya ang timpla na gusto ko.</p>
+          <p>“Isang baso po, maraming arnibal,”</p>
+          <p>“Eto, dinagdagan ko,” nakangiti niyang sagot.</p>
+          <p>“Bukas po ulit!”</p>
+          <p>“Bukas ulit,” sagot niya.</p>
+          <p>Kinabukasan, walang “Tahoooo!” na sumalubong sa akin.</p>
+          <p>Naghintay ako nang matagal ngunit wala talaga.</p>
+          <p>Nang pumunta ako sa kanto,</p>
+          <p>May tarpaulin para kay Mang Pedro.</p>
+          <p>Narinig ko ang usapan ng dalawang matanda.</p>
+          <p>“Wala na pala si Mang Pedro?”</p>
+          <p>“Oo, inatake raw habang naglalako,” sagot ng isa.</p>
+          <p>Nalungkot ako sa mga nalaman ko.</p>
+          <p>Naalala ko ang matamis na timpla ng taho ni Mang Pedro.</p>
+          <p>Maya-maya, may isang nagtataho na naglalako.</p>
+          <p>Magkapareho ang lasa nito sa taho ni Mang Pedro.</p>
+          <p>Ngunit parang may kulang pa rin.</p>
+          <p>Hindi pala arnibal ni Mang Pedro ang hanap ko.</p>
+          <p>Dahil ang matamis niyang ngiti ang kulang sa timpla ng taho ko.</p>
+          <p>Hindi lahat ng timpla ay habangbuhay</p>
+          <p><strong><em>Ngunit may timplang lagi nating maaalala.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4801:12251 (panel 4801:12435)
+    'pagkatapos-basahin': [
+      {
+        // The frame gives only the answers here, with no questions; kept as drawn
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Pangyayari</h4>
+          <p class="answer"><strong>SAGOT:</strong></p>
+          <ol start="1">
+            <li>Ang unang pangyayari ay lagi bumibili si Biboy ng taho kay Mang Pedro. Ito ang simula ng kuwento.</li>
+            <li>Ang ikalawang pangyayari ay kinabukasan, hindi dumating si Mang Pedro kahit hinintay siya ni Biboy.</li>
+            <li>Ang ikatlong pangyayari ay nalaman ni Biboy na inatake si Mang Pedro at narinig niya ito sa dalawang matanda.</li>
+            <li>Ang ikaapat na pangyayari ay bumili si Biboy ng taho sa ibang nagtataho.</li>
+            <li>Ang ikalimang pangyayari ay naalala ni Biboy ang matamis na ngiti ni Mang Pedro nang tikman ang matamis na taho.</li>
+          </ol>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Pangyayari</h4>
+          <ol start="1"><li>Bumibili si B _ _ _ _ ng _ _ _ _ kay Mang Pedro araw-araw.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Bumibili si BIBOY ng TAHO kay Mang Pedro araw-araw.</p>
+          <ol start="2"><li>Kinabukasan, hindi d u _ _ t _ n g si Mang P _ _ _ o.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Kinabukasan, hindi DUMATING si MANG PEDRO.</p>
+          <ol start="3"><li>N _ l _ m _ n ni _ _ b _ y na inatake si Mang Pedro.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> NALAMAN ni BIBOY na inatake si Mang Pedro.</p>
+          <ol start="4"><li>B _ m _ l i si Biboy ng _ _ _ _ sa ibang magtataho.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> BUMILI si Biboy ng TAHO sa ibang magtataho.</p>
+          <ol start="5"><li>N _ _ l a _ a ni Biboy ang matamis na n _ _ _ i ni Mang Pedro.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> NAALALA ni Biboy ang matamis na NGITI ni Mang Pedro.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Ano ang ginagawa ni Biboy araw-araw tuwing umaga?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Bumibili si Biboy ng taho kay Mang Pedro tuwing umaga.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang nangyari kay Mang Pedro kaya hindi siya dumating kinabukasan?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Hindi dumating si Mang Pedro kinabukasan dahil inatake siya habang naglalako ng taho.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li>Ano ang natutunan ni Biboy nang tikman ang taho ng bagong magtataho?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nang tikman ang bagong taho, natutunan ni Biboy na ang matamis na ngiti ni Mang Pedro ang hanap niya.</p>
+          <h4>Kabuuan</h4>
+          <p>Araw-araw, bumibili ang bata ng taho kay Mang Pedro. Kinabukasan, hindi dumating si Mang Pedro. Nalaman niyang inatake siya habang naglalako. Maya-maya, may isang nagtataho na dumating. Magkapareho ang lasa nito sa taho ni Mang Pedro, ngunit parang may kulang pa rin. Natutunan ni Biboy na ang matamis na ngiti ni Mang Pedro pala ang hanap niya.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">Nakatikim ka ng pagkain na nagpapaalala sa isang taong mahalaga sa iyo. Nalungkot ka dahil nami-miss mo siya.</p>
+          <ul>
+            <li>Iiwasan ko na ang pagkain na ito.</li>
+            <li>Kakalimutan ko na lahat para hindi ako maging malungkot.</li>
+            <li class="is-answer">Alalahanin ko ang masasayang ala-ala namin.</li>
+          </ul>
+          <p class="question">Nami-miss mo ang iyong magulang na matagal nang nasa ibang lugar. Ano ang maaari mong gawin?</p>
+          <ul>
+            <li>Magagalit ako sa kaniya dahil iniwan niya ako.</li>
+            <li class="is-answer">Makikipag-usap ako sa kaniya kapag mayroong pagkakataon.</li>
+            <li>Hindi ko nalang siya iisipin kahit kailan.</li>
+          </ul>
+          <p class="question">Nakita mo ang regalong ibinigay sa iyo ng mahal mong pumanaw na. Ano ang maaari mong gawin?</p>
+          <ul>
+            <li class="is-answer">Tatandaan ko ang kaniyang pagmamahal at ala-ala namin.</li>
+            <li>Itapon ko ang regalo upang makalimutan siya.</li>
+            <li>Itago ko ang regalo at hindi na ito titignan.</li>
+          </ul>`,
+      },
+    ],
+  },
 };
