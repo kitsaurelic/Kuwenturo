@@ -310,7 +310,6 @@
           </div>
           <div class="sched-actions">
             ${pill({ tone: 'navy', label: 'Aralin', name: `Buksan ang aralin: ${l.title}`, href: `#/aralin/${id}`, gloss: 'navy' })}
-            ${pill({ tone: 'light', label: 'Palitan', name: 'Palitan ang kuwento', gloss: 'light', attrs: 'data-story-swap' })}
           </div>
           ${kidsArt(l.art)}
         </div>
@@ -370,33 +369,6 @@
       ? gabayCard(id, gabay.story + 1) + guideBody(id)
       : `<p class="empty">Wala pang kuwento sa ${STREETS[gabay.street]}.</p>`;
   }
-
-  // Palitan on the Gabay card: pick another story on this street
-  const storyDialog = $('story-dialog');
-  $('gabay-body').addEventListener('click', (event) => {
-    const button = event.target.closest('[data-story-swap]');
-    if (!button) return;
-    const stories = storiesOn(gabay.street);
-    $('story-desc').textContent = `${STREETS[gabay.street]} — kasalukuyan: ${LESSONS[currentStory()].title}`;
-    $('story-list').querySelectorAll('label').forEach((el) => el.remove());
-    $('story-list').insertAdjacentHTML('beforeend', stories.map((sid, i) => `
-      <label class="swap-option">
-        <input type="radio" name="story" value="${i}"${i === gabay.story ? ' checked' : ''}>
-        <span>Kuwento ${i + 1}: ${LESSONS[sid].title}<small>${LESSONS[sid].street}${LESSONS[sid].topic ? ` · ${LESSONS[sid].topic}` : ''}</small></span>
-      </label>`).join(''));
-    button.focus();
-    storyDialog.showModal();
-    $('story-list').querySelector('input:checked').focus();
-  });
-  $('story-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const chosen = Number($('story-form').querySelector('input[name="story"]:checked').value);
-    const changed = chosen !== gabay.story;
-    storyDialog.close();
-    goToStory(gabay.street, chosen);
-    $('gabay-body').querySelector('[data-story-swap]')?.focus();
-    if (changed) announce(`Kuwento ${chosen + 1}: ${LESSONS[currentStory()].title}`);
-  });
 
   // Guide modal
   const guideDialog = $('guide-dialog');
