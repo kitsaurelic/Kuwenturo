@@ -843,4 +843,131 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Matiyaga St.: section 4801:4080, "Kuwento 3" (Gabay page 4801:4932)
+  'sa-likod-ng-kompyuter': {
+    thumb: 'thumb-sa-likod-ng-kompyuter.jpg',
+    paksa: 'Responsableng Pananalita at Pag-uugali Online',
+    aral: 'Mahalagang mag-isip bago magsalita at maging magalang sa kapwa.',
+    salita: 103,
+    vocab: [
+      ['Umawat', 'Pumigil sa pag-aaway ng iba.'],
+      ['Nagdabog', 'Kumilos nang malakas dahil sa galit.'],
+      ['Kompyuteran', 'Lugar kung saan maaaring gumamit ng kompyuter.'],
+      ['Pasensya', 'Paghingi ng tawad sa nagawang mali.'],
+      ['Kakampi', 'Taong kasama sa isang pangkat o panig.'],
+    ],
+
+    // Figma 4801:5115 (panel 4801:5298)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na ang pagkontrol sa galit, kilos, at salita ay mahalaga upang mapanatili ang maayos na pakikitungo sa kapwa.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang mga pangyayari sa kuwento na nagpapakita ng problema at solusyon.</li>
+            <li>Ang aral ng kuwento tungkol sa pagkontrol sa galit at paggalang sa kapwa.</li>
+            <li>Ang suliranin sa kuwento at kung paano ito naresolba ng mga tauhan.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Mga batang hindi pumapasok para maglaro sa kompyuteran.</li>
+            <li>Mga bata na nag-aaway dahil nag-aagawan sa kompyuter.</li>
+            <li class="is-answer">Mga batang naglalaro sa kompyuteran na nagkaroon ng kaunting tampuhan.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4801:5318 (panel 4801:5501)
+    basahin: [
+      {
+        title: 'Sa Likod ng Kompyuter', tone: 'green',
+        html: `<p>“Ang pangit mong kakampi” narinig ko sa labas ng kompyuteran.</p>
+          <p>“Ayoko na sa’yo!” dagdag ni Uno.</p>
+          <p>“Huwag mo akong sigawan,” sagot ni Nilo.</p>
+          <p>Umawat ang bata sa bidyo call.</p>
+          <p>“Si Nilo kasi!” sigaw niya.</p>
+          <p>Tumayo si Uno at nagdabog.</p>
+          <p>Tumahimik ang paligid.</p>
+          <p>“Laro ulit tayo?” tanong ng dalawa.</p>
+          <p>“Hayst, ayoko” sagot ni Nilo.</p>
+          <p>“Masaya lang dapat ang laro, pero nagagalit si Uno.”</p>
+          <p>Naalala ni Uno ang kaniyang kilos.</p>
+          <p>“Pasensya na sa mga nasabi ko, hindi na ito mauulit”</p>
+          <p>Ngumiti silang lahat.</p>
+          <p>Ang salita ay nakakasakit kapag mula sa galit.</p>
+          <p>Hindi ito basta laro lang.</p>
+          <p>Dahil sa likod ng kompyuter</p>
+          <p><strong><em>May totoong taong nakikinig.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4801:5510 (panel 4801:5693)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Pangyayari</h4>
+          <ol start="1"><li>Sinabi ni Uno kay Nilo na pangit siyang kakampi.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“PROBLEMA”</strong> dahil naging problema nila ang pagsabi ni Uno ng mga masasakit na salita.</p>
+          <ol start="2"><li>Sinabi ni Nilo ang kaniyang nararamdaman.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“SOLUSYON”</strong> dahil solusyon ito upang maalala ni Uno ang kaniyang nagawang mali.</p>
+          <ol start="3"><li>Nagdabog at sumigaw si Uno nang matalo sila ni Nilo sa laro.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“PROBLEMA”</strong> dahil naging problema ang hindi pagkontrol ni Uno sa kaniyang galit.</p>
+          <ol start="4"><li>Humingi ng tawad si Uno at sinabing hindi na niya uulitin ang kaniyang mali.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Piliin ang <strong>“SOLUSYON”</strong> dahil ito ang naging solusyon upang matapos ang kanilang tampuhan.</p>`,
+      },
+      {
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Solusyon</h4>
+          <ol start="1"><li>Ano ang ginawa ni Ana upang matigil ang pagtatalo?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang solusyon ay <strong>UMAWAT</strong> si Ana sa dalawa upang matigil ang pagtatalo nina Uno at Nilo.</p>
+          <ol start="2"><li>Ano ang ginawa ni Uno upang makipagbati kay Nilo?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang solusyon ay <strong>HUMINGI NG TAWAD</strong> si Uno sa nagawa niyang pagkakamali.</p>
+          <ol start="3"><li>Ano ang ginawa ni Nilo upang malaman ni Uno ang mali niya?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang solusyon ay <strong>NAGSABI NG DAMDAMIN</strong> si Nilo upang malaman ni Uno ang kaniyang pagkakamali.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Ano ang ginawa ni Uno na nakasakit sa damdamin ni Nilo?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Sinabihan ni Uno si Nilo ng masasakit na salita dahil sa galit.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang ginawa ni Uno upang magkaayos sila ni Nilo?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Humingi ng tawad si Uno at nangakong hindi na ito mauulit.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li>Ano ang natutuhan ni Biboy mula sa nangyari kina Uno at Nilo?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natutuhan ni Biboy na kontrolin ang galit at maging maingat sa mga kilos at salita.</p>
+          <h4>Kabuuan</h4>
+          <p>Habang naglalaro sa kompyuteran, nagalit si Uno kay Nilo at nasabihan siya ng masasakit na salita. Nagkaroon sila ng hindi pagkakaunawaan, ngunit humingi ng tawad si Uno at nangakong hindi na ito mauulit. Natutunan nila na mahalagang kontrolin ang galit at maging maingat sa mga kilos at salita dahil may totoong taong nasasaktan sa likod ng kompyuter.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">Natalo ka sa larong nilalaro ninyo ng iyong kaibigan. Ano ang gagawin mo?</p>
+          <ul>
+            <li>Sisigawan ko ang aking kaibigan.</li>
+            <li>Iisipin ko na dinaya ako ng aking kaibigan.</li>
+            <li class="is-answer">Tatanggapin ko ang pagkatalo at susubukan muli.</li>
+          </ul>
+          <p class="question">Nainis ka dahil nilaro ng iyong kaibigan ang paborito mong laruan nang walang paalam. Ano ang gagawin mo?</p>
+          <ul>
+            <li>Aagawin ko ito at sisigawan siya.</li>
+            <li class="is-answer">Sasabihin ko nang maayos na magpaalam muna siya.</li>
+            <li>Hindi ko na siya gagawing kaibigan.</li>
+          </ul>
+          <p class="question">Hindi sinasadyang malukot ng kaklase mo ang papel mo. Ano ang gagawin mo?</p>
+          <ul>
+            <li class="is-answer">Kakausapin ko siya nang maayos.</li>
+            <li>Sisirain ko rin ibang gamit niya.</li>
+            <li>Ibubuhos ko ang galit ko sa kaniya.</li>
+          </ul>`,
+      },
+    ],
+  },
 };
