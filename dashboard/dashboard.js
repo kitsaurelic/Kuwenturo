@@ -31,11 +31,15 @@
       title: 'Ang Piraso ng Biyaya', street: 'Matiyaga St.', topic: 'Sanhi at Bunga', minutes: 15,
       art: { src: 'kids-4.png', box: [138.7, -0.08, 180, 108], img: 'inset:0;width:100%;height:100%;object-fit:cover' },
     },
+    // Kuwento 2 of Matiyaga St. (Figma 4801:3236)
+    'ang-kaniyang-munting-ngiti': {
+      title: 'Ang Kaniyang Munting Ngiti', street: 'Matiyaga St.', topic: 'Sanhi at Bunga', minutes: 15,
+      art: { src: 'kids-7.png', box: [174.71, -12.29, 106, 121], img: 'left:10.48%;top:-0.08%;width:79.04%;height:100.17%' },
+    },
     'sa-likod-ng-kompyuter': {
       title: 'Sa Likod ng Kompyuter', street: 'Matiyaga St.', topic: 'Problema at Solusyon', minutes: 15,
       art: { src: 'kids-5.png', box: [161.7, 3.71, 132, 103], img: 'inset:0;width:100%;height:100%;object-fit:contain' },
     },
-    'ang-kaniyang-munting-ngiti': { title: 'Ang Kaniyang Munting Ngiti', street: 'Matiyaga St.' },
     'ang-timpla-ng-taho': { title: 'Ang Timpla ng Taho', street: 'Matatag St.' },
     'ang-limampung-piso-ko': { title: 'Ang Limampung Piso Ko', street: 'Matatag St.' },
   };

@@ -713,4 +713,134 @@ window.KUWENTURO_GUIDES = {
       },
     ],
   },
+
+  // Matiyaga St.: section 4801:2385, "Kuwento 2" (Gabay page 4801:3236)
+  'ang-kaniyang-munting-ngiti': {
+    thumb: 'thumb-ang-kaniyang-munting-ngiti.jpg',
+    paksa: 'Pagiging Sensitibo sa Damdamin ng Kapwa',
+    aral: 'Mahalagang isaalang-alang ang damdamin ng iba bago magbigay ng puna.',
+    salita: 101,
+    vocab: [
+      ['Naglalako', 'Nagbebenta ng mga paninda habang naglalakad.'],
+      ['Sorbetes', 'Matamis at malamig na pagkain.'],
+      ['Natapilok', 'Nawala ang balanse habang naglalakad.'],
+      ['Napagtanto', 'Naunawaan o nalaman pagkatapos mag-isip.'],
+      ['Segundo', 'Yunit ng oras na mas maikli kaysa sa isang minuto.'],
+    ],
+
+    // Figma 4801:3419 (panel 4801:3602)
+    'bago-basahin': [
+      {
+        title: 'Misyon', tone: 'green',
+        html: `<p>Alamin na ang mga salita ay maaaring makasakit ng damdamin, kaya mahalagang mag-isip muna bago magsalita.</p>`,
+      },
+      {
+        title: 'Layunin', tone: 'yellow',
+        html: `<p>Sa pagtatapos ng aralin, inaasahang matutukoy ng mga mag-aaral:</p>
+          <ul>
+            <li>Ang mga pangyayari sa kuwento na nagpapakita ng sanhi.</li>
+            <li>Ang mga pangyayari sa kuwento na nagpapakita ng bunga.</li>
+            <li>Ang ugnayan ng sanhi at bunga sa mga kilos at desisyon ng mga tauhan.</li>
+            <li>Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.</li>
+          </ul>`,
+      },
+      {
+        title: 'Hulaan', tone: 'red',
+        html: `<p>Batay sa pamagat at larawan, tungkol saan kaya ang kwento?</p>
+          <ul>
+            <li>Isang bata na nagnakaw kay Mang Berto.</li>
+            <li class="is-answer">Isang bata na natutong maging maingat sa kaniyang salita dahil kay Mang Berto.</li>
+            <li>Isang bata na hindi na kumain ng sorbetes dahil kay Mang Berto.</li>
+          </ul>`,
+      },
+    ],
+
+    // Figma 4801:3628 (panel 4801:3811)
+    basahin: [
+      {
+        title: 'Ang Kaniyang Munting Ngiti', tone: 'green',
+        html: `<p>Habang naglalakad, narinig ko ang naglalako ng sorbetes.</p>
+          <p>Tumakbo ako kay Mang Berto at bumili. Ngunit may napansin ako sa kaniyang ngiti.</p>
+          <p>“Hahaha! Kulang ang ngipin!” sabi ko.</p>
+          <p>Biglang nawala ang kaniyang ngiti.</p>
+          <p>Kinuha ko ang sorbetes, ngunit natapilok ako at nadumihan.</p>
+          <p>“Hahaha! Ang dumi!” sabi ng bata.</p>
+          <p>Tinawag ako ni Mang Berto upang linisin.</p>
+          <p>Habang ginagawa ito, nagbilang siya ng limang segundo.</p>
+          <p>“Isa… dalawa… tatlo… apat… lima…”</p>
+          <p>Nagbago ang itsura ko kaya sinubukan ko ito sa kaniya.</p>
+          <p>Pero walang nagbago sa ngipin niya.</p>
+          <p>Napagtanto kong hindi lahat ay kayang ayusin.</p>
+          <p><strong><em>Humingi ako ng tawad, at bumalik ang kaniyang munting ngiti.</em></strong></p>`,
+      },
+    ],
+
+    // Figma 4801:3826 (panel 4801:4009)
+    'pagkatapos-basahin': [
+      {
+        title: 'Tuklasin', tone: 'green',
+        html: `<h4>Pumili ng Bunga</h4>
+          <ol start="1"><li>Pinagtawanan ni Biboy ang ngipin ni Mang Berto.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Nawala ang ngiti ni Mang Berto dahil kay Biboy.</p>
+          <ol start="2"><li>Natapilok si Biboy habang hawak niya ang kaniyang sorbetes.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natapon ang sorbetes kay Biboy at nadumihan siya.</p>
+          <ol start="3"><li>Nagbilang si Biboy ng limang segundo habang nililinis siya ni Mang Berto.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Walang nagbago sa ngipin ni Mang Berto.</p>
+          <ol start="4"><li>Nagkamali si Biboy na pagtawanan si Mang Berto.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Humingi siya ng tawad kay Mang Berto.</p>
+          <ol start="5"><li>Humingi ng tawad si Biboy kay Mang Berto sa ginawa niyang mali.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Bumalik na ang munting ngiti ni Mang Berto.</p>`,
+      },
+      {
+        // The frame repeats item 3 as item 4; kept as drawn
+        title: 'Suriin', tone: 'yellow',
+        html: `<h4>Pumili ng Sanhi</h4>
+          <ol start="1"><li>Nadumihan ang damit ni Biboy.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay natapilok siya habang may dalang sorbetes.</p>
+          <ol start="2"><li>Nawala ang ngiti ni Mang Berto dahil kay Biboy.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay tinawanan ni Biboy ang kaniyang ngipin na kulang-kulang.</p>
+          <ol start="3"><li>Naging maayos at malinis na ang itsura ni Biboy.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay tinawagan ni Mang Berto si Biboy upang malinisan siya.</p>
+          <ol start="4"><li>Naging maayos at malinis na ang itsura ni Biboy.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay tinawagan ni Mang Berto si Biboy upang malinisan siya.</p>
+          <ol start="5"><li>Bumalik ang munting ngiti ni Mang Berto dahil kay Biboy.</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Ang sanhi nito ay humingi ng tawad si Biboy kay Mang Berto dahil napagtanto niya ang kaniyang pagkakamali.</p>`,
+      },
+      {
+        title: 'Paglalagom', tone: 'red',
+        html: `<h4>Simula</h4>
+          <ol start="1"><li>Bakit pinagtawanan ni Biboy ang mga ngipin ni Mang Berto?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Tinawanan ni Biboy si Mang Berto dahil kulang-kulang ang kaniyang ngipin.</p>
+          <h4>Gitna</h4>
+          <ol start="2"><li>Ano ang nangyari kay Biboy at paano siya tinulungan ni Mang Berto?</li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Natapilok si Biboy at nadumihan ng sorbetes. Tinawag siya ni Mang Berto at tinulungang maglinis.</p>
+          <h4>Wakas</h4>
+          <ol start="3"><li><strong>Ano ang natutuhan ni Biboy tungkol sa pagsasalita sa kapwa?</strong></li></ol>
+          <p class="answer"><strong>SAGOT:</strong> Mag-isip muna bago magsalita upang hindi makasakit ng damdamin ng iba.</p>
+          <h4>Kabuuan</h4>
+          <p>Bumili si Biboy ng sorbetes kay Mang Berto at pinagtawanan ang kaniyang ngipin. Natapilok si Biboy at nadumihan, kaya tinulungan siya ni Mang Berto. Napagtanto ni Biboy na hindi lahat ay kayang ayusin sa loob ng limang segundo. Humingi siya ng tawad, at muling bumalik ang ngiti ni Mang Berto. Natutuhan ni Biboy na mag-isip muna bago magsalita upang hindi makasakit ng damdamin ng iba.</p>`,
+      },
+      {
+        title: 'Totoong Buhay', tone: 'blue',
+        html: `<p class="question">May kaklase kang may kondisyon sa balat na hindi nakakahawa, ngunit iiwasan siya ng ibang bata.</p>
+          <ul>
+            <li>Iiwasan ko siya dahil kadiri siyang tignan.</li>
+            <li>Papagtawanan ko siya dahil sa itsura ng balat niya.</li>
+            <li class="is-answer">Magiging mabait ako dahil hindi naman mababago ang balat.</li>
+          </ul>
+          <p class="question">Napansin mong amoy pawis ang iyong kaklase. Ano ang dapat mong gawin para hindi siya masaktan?</p>
+          <ul>
+            <li>Iiwasan ko nalang siya dahil amoy pawis siya.</li>
+            <li class="is-answer">Ibubulong ko sa kaniya nang maayos na amoy pawis siya.</li>
+            <li>Sasabihin ko sa iba para sila na lang ang magsabi.</li>
+          </ul>
+          <p class="question">Napansin mong nakabukas ang zipper ng pantalon ng kaklase mo habang papasok kayo sa silid-aralan.</p>
+          <ul>
+            <li class="is-answer">Ibubulong ko sa kaniya nang maayos upang maisara niya ito.</li>
+            <li>Tatawanan ko siya at sasabihin pa ito iba.</li>
+            <li>Hahayaan ko nalang siya para mayroong iba na makapansin.</li>
+          </ul>`,
+      },
+    ],
+  },
 };
