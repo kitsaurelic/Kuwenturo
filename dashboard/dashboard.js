@@ -53,6 +53,7 @@
     // Kuwento 2 of Matatag St. (Figma 4801:11671)
     'ang-timpla-ng-taho': {
       title: 'Ang Timpla ng Taho', street: 'Matatag St.', topic: 'Pagkakasunod ng Pangyayari', minutes: 15,
+      cardTitle: 'Ang Timpla <br>ng Taho', // Tulong Aralin card breaks the line here (Figma 4879:11208)
       art: { src: 'kids-10.png', box: [174.71, -9.29, 106, 115], img: 'left:12.95%;top:-0.06%;width:74.11%;height:100.12%' },
     },
   };
@@ -467,7 +468,7 @@
       <li class="story-card story-${street.tone}">
         <h3 class="story-number">Kuwento #${i + 1}</h3>
         <div class="story-body">
-          <p class="story-title">${l.title}</p>
+          <p class="story-title">${l.cardTitle || l.title}</p>
           <p class="story-topic">${l.topic}</p>
           <img class="story-cover" src="assets/cover-${id}.png" width="160" height="141" alt="">
           ${pill({ tone: street.tone, label: 'Piliin', name: `Piliin: ${l.title}`, attrs: `data-plan-story="${id}"` })}

@@ -709,7 +709,7 @@ button.pill { padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
   text-align: center;
 }
 .story-title { min-height: 2.2em; font-size: 16px; line-height: 1.1; font-weight: 700; }
-.story-topic { flex: 1; font-size: 13px; line-height: 1.2; color: var(--caption); }
+.story-topic { flex: 1; margin: 0 -6px; font-size: 13px; line-height: 1.2; white-space: nowrap; color: var(--caption); }
 .story-cover { display: block; width: 100%; max-width: 160px; height: auto; margin: 8px 0 10px; border-radius: 13px; }
 .story-card .pill { width: 99px; height: 27px; }
 
