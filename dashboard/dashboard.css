@@ -636,6 +636,108 @@ button.pill { padding: 0; font: inherit; font-weight: 700; cursor: pointer; }
   .page-title { font-size: 27px; }
 }
 
+/* ---------- Tulong Aralin (Figma 4553:11578, 4879:2240, 4879:11109) ---------- */
+.tulong-sub { width: 228px; }
+.tulong-week { width: fit-content; margin-top: 13px; }
+
+.day-green  { --tone: #0C9358; --edge: #066A3E; }
+.day-yellow { --tone: #FFBE33; --edge: #BE8A0D; }
+.day-red    { --tone: #B42224; --edge: #7C0E0F; }
+.day-blue   { --tone: #2478FF; --edge: #0A4B95; }
+.day-orange { --tone: #F37F2F; --edge: #A24200; }
+
+.day-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px 33px; margin-top: 24px; padding: 0; list-style: none; }
+.day-card {
+  position: relative; display: flex; flex-direction: column; min-height: 131px; padding: 34px 8px 8px;
+  background: linear-gradient(145deg, #FFFBF4 15%, var(--tone) 115%);
+  border: 4px solid #fff; border-radius: 13px;
+  box-shadow: inset 0 34px 0 var(--tone), 3px 4px 0 var(--edge);
+}
+.day-name { position: absolute; top: 5px; left: 13px; margin: 0; font-size: 20px; line-height: 25px; font-weight: 700; color: var(--navy); }
+.day-red .day-name { color: #FFFBF4; } /* navy on the red header is 2.4:1; cream is 6:1, as on the Salita card */
+.day-date {
+  position: absolute; top: -4px; right: -24px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 51px; height: 51px; margin: 0;
+  background: linear-gradient(145deg, #fff 25%, var(--tone) 130%);
+  border: 4px solid #fff; border-radius: 50%;
+  color: var(--navy); font-size: 22px; line-height: 20px; font-weight: 700;
+}
+.day-date span { font-size: 12px; line-height: 11px; font-weight: 400; }
+/* The frame's white label is under 2:1 on the pale card, so the label is navy */
+.day-add {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  width: 100%; padding: 4px; border: 0; border-radius: 9px; background: none;
+  color: var(--navy); font: inherit; font-size: 14px; line-height: 1.2; font-weight: 700; cursor: pointer;
+}
+.day-add:hover { background: rgba(255, 255, 255, .35); }
+.day-plus { font-size: 40px; line-height: 32px; }
+.day-story { flex: 1; display: flex; flex-direction: column; gap: 2px; padding-top: 6px; }
+.day-story-title { font-size: 14px; line-height: 1.2; font-weight: 700; }
+.day-story-street { font-size: 13px; line-height: 1.2; }
+.day-actions { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; padding-top: 6px; }
+.day-btn {
+  flex: 1; min-height: 28px; padding: 0 6px; border: 1px solid var(--navy); border-radius: 14px;
+  background: #FFFBF4; color: var(--navy); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.day-btn:hover { background: #fff; text-decoration: underline; }
+.day-add:focus-visible, .day-btn:focus-visible, .street-arrow:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.street-panel {
+  margin: 96px 0 0; padding: 0 16px 28px;
+  background: linear-gradient(90deg, #FFF4C0, #fff 50%, #FFF4C0);
+  border: 4px solid #fff; border-radius: 13px;
+  box-shadow: inset 0 34px 0 var(--navy), 3px 4px 0 var(--navy);
+}
+.street-bar { display: flex; align-items: flex-end; justify-content: center; gap: 3px; margin-top: -82px; }
+.street-sign { flex: 0 1 527px; min-width: 0; width: 527px; height: auto; }
+.street-arrow { flex: none; width: 77px; margin-bottom: 41px; padding: 0; border: 0; background: none; cursor: pointer; }
+.street-arrow img { display: block; width: 100%; height: auto; }
+.street-arrow:hover { filter: brightness(1.06); }
+.street-prompt { margin: 0; text-align: center; font-size: 20px; line-height: 25px; font-weight: 700; }
+.story-cards { display: grid; grid-template-columns: repeat(auto-fit, 196px); justify-content: center; gap: 24px 26px; margin-top: 16px; padding: 0; list-style: none; }
+
+.story-green  { --tone: #00834A; --edge: #066A3E; --fade: #04673C; }
+.story-yellow { --tone: #FFBE33; --edge: #BE8A0D; --fade: #FFBE33; }
+.story-red    { --tone: #B42224; --edge: #7C0E0F; --fade: #B42224; }
+.story-card { background: var(--tone); border: 4px solid #fff; border-radius: 13px; box-shadow: 3px 4px 0 var(--edge); }
+.story-number { margin: 0; padding: 4px 0 5px; text-align: center; font-size: 20px; line-height: 25px; font-weight: 700; color: #FFFBF4; }
+.story-yellow .story-number { color: var(--navy); } /* cream on yellow is 1.6:1 */
+.story-body {
+  display: flex; flex-direction: column; align-items: center; gap: 3px; height: calc(100% - 34px); margin: 0 -4px -4px; padding: 8px 14px 12px;
+  background: linear-gradient(170deg, #FFF8E9 30%, var(--fade) 150%);
+  border: 4px solid #fff; border-radius: 13px;
+  text-align: center;
+}
+.story-title { min-height: 2.2em; font-size: 16px; line-height: 1.1; font-weight: 700; }
+.story-topic { flex: 1; font-size: 13px; line-height: 1.2; color: var(--caption); }
+.story-cover { display: block; width: 100%; max-width: 160px; height: auto; margin: 8px 0 10px; border-radius: 13px; }
+.story-card .pill { width: 99px; height: 27px; }
+
+#plan-list { max-height: calc(100vh - 240px); overflow-y: auto; padding: 3px; }
+.btn-remove { margin-right: auto; color: var(--color-main-red); }
+.btn-remove[hidden] { display: none; }
+.btn-solid:disabled { opacity: .5; cursor: default; filter: none; }
+
+@media (max-width: 1199px) {
+  .day-cards { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px 28px; padding-right: 24px; }
+}
+@media (max-width: 640px) {
+  .tulong-week { width: 100%; }
+  .day-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 30px; padding-right: 20px; }
+  .day-name { font-size: 18px; left: 9px; }
+  #plan-list { max-height: calc(100vh - 320px); }
+  .street-panel { padding: 0 10px 20px; margin-top: 56px; }
+  .street-bar { margin-top: -48px; }
+  .street-sign { flex: 1 1 0; width: 0; }
+  .street-arrow { width: 48px; margin-bottom: 12px; }
+  .street-prompt { margin-top: 8px; font-size: 18px; }
+  .story-cards { grid-template-columns: minmax(0, 228px); }
+}
+@media (max-width: 480px) {
+  .day-cards { grid-template-columns: minmax(0, 1fr); }
+  .day-name { font-size: 20px; left: 13px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
 }

@@ -234,6 +234,44 @@
           <div id="gabay-body"></div>
         </div>
 
+        <!-- Tulong Aralin view (Figma 4553:11578, 4879:2240, 4879:11109) -->
+        <div class="content tulong" id="view-tulong" hidden>
+          <header class="gabay-head">
+            <h1 class="gabay-title" id="tulong-title" tabindex="-1">Tulong Aralin</h1>
+            <p class="gabay-sub tulong-sub">Planuhin ang mga gawain at aralin para sa linggong ito.</p>
+          </header>
+
+          <!-- Figma 4553:11667 DATE BUTTON -->
+          <div class="week-nav tulong-week">
+            <button type="button" class="week-arrow week-prev" id="tulong-week-prev">
+              <img src="assets/chevron.svg" width="24" height="24" alt="">
+              <span class="sr-only">Nakaraang linggo</span>
+            </button>
+            <p class="week-label" id="tulong-week-label" aria-live="polite"></p>
+            <button type="button" class="week-arrow week-next" id="tulong-week-next">
+              <img src="assets/chevron.svg" width="24" height="24" alt="">
+              <span class="sr-only">Susunod na linggo</span>
+            </button>
+          </div>
+
+          <!-- Figma 4553:11614 SCHED CARDS -->
+          <ul class="day-cards" id="day-cards" aria-label="Plano sa linggong ito"></ul>
+
+          <section class="street-panel" aria-labelledby="street-prompt">
+            <div class="street-bar">
+              <button type="button" class="street-arrow" id="street-prev" aria-label="Nakaraang kalye">
+                <img src="assets/tulong-arrow-prev.png" width="77" height="82" alt="">
+              </button>
+              <img class="street-sign" id="street-sign" src="assets/tulong-sign-masipag.png" width="527" height="164" alt="Masipag Street">
+              <button type="button" class="street-arrow" id="street-next" aria-label="Susunod na kalye">
+                <img src="assets/tulong-arrow-next.png" width="77" height="82" alt="">
+              </button>
+            </div>
+            <h2 class="street-prompt" id="street-prompt">Narito ang mga kuwento na maaari mong pagpilian:</h2>
+            <ul class="story-cards" id="story-cards"></ul>
+          </section>
+        </div>
+
         <!-- Section and lesson pages -->
         <div class="content" id="view-page" hidden>
           <article class="page-card">
@@ -273,6 +311,25 @@
       <div class="dialog-actions">
         <button type="button" class="btn-text" data-close>Kanselahin</button>
         <button type="submit" class="btn-solid">Palitan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Tulong Aralin: pick a story for a day, or a day for a story -->
+  <dialog class="dialog" id="plan-dialog" aria-labelledby="plan-title" aria-describedby="plan-desc">
+    <form method="dialog" id="plan-form">
+      <div class="dialog-head">
+        <h2 class="dialog-title" id="plan-title"></h2>
+        <button type="button" class="dialog-close" data-close aria-label="Isara">×</button>
+      </div>
+      <p class="search-count" id="plan-desc"></p>
+      <fieldset class="swap-list" id="plan-list">
+        <legend class="sr-only" id="plan-legend"></legend>
+      </fieldset>
+      <div class="dialog-actions">
+        <button type="button" class="btn-text btn-remove" id="plan-remove" hidden>Alisin</button>
+        <button type="button" class="btn-text" data-close>Kanselahin</button>
+        <button type="submit" class="btn-solid" id="plan-submit"></button>
       </div>
     </form>
   </dialog>

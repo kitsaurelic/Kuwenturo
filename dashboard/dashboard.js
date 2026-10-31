@@ -408,8 +408,160 @@
     if (location.hash !== back && location.hash.startsWith('#/gabay-aralin')) location.replace(back);
   });
 
-  // ---------- Routing (#/, #/gabay-aralin, #/aralin/<id>) ----------
-  const VIEWS = ['view-dashboard', 'view-gabay', 'view-page'];
+  // ---------- Tulong Aralin (Figma 4553:11578, 4879:2240, 4879:11109) ----------
+  // Plan: date -> story id, kept in this browser. It starts empty, as in the frames.
+  const TULONG_STREETS = [
+    { slug: 'masipag', tone: 'green', name: 'Masipag Street' },
+    { slug: 'matiyaga', tone: 'yellow', name: 'Matiyaga Street' },
+    { slug: 'matatag', tone: 'red', name: 'Matatag Street' },
+  ];
+  const DAY_TONES = ['green', 'yellow', 'red', 'blue', 'orange'];
+  const MONTHS_SHORT = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const tulong = { street: 0, weekStart: new Date(FIRST_WEEK) };
+  const planDialog = $('plan-dialog');
+  let planTarget = null; // { date } when choosing a story, { story } when choosing a day
+  let plan = {};
+  try { plan = JSON.parse(storage.get('kuwenturo.plan')) || {}; } catch { /* ignore bad data */ }
+  Object.keys(plan).forEach((d) => { if (!LESSONS[plan[d]]) delete plan[d]; });
+  const dayName = (date) => {
+    const d = new Date(`${date}T00:00:00`);
+    return `${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+  };
+
+  function renderDayCards() {
+    $('tulong-week-label').textContent = weekLabel(tulong.weekStart);
+    $('day-cards').innerHTML = DAY_TONES.map((tone, n) => {
+      const day = addDays(tulong.weekStart, n);
+      const date = isoDate(day);
+      const name = dayName(date);
+      const l = LESSONS[plan[date]];
+      const body = l
+        ? `<div class="day-story">
+            <p class="day-story-title">${l.title}</p>
+            <p class="day-story-street">${l.street}</p>
+            <div class="day-actions">
+              <button type="button" class="day-btn" data-plan-day="${date}" aria-label="Palitan ang kuwento sa ${name}">Palitan</button>
+              <button type="button" class="day-btn" data-plan-remove="${date}" aria-label="Alisin ang kuwento sa ${name}">Alisin</button>
+            </div>
+          </div>`
+        : `<button type="button" class="day-add" data-plan-day="${date}" aria-label="Add Story sa ${name}">
+            <span class="day-plus" aria-hidden="true">+</span>
+            <span>Add Story</span>
+          </button>`;
+      return `
+      <li class="day-card day-${tone}">
+        <h2 class="day-name">${DAYS[day.getDay()]}</h2>
+        <p class="day-date"><span>${MONTHS_SHORT[day.getMonth()]}</span>${day.getDate()}</p>
+        ${body}
+      </li>`;
+    }).join('');
+  }
+
+  function renderStoryCards() {
+    const street = TULONG_STREETS[tulong.street];
+    $('street-sign').src = `assets/tulong-sign-${street.slug}.png`;
+    $('street-sign').alt = street.name;
+    $('story-cards').innerHTML = storiesOn(tulong.street).map((id, i) => {
+      const l = LESSONS[id];
+      return `
+      <li class="story-card story-${street.tone}">
+        <h3 class="story-number">Kuwento #${i + 1}</h3>
+        <div class="story-body">
+          <p class="story-title">${l.title}</p>
+          <p class="story-topic">${l.topic}</p>
+          <img class="story-cover" src="assets/cover-${id}.png" width="160" height="141" alt="">
+          ${pill({ tone: street.tone, label: 'Piliin', name: `Piliin: ${l.title}`, attrs: `data-plan-story="${id}"` })}
+        </div>
+      </li>`;
+    }).join('');
+  }
+
+  function saveDay(date, id) {
+    if (id) plan[date] = id; else delete plan[date];
+    storage.set('kuwenturo.plan', JSON.stringify(plan));
+    renderDayCards();
+  }
+
+  function openPlan(target) {
+    planTarget = target;
+    const current = target.date && plan[target.date];
+    $('plan-title').textContent = target.date ? (current ? 'Palitan ang kuwento' : 'Pumili ng kuwento') : 'Pumili ng araw';
+    $('plan-legend').textContent = target.date ? 'Pumili ng kuwento' : 'Pumili ng araw';
+    $('plan-desc').textContent = target.date
+      ? `${dayName(target.date)}${current ? ` — kasalukuyan: ${LESSONS[current].title}` : ''}`
+      : LESSONS[target.story].title;
+    $('plan-submit').textContent = current ? 'Palitan' : 'Idagdag';
+    $('plan-remove').hidden = !current;
+    $('plan-list').querySelectorAll('label').forEach((el) => el.remove());
+    const options = target.date
+      ? Object.entries(LESSONS).map(([id, l]) => [id, l.title, `${l.street}${l.topic ? ` · ${l.topic}` : ''}`])
+      : DAY_TONES.map((tone, n) => {
+        const date = isoDate(addDays(tulong.weekStart, n));
+        return [date, dayName(date), plan[date] ? LESSONS[plan[date]].title : 'Wala pang kuwento'];
+      });
+    $('plan-list').insertAdjacentHTML('beforeend', options.map(([value, label, note]) => `
+      <label class="swap-option">
+        <input type="radio" name="plan" value="${value}"${value === current ? ' checked' : ''}>
+        <span>${label}<small>${note}</small></span>
+      </label>`).join(''));
+    $('plan-submit').disabled = !current;
+    planDialog.showModal();
+    ($('plan-list').querySelector('input:checked') || $('plan-list').querySelector('input')).focus();
+  }
+
+  // The day cards are redrawn, so focus moves to the matching button on the new card
+  function focusDay(date) {
+    $('day-cards').querySelector(`[data-plan-day="${date}"]`)?.focus();
+  }
+
+  function removeDay(date) {
+    const title = LESSONS[plan[date]].title;
+    saveDay(date, null);
+    focusDay(date);
+    announce(`Inalis: ${title}`);
+  }
+
+  $('day-cards').addEventListener('click', (event) => {
+    const change = event.target.closest('[data-plan-day]');
+    const remove = event.target.closest('[data-plan-remove]');
+    if (change) openPlan({ date: change.dataset.planDay });
+    if (remove) removeDay(remove.dataset.planRemove);
+  });
+  $('story-cards').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-plan-story]');
+    if (button) openPlan({ story: button.dataset.planStory });
+  });
+  $('plan-list').addEventListener('change', () => { $('plan-submit').disabled = false; });
+  $('plan-remove').addEventListener('click', () => {
+    const { date } = planTarget;
+    planDialog.close();
+    removeDay(date);
+  });
+  $('plan-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const chosen = $('plan-form').querySelector('input[name="plan"]:checked').value;
+    const date = planTarget.date || chosen;
+    const id = planTarget.story || chosen;
+    planDialog.close();
+    saveDay(date, id);
+    if (planTarget.date) focusDay(date);
+    announce(`${dayName(date)}: ${LESSONS[id].title}`);
+  });
+
+  $('tulong-week-prev').addEventListener('click', () => { tulong.weekStart = addDays(tulong.weekStart, -7); renderDayCards(); });
+  $('tulong-week-next').addEventListener('click', () => { tulong.weekStart = addDays(tulong.weekStart, 7); renderDayCards(); });
+
+  // The arrows cycle through the streets; the URL names the street
+  function stepStreet(step) {
+    const next = TULONG_STREETS[(tulong.street + step + TULONG_STREETS.length) % TULONG_STREETS.length];
+    location.hash = `#/tulong-aralin/${next.slug}`;
+    announce(next.name);
+  }
+  $('street-prev').addEventListener('click', () => stepStreet(-1));
+  $('street-next').addEventListener('click', () => stepStreet(1));
+
+  // ---------- Routing (#/, #/gabay-aralin, #/tulong-aralin, #/aralin/<id>) ----------
+  const VIEWS = ['view-dashboard', 'view-gabay', 'view-tulong', 'view-page'];
   function showView(viewId) {
     const wasHidden = $(viewId).hidden;
     VIEWS.forEach((v) => { $(v).hidden = v !== viewId; });
@@ -446,6 +598,14 @@
       renderGabay();
       if (wasHidden) $('gabay-title').focus();
       if (guidePart && currentStory()) openGuide(guidePart);
+    } else if (section === 'tulong-aralin') {
+      const wasHidden = showView('view-tulong');
+      keepScroll = !wasHidden;
+      document.title = 'Tulong Aralin — Kuwenturo';
+      tulong.street = Math.max(0, TULONG_STREETS.findIndex((s) => s.slug === id));
+      renderDayCards();
+      renderStoryCards();
+      if (wasHidden) $('tulong-title').focus();
     } else if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
     } else if (section === 'aralin' && LESSONS[id]) {
