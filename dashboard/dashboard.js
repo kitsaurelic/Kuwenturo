@@ -748,7 +748,22 @@
     'lk-start': { x: 189, w: 1011, bg: [-66, 0, 1496, 1034] },
     'lk-saan': { x: 0, w: 1200, bg: [-93, -180, 1374, 1259] },
     'lk-street': { x: 0, w: 1200, bg: [-52, -52, 1289, 1117] },
+    'lk-steps': { x: 0, w: 1200, bg: null },
   };
+  // Story cards and step signs built so far; other stories keep the "malapit na" page
+  const LK_DETAIL = {
+    'ang-pamilyang-puno-ng-pagmamahal': {
+      art: 'assets/lakbay/story-k01-card.jpg',
+      salita: '104 Salita',
+      aral: 'Mahalaga ang pagmamahalan, pag-aaruga, at pag-unawa sa bawat miyembro ng pamilya upang manatiling masaya at nagkakaisa ang pamilya.',
+      paksa: 'Pagmamahalan, Pag-aaruga, at Pagkakaunawaan sa Pamilya',
+    },
+  };
+  const LK_STEPS = [
+    { slug: 'bago-basahin', tone: 'green', title: 'Bago Basahin', lines: ['BAGO', 'BASAHIN'], note: 'Maghanda bago basahin ang kuwento' },
+    { slug: 'ang-babasahin', tone: 'yellow', title: 'Ang Babasahin', lines: ['ANG', 'BABASAHIN'], note: 'Basahin at intindihin ang kuwento' },
+    { slug: 'pagkatapos-basahin', tone: 'red', title: 'Pagkatapos Basahin', lines: ['PAGKATAPOS', 'BASAHIN'], note: 'Sagutan ang mga gawain at magbuod' },
+  ];
   const lkPhone = window.matchMedia('(max-width: 700px), (max-width: 900px) and (max-height: 500px)');
   let lkScene = null;
 
@@ -756,11 +771,11 @@
   function lkFit() {
     if (!lkScene) return;
     const scene = $(lkScene);
-    const stage = scene.querySelector('.lk-stage');
+    const stages = scene.querySelectorAll('.lk-stage');
     const bg = scene.querySelector('.lk-bg');
     if (lkPhone.matches) {
-      stage.style.transform = '';
-      bg.style.cssText = '';
+      stages.forEach((stage) => { stage.style.transform = ''; });
+      if (bg) bg.style.cssText = '';
       return;
     }
     const d = LK_DESIGN[lkScene];
@@ -769,7 +784,9 @@
     const s = Math.min(W / d.w, H / 900);
     const ox = (W - d.w * s) / 2 - d.x * s;
     const oy = H - 900 * s; // tall windows keep the road at the bottom, extra sky on top
-    stage.style.transform = `translate(${ox}px, ${oy}px) scale(${s})`;
+    stages.forEach((stage) => { stage.style.transform = `translate(${ox}px, ${oy}px) scale(${s})`; });
+    scene.style.setProperty('--lk-panel-top', `${oy + 426 * s}px`);
+    if (!d.bg) return;
     // The art stops just past the frame: enlarge it only as far as the window needs
     const [bx, by, bw, bh] = d.bg;
     const k = Math.max(1, W / (bw * s), H / (bh * s));
@@ -783,7 +800,7 @@
 
   function lkShow(sceneId) {
     const changed = lkScene !== sceneId;
-    ['lk-start', 'lk-saan', 'lk-street'].forEach((id) => { $(id).hidden = id !== sceneId; });
+    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps'].forEach((id) => { $(id).hidden = id !== sceneId; });
     lkScene = sceneId;
     document.body.classList.add('lk-on');
     const full = sceneId !== 'lk-start';
@@ -843,11 +860,79 @@
       <img src="assets/lakbay/light-${s.light}.png" width="144" height="62" alt="">
     </a>`).join('');
 
-  function lkRoute(id, sub) {
+  function lkModal(open) {
+    $('lk-veil').hidden = !open;
+    $('lk-modal').hidden = !open;
+    document.querySelector('#lk-street > .lk-stage').inert = open;
+    lkFit();
+  }
+  function lkRenderCard(id) {
+    const l = LESSONS[id];
+    const c = LK_DETAIL[id];
+    const n = LK_STORY_ORDER.indexOf(id) + 1;
+    const from = LK_STREETS.find((s) => s.street === l.street);
+    $('lk-modal-no').textContent = `KUWENTO #${n}`;
+    $('lk-m-art').src = c.art;
+    $('lk-m-street').textContent = l.street.toUpperCase();
+    $('lk-m-title').textContent = l.title;
+    $('lk-m-time').textContent = `${l.minutes}min`;
+    $('lk-m-aralin').textContent = LK_ARALIN[n - 1];
+    $('lk-m-salita').textContent = c.salita;
+    $('lk-m-aral').textContent = c.aral;
+    $('lk-m-paksa').textContent = c.paksa;
+    $('lk-m-close').href = `#/lakbay-aralin/${from.slug}`;
+    $('lk-m-go').innerHTML = pill({ tone: 'green', label: 'Simulan', name: `Simulan ang ${l.title}`, href: `#/lakbay-aralin/kuwento/${id}/hakbang` });
+    return from;
+  }
+  function lkRenderSteps(id) {
+    const l = LESSONS[id];
+    $('lk-steps-title').textContent = l.title.toUpperCase();
+    $('lk-steps-close').href = `#/lakbay-aralin/kuwento/${id}`;
+    $('lk-step-signs').innerHTML = LK_STEPS.map((s, i) => `
+      <a class="lk-step lk-step-${s.tone}" href="#/lakbay-aralin/kuwento/${id}/${s.slug}" aria-label="Hakbang ${i + 1}: ${s.title}. ${s.note}">
+        <i class="lk-step-pole"></i>
+        <span class="lk-step-board"><span>${s.lines.join('<br>')}</span></span>
+        <b class="lk-step-no">${i + 1}</b>
+        <span class="lk-step-note"><span>${s.note}</span></span>
+      </a>`).join('');
+  }
+
+  function lkRoute(id, sub, step) {
     const street = LK_STREETS.find((s) => s.slug === id);
-    if (id === 'kuwento' && LESSONS[sub]) {
+    if (id === 'kuwento' && LK_DETAIL[sub] && step === 'hakbang') {
+      lkModal(false);
+      showView('view-lakbay');
+      lkRenderSteps(sub);
+      const changed = lkShow('lk-steps');
+      document.title = `${LESSONS[sub].title} â€” Kuwenturo`;
+      if (changed) $('lk-steps-title').focus({ preventScroll: true });
+      return;
+    }
+    const stepInfo = LK_STEPS.find((s) => s.slug === step);
+    if (id === 'kuwento' && LK_DETAIL[sub] && stepInfo) {
       lkHide();
-      const l = LESSONS[sub];
+      showPage({
+        kicker: LESSONS[sub].title,
+        title: stepInfo.title,
+        body: `<p>Malapit na ang bahaging ito ng lakbay.</p>
+          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa mga Hakbang', name: 'Bumalik sa mga Hakbang', href: `#/lakbay-aralin/kuwento/${sub}/hakbang` })}</div>`,
+      });
+      return;
+    }
+    if (id === 'kuwento' && LK_DETAIL[sub]) {
+      showView('view-lakbay');
+      const from = lkRenderCard(sub);
+      lkRenderStreet(from);
+      lkShow('lk-street');
+      const wasOpen = !$('lk-modal').hidden;
+      lkModal(true);
+      document.title = `${LESSONS[sub].title} â€” Kuwenturo`;
+      if (!wasOpen) $('lk-modal-no').focus({ preventScroll: true });
+      return;
+    }
+    lkModal(false);
+    if (id === 'kuwento' && LESSONS[sub]) {
+      lkHide();      const l = LESSONS[sub];
       const n = LK_STORY_ORDER.indexOf(sub) + 1;
       const from = LK_STREETS.find((s) => s.street === l.street);
       showPage({
@@ -865,7 +950,7 @@
       const stale = document.title !== `Kuwentong ${street.name} — Kuwenturo`;
       changed = lkShow('lk-street') || stale;
       document.title = `Kuwentong ${street.name} — Kuwenturo`;
-      if (changed) $('lk-street-title').focus({ preventScroll: true });
+      if (changed || stale) $('lk-street-title').focus({ preventScroll: true });
     } else if (id === 'saan-patungo') {
       changed = lkShow('lk-saan');
       document.title = 'Saan Patungo — Kuwenturo';
@@ -881,10 +966,11 @@
   lkPhone.addEventListener('change', lkFit);
   document.addEventListener('keydown', (event) => {
     if (!lkScene || lkScene === 'lk-start' || document.querySelector('dialog[open]')) return;
+    const modalOpen = !$('lk-modal').hidden;
     if (event.key === 'Escape') {
       event.preventDefault();
-      location.hash = lkScene === 'lk-street' ? '#/lakbay-aralin/saan-patungo' : '#/lakbay-aralin';
-    } else if (lkScene === 'lk-street' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+      location.hash = (modalOpen ? $('lk-m-close') : $(lkScene).querySelector('.lk-stage > .lk-close')).getAttribute('href');
+    } else if (lkScene === 'lk-street' && !modalOpen && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
       location.hash = $(event.key === 'ArrowLeft' ? 'lk-prev' : 'lk-next').getAttribute('href');
     }
   });
@@ -908,7 +994,7 @@
 
   function route() {
     const path = location.hash.replace(/^#\/?/, '');
-    const [section, id, sub] = path.split('/');
+    const [section, id, sub, step] = path.split('/');
     // #/gabay-aralin/<story id>/<part>; the older #/gabay-aralin/<part> uses the current story
     const guidePart = section !== 'gabay-aralin' ? null : (GUIDE_PARTS[id] ? id : (GUIDE_PARTS[sub] ? sub : null));
     const navKey = section === 'aralin' ? 'dashboard' : (SECTIONS[section] ? section : 'dashboard');
@@ -921,7 +1007,7 @@
     let keepScroll = false;
     if (section !== 'lakbay-aralin') lkHide();
     if (section === 'lakbay-aralin') {
-      lkRoute(id, sub);
+      lkRoute(id, sub, step);
     } else if (section === 'gabay-aralin') {
       const wasHidden = showView('view-gabay');
       keepScroll = !wasHidden;
