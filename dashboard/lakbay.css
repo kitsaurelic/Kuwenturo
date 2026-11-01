@@ -1,0 +1,165 @@
+/* Lakbay Aralin (Figma 4763:8758, 4763:12150, 4786:1868 / 3613 / 4420).
+   Desktop: one 1200 × 900 stage, positions from the frames, scaled to fit by lkFit().
+   Phone: the same pieces restacked so the text stays readable. */
+.lk { position: relative; }
+.lk-scene { position: relative; height: 100vh; height: 100dvh; overflow: hidden; background: #fff; }
+.lk-scene[hidden] { display: none; }
+.lk-full { position: fixed; inset: 0; z-index: 30; }
+.lk-bg { position: absolute; max-width: none; pointer-events: none; }
+.lk-stage { position: absolute; left: 0; top: 0; width: 1200px; height: 900px; transform-origin: 0 0; }
+.lk-stage h1:focus { outline: none; }
+@media (min-width: 641px) { .lk-on .topbar { display: none; } }
+/* The desktop scenes fill the window exactly; a page scrollbar would only shrink them */
+@media (min-width: 701px) and (min-height: 501px), (min-width: 901px) {
+  html:has(body.lk-on), body.lk-on { overflow: hidden; }
+}
+@media (max-width: 340px) { .lk-card { zoom: .9; } }
+
+/* Title board with the two blue tabs behind it */
+.lk-title { position: absolute; left: 340.6px; top: 61.3px; width: 696.2px; height: 150.5px; transform-origin: 0 0; }
+.lk-tab {
+  position: absolute; border: 2.5px solid #fff; border-radius: 5px; rotate: -11.51deg;
+  background: linear-gradient(0deg, #001343 0%, #002581 48%, #001343 93%);
+  box-shadow: inset 0 6.7px 0 rgba(0, 0, 0, .25);
+}
+.lk-tab-1 { left: 5.8px; top: -1.8px; width: 90px; height: 74.4px; }
+.lk-tab-2 { left: 75.1px; top: -10.2px; width: 48.6px; height: 77.3px; }
+.lk-title-board {
+  position: absolute; left: 0; top: 30.9px; width: 100%; height: 119.6px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(90deg, #FFAE00 2%, #FBCB39 49%, #FFAE00 100%);
+  box-shadow: 0 8.4px 8.4px rgba(0, 0, 0, .25), 0 3.3px 3.3px #D68F3D, inset 5px 11px 8px rgba(0, 0, 0, .25), inset 0 -8.4px 8.4px #D48C3B;
+}
+.lk-title-board h1 {
+  font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-weight: 400;
+  font-size: 82px; line-height: 1; white-space: nowrap;
+  background: linear-gradient(180deg, #001343 0%, #002581 48%, #001343 93%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.lk-dash { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.lk-title-saan { left: 342.2px; top: 439.6px; scale: .7415; }
+.lk-title-saan .lk-title-board h1 { font-size: 79px; }
+
+/* Cream plate under the title */
+.lk-plate {
+  position: absolute; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(90deg, #FFF4C0 0%, #FFFFFF 50%, #FFF4C0 100%);
+  color: var(--navy); font-weight: 700; text-align: center;
+}
+.lk-plate p { position: relative; }
+.lk-plate-start { left: 308px; top: 195.9px; width: 762px; height: 112.7px; border-radius: 10.2px; box-shadow: 0 4px 100px #fff; font-size: 22px; line-height: 22px; }
+.lk-plate-start .lk-dash { left: 9.6px; top: 9.3px; width: 743px; height: 94.66px; }
+.lk-plate-start p { width: 690px; }
+.lk-plate-saan { left: 318px; top: 539.4px; width: 565px; height: 83.6px; border-radius: 7.6px; box-shadow: 0 3px 74px #fff; font-size: 20px; line-height: 20px; }
+.lk-plate-saan .lk-dash { left: 7.1px; top: 6.9px; width: 551px; height: 70.2px; }
+.lk-plate-saan p { width: 523px; }
+
+/* Simulan */
+.lk-go { position: absolute; left: 603px; top: 286px; }
+.lk-go .pill { width: 174px; height: 54.1px; border-width: 4.16px; background: linear-gradient(0deg, #001E90, #2163FA); }
+.lk-go .pill-label { font-size: 26.6px; }
+
+/* Saan Patungo */
+.lk-biboy { position: absolute; left: 322px; top: -57px; width: 559px; height: 787.5px; max-width: none; pointer-events: none; }
+.lk-sign {
+  position: absolute; width: 349.6px; height: 161.2px; rotate: .56deg;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 16px; color: #fff; text-decoration: none; text-align: center;
+  font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.lk-sign::before { content: ""; position: absolute; inset: 7.5px 6.6px; border: 2.68px solid #fff; border-radius: 11.2px; pointer-events: none; }
+.lk-sign:hover { transform: translateY(-4px); box-shadow: 0 6px 6px rgba(0, 0, 0, .25); }
+.lk-sign:active { transform: translateY(1px); box-shadow: none; }
+.lk-sign:focus-visible, .lk-close:focus-visible, .lk-arrow:focus-visible { outline: 4px solid #fff; outline-offset: 3px; box-shadow: 0 0 0 10px var(--navy); }
+.lk-sign-text { position: relative; display: block; width: 306px; font-size: 47.5px; line-height: 50px; text-shadow: 0 2.57px 1.28px rgba(0, 0, 0, .5); }
+.lk-sign-text b { display: block; font-weight: 400; font-size: 57.7px; }
+.lk-sign img { position: absolute; left: 103px; top: 134px; width: 144px; height: 61.5px; max-width: none; }
+.lk-sign-green { left: 26.5px; top: 674px; background: linear-gradient(90deg, #136C39 2%, #29BF68 49%, #136C39 100%); }
+.lk-sign-yellow { left: 426.75px; top: 674.8px; background: linear-gradient(90deg, #FFAE00 2%, #FBCB39 49%, #FFAE00 100%); color: var(--navy); }
+.lk-sign-yellow .lk-sign-text { text-shadow: 0 1px 0 rgba(255, 255, 255, .45); } /* white on yellow is 1.6:1; navy is 10:1 */
+.lk-sign-red { left: 827px; top: 676.8px; background: linear-gradient(90deg, #AF0414 0%, #E43D45 50%, #AF0414 100%); }
+
+.lk-close { position: absolute; left: 1110px; top: 26px; width: 58.5px; height: 57px; border-radius: 50%; z-index: 3; transition: transform .15s ease; }
+.lk-close img { width: 100%; height: 100%; }
+.lk-close:hover { transform: translateY(-2px) scale(1.04); }
+.lk-close:active { transform: translateY(1px); }
+
+/* Street screens */
+.lk-board { position: absolute; left: 25px; top: 75px; width: 1149px; height: 657px; max-width: none; pointer-events: none; }
+.lk-street-sign { position: absolute; left: 244px; top: 100px; width: 711px; height: 99px; }
+.lk-street-sign svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 4px 4px rgba(0, 0, 0, .25)); }
+.lk-street-sign h1 {
+  position: relative; padding-top: 15.6px; text-align: center; white-space: nowrap;
+  font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-weight: 400;
+  font-size: 55px; line-height: 48.5px;
+  background: linear-gradient(180deg, #001343 0%, #002581 48%, #001343 93%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.lk-pick { position: absolute; left: 144px; top: 206px; width: 911px; text-align: center; color: var(--navy); font-weight: 700; font-size: 30px; line-height: 30px; }
+.lk-cards { position: absolute; left: 108px; top: 226px; width: 983px; height: 439px; display: flex; justify-content: center; }
+.lk-card { position: relative; flex: none; width: 287px; height: 439px; color: var(--navy); }
+.lk-card + .lk-card { margin-left: -55px; }
+.lk-card-shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.lk-card-no { position: absolute; left: 48px; top: 28.6px; width: 205px; text-align: center; color: #FFFBF4; font-weight: 700; font-size: 22.5px; line-height: 30px; }
+.lk-card-yellow .lk-card-no { color: var(--navy); } /* cream on yellow is 1.6:1 */
+.lk-card-title { position: absolute; left: 47px; top: 78.6px; width: 202px; text-align: center; font-weight: 700; font-size: 19px; line-height: 19px; text-wrap: balance; }
+.lk-card-aralin { position: absolute; left: 64px; top: 122.6px; width: 168px; text-align: center; color: var(--caption); font-size: 17px; line-height: 15px; }
+.lk-card-art { position: absolute; left: 52.8px; top: 157.6px; width: 179.4px; height: 179.8px; max-width: none; object-fit: cover; transform: skewX(-3.2deg); border: 4.26px solid #FFFBF4; border-radius: 11px; box-shadow: 0 4.26px 5.11px rgba(0, 0, 0, .25); }
+.lk-card .pill { position: absolute; left: 75px; top: 366.6px; width: 118.7px; height: 32px; }
+.lk-card .pill-label { font-size: 17px; }
+.lk-arrow { position: absolute; top: 352px; width: 113px; height: 112px; transition: transform .15s ease; }
+.lk-arrow img { width: 100%; height: 100%; }
+.lk-prev { left: 38px; }
+.lk-next { left: 1047px; }
+.lk-prev:hover { transform: translateX(-3px); }
+.lk-next:hover { transform: translateX(3px); }
+.lk-arrow:active { transform: scale(.96); }
+.lk-back { position: absolute; left: 417px; top: 527px; width: 380.5px; height: 536px; max-width: none; pointer-events: none; }
+
+.lk-page-back { margin-top: 16px; }
+.lk-page-back .pill { display: inline-flex; min-height: 44px; padding: 8px 24px; }
+.lk-page-back .pill-label { font-size: 16px; }
+
+@media (max-width: 700px), (max-width: 900px) and (max-height: 500px) {
+  .lk-scene { height: auto; min-height: 100vh; min-height: 100dvh; overflow: visible; }
+  .lk-full { overflow-y: auto; overflow-x: hidden; }
+  .lk-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+  .lk-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; width: auto; height: auto; min-height: 100dvh; padding: 72px 16px 24px; }
+  .lk-stage > * { position: relative; left: auto; top: auto; }
+  .lk-title, .lk-title-saan { order: 1; width: 100%; max-width: 420px; height: auto; scale: none; }
+  .lk-tab { display: none; }
+  .lk-title-board { position: relative; top: 0; height: 76px; }
+  .lk-title-board h1, .lk-title-saan .lk-title-board h1 { font-size: 33px; }
+  .lk-plate, .lk-plate-start, .lk-plate-saan { order: 2; width: 100%; max-width: 420px; height: auto; padding: 18px; font-size: 18px; line-height: 28px; }
+  .lk-plate-start .lk-dash, .lk-plate-saan .lk-dash { left: 6px; top: 6px; width: calc(100% - 12px); height: calc(100% - 12px); }
+  .lk-plate .lk-dash { display: none; }
+  .lk-plate { border: 2px dashed var(--navy); outline: 6px solid #FFF9DE; outline-offset: -8px; }
+  .lk-plate p { width: auto; }
+  .lk-go { order: 3; }
+  /* Start: the menu button floats over the sky and the text stays above Biboy */
+  .lk-on .topbar { position: absolute; left: 0; right: 0; top: 0; z-index: 5; }
+  .lk-start .lk-stage { padding-top: 64px; gap: 10px; }
+  .lk-start .lk-title-board { height: 62px; }
+  .lk-start .lk-plate { padding: 12px 14px; line-height: 24px; }
+  .lk-biboy { order: 0; width: 170px; height: 240px; margin-bottom: -28px; }
+  #lk-signs { order: 3; display: flex; flex-direction: column; align-items: center; gap: 44px; width: 100%; padding: 8px 0 32px; }
+  .lk-sign { position: relative; left: auto; top: auto; width: 100%; max-width: 300px; height: 128px; }
+  .lk-sign-text { font-size: 36px; line-height: 36px; width: auto; }
+  .lk-sign-text b { font-size: 42px; }
+  .lk-sign img { left: 50%; top: auto; bottom: -30px; width: 120px; height: 51px; margin-left: -60px; }
+  .lk-stage > .lk-close { position: fixed; left: auto; top: 12px; right: 12px; width: 48px; height: 47px; }
+  .lk-board, .lk-back { display: none; }
+  .lk-street .lk-stage { padding-top: 68px; }
+  .lk-street-sign { order: 1; width: min(100%, 340px); height: 60px; }
+  .lk-street-sign h1 { padding-top: 11px; font-size: clamp(20px, 6.4vw, 26px); line-height: 30px; }
+  .lk-pick { order: 2; width: 100%; max-width: 420px; padding: 12px 16px; border-radius: 20px; background: rgba(255, 251, 244, .94); font-size: 18px; line-height: 28px; }
+  .lk-cards { order: 3; width: 100%; height: auto; flex-direction: column; align-items: center; gap: 4px; }
+  .lk-card + .lk-card { margin-left: 0; }
+  .lk-stage > .lk-arrow { position: fixed; top: 12px; width: 48px; height: 47px; z-index: 3; }
+  .lk-stage > .lk-prev { left: 12px; }
+  .lk-stage > .lk-next { left: 68px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lk-sign, .lk-close, .lk-arrow { transition: none; }
+}

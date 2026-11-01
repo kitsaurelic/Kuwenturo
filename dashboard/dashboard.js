@@ -724,8 +724,173 @@
     }
   });
 
-  // ---------- Routing (#/, #/gabay-aralin, #/tulong-aralin, #/guro-konek, #/aralin/<id>) ----------
-  const VIEWS = ['view-dashboard', 'view-gabay', 'view-tulong', 'view-guro', 'view-page'];
+  // ---------- Lakbay Aralin ----------
+  // #/lakbay-aralin → start; /saan-patungo → pick a street; /<street> → its stories
+  const LK_STREETS = [
+    { slug: 'masipag', name: 'Masipag', street: 'Masipag St.', tone: 'green', light: 1 },
+    { slug: 'matiyaga', name: 'Matiyaga', street: 'Matiyaga St.', tone: 'yellow', light: 2 },
+    { slug: 'matatag', name: 'Matatag', street: 'Matatag St.', tone: 'red', light: 3 },
+  ];
+  // The Aralin line and art of each story card, in the frames' Kuwento #1–#10 order
+  const LK_STORY_ORDER = Object.keys(LESSONS);
+  const LK_ARALIN = [
+    'Detalye ng Kuwento', 'Detalye ng Kuwento', 'Ang Damdamin ng Tauhan', 'Ang Damdamin ng Tauhan',
+    'Sanhi at Bunga', 'Sanhi at Bunga', 'Problema at Solusyon', 'Problema at Solusyon',
+    'Sanhi at Bunga', 'Problema at Solusyon',
+  ];
+  const LK_TONES = {
+    green: { head: '#0C9358', body: '#04673C', pill: 'green' },
+    yellow: { head: '#FFBE33', body: '#FFBE33', pill: 'yellow' },
+    red: { head: '#B42224', body: '#B52325', pill: 'red' },
+    blue: { head: '#2478FF', body: '#2478FF', pill: 'blue' },
+  };
+  const LK_DESIGN = {
+    'lk-start': { x: 189, w: 1011, bg: [-66, 0, 1496, 1034] },
+    'lk-saan': { x: 0, w: 1200, bg: [-93, -180, 1374, 1259] },
+    'lk-street': { x: 0, w: 1200, bg: [-52, -52, 1289, 1117] },
+  };
+  const lkPhone = window.matchMedia('(max-width: 700px), (max-width: 900px) and (max-height: 500px)');
+  let lkScene = null;
+
+  // The frames are one 1200 × 900 picture, so the desktop screens scale as a whole to fit
+  function lkFit() {
+    if (!lkScene) return;
+    const scene = $(lkScene);
+    const stage = scene.querySelector('.lk-stage');
+    const bg = scene.querySelector('.lk-bg');
+    if (lkPhone.matches) {
+      stage.style.transform = '';
+      bg.style.cssText = '';
+      return;
+    }
+    const d = LK_DESIGN[lkScene];
+    const W = scene.clientWidth;
+    const H = scene.clientHeight;
+    const s = Math.min(W / d.w, H / 900);
+    const ox = (W - d.w * s) / 2 - d.x * s;
+    const oy = H - 900 * s; // tall windows keep the road at the bottom, extra sky on top
+    stage.style.transform = `translate(${ox}px, ${oy}px) scale(${s})`;
+    // The art stops just past the frame: enlarge it only as far as the window needs
+    const [bx, by, bw, bh] = d.bg;
+    const k = Math.max(1, W / (bw * s), H / (bh * s));
+    const w = bw * s * k;
+    const h = bh * s * k;
+    const cx = W / 2 + (bx + bw / 2 - (d.x + d.w / 2)) * s;
+    const left = Math.min(0, Math.max(W - w, cx - w / 2));
+    const top = Math.min(0, Math.max(H - h, oy + by * s));
+    bg.style.cssText = `left:${left}px;top:${top}px;width:${w}px;height:${h}px`;
+  }
+
+  function lkShow(sceneId) {
+    const changed = lkScene !== sceneId;
+    ['lk-start', 'lk-saan', 'lk-street'].forEach((id) => { $(id).hidden = id !== sceneId; });
+    lkScene = sceneId;
+    document.body.classList.add('lk-on');
+    const full = sceneId !== 'lk-start';
+    document.body.classList.toggle('lk-full-on', full);
+    // Full-screen scenes cover the menu, so it leaves the tab order too
+    $('sidebar').inert = full;
+    document.querySelector('.topbar').inert = full;
+    lkFit();
+    return changed;
+  }
+  function lkHide() {
+    lkScene = null;
+    document.body.classList.remove('lk-on', 'lk-full-on');
+    $('sidebar').inert = false;
+    document.querySelector('.topbar').inert = false;
+  }
+
+  function lkStreetStories(street) {
+    return LK_STORY_ORDER.filter((id) => LESSONS[id].street === street.street);
+  }
+  function lkCard(id, tone) {
+    const n = LK_STORY_ORDER.indexOf(id) + 1;
+    const t = LK_TONES[tone];
+    const l = LESSONS[id];
+    return `<li class="lk-card lk-card-${tone}">
+      <svg class="lk-card-shape" viewBox="0 0 287 439" aria-hidden="true">
+        <defs><linearGradient id="lk-body-${n}" gradientUnits="userSpaceOnUse" x1="212.5" y1="558.976" x2="-57.313" y2="173.443"><stop stop-color="${t.body}"/><stop offset="1" stop-color="#FFF8E9"/></linearGradient></defs>
+        <path transform="translate(20 20)" d="M53.79 2H212.64C228.88 2 241.71 15.76 240.57 31.96L216.79 370.96C215.76 385.63 203.56 397 188.85 397H30C13.77 397 .93 383.24 2.07 367.04L25.86 28.04C26.89 13.37 39.09 2 53.79 2Z" fill="${t.head}" stroke="#fff" stroke-width="4"/>
+        <path transform="translate(20 66)" d="M53.16 2H211.35C227.57 2 240.4 15.75 239.28 31.94L218.94 324.94C217.92 339.62 205.72 351 191.01 351H32.22C15.97 351 3.13 337.21 4.29 321L25.24 28C26.28 13.35 38.47 2 53.16 2Z" fill="url(#lk-body-${n})" stroke="#fff" stroke-width="4"/>
+      </svg>
+      <p class="lk-card-no">Kuwento #${n}</p>
+      <h2 class="lk-card-title">${escapeHtml(l.title).replace("Sari-Sari", "<span style=\"white-space:nowrap\">Sari-Sari</span>")}</h2>
+      <p class="lk-card-aralin">Aralin: ${LK_ARALIN[n - 1]}</p>
+      <img class="lk-card-art" src="assets/lakbay/story-k${String(n).padStart(2, '0')}.jpg" width="180" height="180" alt="" loading="lazy">
+      ${pill({ tone: t.pill, label: 'Piliin', name: `Piliin ang ${l.title}`, href: `#/lakbay-aralin/kuwento/${id}` })}
+    </li>`;
+  }
+  function lkRenderStreet(street) {
+    const at = LK_STREETS.indexOf(street);
+    const prev = LK_STREETS[(at + LK_STREETS.length - 1) % LK_STREETS.length];
+    const next = LK_STREETS[(at + 1) % LK_STREETS.length];
+    $('lk-street-title').textContent = `KUWENTONG ${street.name.toUpperCase()}`;
+    $('lk-prev').href = `#/lakbay-aralin/${prev.slug}`;
+    $('lk-prev').setAttribute('aria-label', `Nakaraang kalye: ${prev.street}`);
+    $('lk-next').href = `#/lakbay-aralin/${next.slug}`;
+    $('lk-next').setAttribute('aria-label', `Susunod na kalye: ${next.street}`);
+    const stories = lkStreetStories(street);
+    // Four cards run green → blue; Matatag's two sit in the yellow and red slots, as in its frame
+    const tones = stories.length === 2 ? ['yellow', 'red'] : ['green', 'yellow', 'red', 'blue'];
+    $('lk-cards').innerHTML = stories.map((id, i) => lkCard(id, tones[i])).join('');
+  }
+
+  $('lk-go').innerHTML = pill({ tone: 'blue', label: 'Simulan', name: 'Simulan ang Lakbay Aralin', href: '#/lakbay-aralin/saan-patungo' });
+  $('lk-signs').innerHTML = LK_STREETS.map((s) => `
+    <a class="lk-sign lk-sign-${s.tone}" href="#/lakbay-aralin/${s.slug}" aria-label="${s.name} Street">
+      <span class="lk-sign-text"><b>${s.name.toUpperCase()}</b> STREET</span>
+      <img src="assets/lakbay/light-${s.light}.png" width="144" height="62" alt="">
+    </a>`).join('');
+
+  function lkRoute(id, sub) {
+    const street = LK_STREETS.find((s) => s.slug === id);
+    if (id === 'kuwento' && LESSONS[sub]) {
+      lkHide();
+      const l = LESSONS[sub];
+      const n = LK_STORY_ORDER.indexOf(sub) + 1;
+      const from = LK_STREETS.find((s) => s.street === l.street);
+      showPage({
+        kicker: `Kuwento #${n} · ${l.street}`,
+        title: l.title,
+        body: `<p>Malapit na ang kuwentong ito sa Lakbay Aralin.</p>
+          <div class="lk-page-back">${pill({ tone: 'blue', label: `Bumalik sa Kuwentong ${from.name}`, name: `Bumalik sa Kuwentong ${from.name}`, href: `#/lakbay-aralin/${from.slug}` })}</div>`,
+      });
+      return;
+    }
+    const wasHidden = showView('view-lakbay');
+    let changed;
+    if (street) {
+      lkRenderStreet(street);
+      const stale = document.title !== `Kuwentong ${street.name} — Kuwenturo`;
+      changed = lkShow('lk-street') || stale;
+      document.title = `Kuwentong ${street.name} — Kuwenturo`;
+      if (changed) $('lk-street-title').focus({ preventScroll: true });
+    } else if (id === 'saan-patungo') {
+      changed = lkShow('lk-saan');
+      document.title = 'Saan Patungo — Kuwenturo';
+      if (changed) $('lk-saan-title').focus({ preventScroll: true });
+    } else {
+      changed = lkShow('lk-start');
+      document.title = 'Lakbay Aralin — Kuwenturo';
+      if (changed || wasHidden) $('lk-start-title').focus({ preventScroll: true });
+    }
+  }
+
+  new ResizeObserver(lkFit).observe($('view-lakbay'));
+  lkPhone.addEventListener('change', lkFit);
+  document.addEventListener('keydown', (event) => {
+    if (!lkScene || lkScene === 'lk-start' || document.querySelector('dialog[open]')) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      location.hash = lkScene === 'lk-street' ? '#/lakbay-aralin/saan-patungo' : '#/lakbay-aralin';
+    } else if (lkScene === 'lk-street' && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+      location.hash = $(event.key === 'ArrowLeft' ? 'lk-prev' : 'lk-next').getAttribute('href');
+    }
+  });
+
+  // ---------- Routing (#/, #/gabay-aralin, #/lakbay-aralin, #/tulong-aralin, #/guro-konek, #/aralin/<id>) ----------
+  const VIEWS = ['view-dashboard', 'view-gabay', 'view-lakbay', 'view-tulong', 'view-guro', 'view-page'];
   function showView(viewId) {
     const wasHidden = $(viewId).hidden;
     VIEWS.forEach((v) => { $(v).hidden = v !== viewId; });
@@ -754,7 +919,10 @@
     if (!guidePart && guideDialog.open) guideDialog.close();
 
     let keepScroll = false;
-    if (section === 'gabay-aralin') {
+    if (section !== 'lakbay-aralin') lkHide();
+    if (section === 'lakbay-aralin') {
+      lkRoute(id, sub);
+    } else if (section === 'gabay-aralin') {
       const wasHidden = showView('view-gabay');
       keepScroll = !wasHidden;
       document.title = 'Gabay Aralin — Kuwenturo';
