@@ -409,7 +409,7 @@
     if (location.hash !== back && location.hash.startsWith('#/gabay-aralin')) location.replace(back);
   });
 
-  // ---------- Tulong Aralin (Figma 4553:11578, 4879:2240, 4879:11109) ----------
+  // ---------- Tulong Aralin (Figma 4553:11578, 4879:2240, 4879:11109; flow 4904:9914, 4904:10273) ----------
   // Plan: date -> story id, kept in this browser. It starts empty, as in the frames.
   const TULONG_STREETS = [
     { slug: 'masipag', tone: 'green', name: 'Masipag Street' },
@@ -418,9 +418,16 @@
   ];
   const DAY_TONES = ['green', 'yellow', 'red', 'blue', 'orange'];
   const MONTHS_SHORT = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  const tulong = { street: 0, weekStart: new Date(FIRST_WEEK) };
+  // Only the current day can be planned. On a weekend that is the coming Monday.
+  const activeDay = () => {
+    const now = new Date();
+    const toMonday = { 6: 2, 0: 1 }[now.getDay()] || 0;
+    return addDays(now, toMonday);
+  };
+  const weekOf = (d) => addDays(d, 1 - d.getDay());
+  const tulong = { street: 0, weekStart: weekOf(activeDay()) };
   const planDialog = $('plan-dialog');
-  let planTarget = null; // { date } when choosing a story, { story } when choosing a day
+  let planDate = null; // the day the pop-up is open for
   let plan = {};
   try { plan = JSON.parse(storage.get('kuwenturo.plan')) || {}; } catch { /* ignore bad data */ }
   Object.keys(plan).forEach((d) => { if (!LESSONS[plan[d]]) delete plan[d]; });
@@ -431,26 +438,29 @@
 
   function renderDayCards() {
     $('tulong-week-label').textContent = weekLabel(tulong.weekStart);
+    const activeDate = isoDate(activeDay());
     $('day-cards').innerHTML = DAY_TONES.map((tone, n) => {
       const day = addDays(tulong.weekStart, n);
       const date = isoDate(day);
       const name = dayName(date);
       const l = LESSONS[plan[date]];
-      const body = l
-        ? `<div class="day-story">
-            <p class="day-story-title">${l.title}</p>
-            <p class="day-story-street">${l.street}</p>
-            <div class="day-actions">
-              <button type="button" class="day-btn" data-plan-day="${date}" aria-label="Palitan ang kuwento sa ${name}">Palitan</button>
-              <button type="button" class="day-btn" data-plan-remove="${date}" aria-label="Alisin ang kuwento sa ${name}">Alisin</button>
-            </div>
-          </div>`
-        : `<button type="button" class="day-add" data-plan-day="${date}" aria-label="Add Story sa ${name}">
+      const isToday = date === activeDate;
+      const story = l && `
+            <span class="day-story-title">${l.title}</span>
+            <span class="day-story-topic"><img src="assets/icon-star.svg" alt="">${l.topic}</span>`;
+      let body;
+      if (l && isToday) {
+        body = `<button type="button" class="day-story" data-plan-day="${date}" aria-label="Palitan o alisin ang kuwento sa ${name}: ${l.title}">${story}</button>`;
+      } else if (l) {
+        body = `<p class="day-story">${story}</p>`;
+      } else {
+        body = `<button type="button" class="day-add" ${isToday ? `data-plan-day="${date}"` : 'disabled'} aria-label="Add Story sa ${name}">
             <span class="day-plus" aria-hidden="true">+</span>
             <span>Add Story</span>
           </button>`;
+      }
       return `
-      <li class="day-card day-${tone}">
+      <li class="day-card day-${tone}${isToday ? ' is-today' : ''}"${isToday ? ' aria-current="date"' : ''}>
         <h2 class="day-name">${DAYS[day.getDay()]}</h2>
         <p class="day-date"><span>${MONTHS_SHORT[day.getMonth()]}</span>${day.getDate()}</p>
         ${body}
@@ -483,27 +493,18 @@
     renderDayCards();
   }
 
-  function openPlan(target) {
-    planTarget = target;
-    const current = target.date && plan[target.date];
-    $('plan-title').textContent = target.date ? (current ? 'Palitan ang kuwento' : 'Pumili ng kuwento') : 'Pumili ng araw';
-    $('plan-legend').textContent = target.date ? 'Pumili ng kuwento' : 'Pumili ng araw';
-    $('plan-desc').textContent = target.date
-      ? `${dayName(target.date)}${current ? ` — kasalukuyan: ${LESSONS[current].title}` : ''}`
-      : LESSONS[target.story].title;
+  function openPlan(date) {
+    planDate = date;
+    const current = plan[date];
+    $('plan-title').textContent = current ? 'Palitan ang kuwento' : 'Pumili ng kuwento';
+    $('plan-desc').textContent = `${dayName(date)}${current ? ` — kasalukuyan: ${LESSONS[current].title}` : ''}`;
     $('plan-submit').textContent = current ? 'Palitan' : 'Idagdag';
     $('plan-remove').hidden = !current;
     $('plan-list').querySelectorAll('label').forEach((el) => el.remove());
-    const options = target.date
-      ? Object.entries(LESSONS).map(([id, l]) => [id, l.title, `${l.street}${l.topic ? ` · ${l.topic}` : ''}`])
-      : DAY_TONES.map((tone, n) => {
-        const date = isoDate(addDays(tulong.weekStart, n));
-        return [date, dayName(date), plan[date] ? LESSONS[plan[date]].title : 'Wala pang kuwento'];
-      });
-    $('plan-list').insertAdjacentHTML('beforeend', options.map(([value, label, note]) => `
+    $('plan-list').insertAdjacentHTML('beforeend', Object.entries(LESSONS).map(([id, l]) => `
       <label class="swap-option">
-        <input type="radio" name="plan" value="${value}"${value === current ? ' checked' : ''}>
-        <span>${label}<small>${note}</small></span>
+        <input type="radio" name="plan" value="${id}"${id === current ? ' checked' : ''}>
+        <span>${l.title}<small>${l.street}${l.topic ? ` · ${l.topic}` : ''}</small></span>
       </label>`).join(''));
     $('plan-submit').disabled = !current;
     planDialog.showModal();
@@ -523,30 +524,31 @@
   }
 
   $('day-cards').addEventListener('click', (event) => {
-    const change = event.target.closest('[data-plan-day]');
-    const remove = event.target.closest('[data-plan-remove]');
-    if (change) openPlan({ date: change.dataset.planDay });
-    if (remove) removeDay(remove.dataset.planRemove);
+    const button = event.target.closest('[data-plan-day]');
+    if (button) openPlan(button.dataset.planDay);
   });
+  // Piliin puts the story on the current day, whichever week is showing
   $('story-cards').addEventListener('click', (event) => {
     const button = event.target.closest('[data-plan-story]');
-    if (button) openPlan({ story: button.dataset.planStory });
+    if (!button) return;
+    const day = activeDay();
+    const id = button.dataset.planStory;
+    tulong.weekStart = weekOf(day);
+    saveDay(isoDate(day), id);
+    announce(`${dayName(isoDate(day))}: ${LESSONS[id].title}`);
   });
   $('plan-list').addEventListener('change', () => { $('plan-submit').disabled = false; });
   $('plan-remove').addEventListener('click', () => {
-    const { date } = planTarget;
     planDialog.close();
-    removeDay(date);
+    removeDay(planDate);
   });
   $('plan-form').addEventListener('submit', (event) => {
     event.preventDefault();
-    const chosen = $('plan-form').querySelector('input[name="plan"]:checked').value;
-    const date = planTarget.date || chosen;
-    const id = planTarget.story || chosen;
+    const id = $('plan-form').querySelector('input[name="plan"]:checked').value;
     planDialog.close();
-    saveDay(date, id);
-    if (planTarget.date) focusDay(date);
-    announce(`${dayName(date)}: ${LESSONS[id].title}`);
+    saveDay(planDate, id);
+    focusDay(planDate);
+    announce(`${dayName(planDate)}: ${LESSONS[id].title}`);
   });
 
   $('tulong-week-prev').addEventListener('click', () => { tulong.weekStart = addDays(tulong.weekStart, -7); renderDayCards(); });
@@ -603,6 +605,7 @@
       const wasHidden = showView('view-tulong');
       keepScroll = !wasHidden;
       document.title = 'Tulong Aralin — Kuwenturo';
+      if (wasHidden) tulong.weekStart = weekOf(activeDay());
       tulong.street = Math.max(0, TULONG_STREETS.findIndex((s) => s.slug === id));
       renderDayCards();
       renderStoryCards();
