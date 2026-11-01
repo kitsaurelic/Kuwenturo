@@ -272,6 +272,53 @@
           </section>
         </div>
 
+        <!-- Guro Konek view (Figma 4557:12327) -->
+        <div class="content guro" id="view-guro" hidden>
+          <header class="gabay-head">
+            <h1 class="gabay-title" id="guro-title" tabindex="-1">Guro Konek</h1>
+            <p class="gabay-sub">Makipag-ugnayan sa mga magulang ukol sa obserbasyon ng bata.</p>
+          </header>
+
+          <!-- Figma 4557:12499: the file has one section, so both arrows stay disabled -->
+          <div class="week-nav tulong-week">
+            <button type="button" class="week-arrow week-prev" disabled>
+              <img src="assets/chevron.svg" width="24" height="24" alt="">
+              <span class="sr-only">Nakaraang seksyon</span>
+            </button>
+            <p class="week-label">Sampaguita</p>
+            <button type="button" class="week-arrow week-next" disabled>
+              <img src="assets/chevron.svg" width="24" height="24" alt="">
+              <span class="sr-only">Susunod na seksyon</span>
+            </button>
+          </div>
+
+          <!-- Figma 4879:11961 -->
+          <ul class="obs-cards" id="obs-cards" tabindex="0" aria-label="Mga obserbasyon ng magulang"></ul>
+
+          <!-- Figma 4557:12510 REPLY CARD -->
+          <section class="tugon-panel" aria-labelledby="tugon-heading">
+            <h2 class="tugon-sign" id="tugon-heading">
+              <img src="assets/tugon-sign.png" width="323" height="90" alt="Iyong Tugon">
+            </h2>
+            <form class="tugon-form" id="tugon-form" novalidate>
+              <div class="tugon-field">
+                <p class="tugon-target" id="tugon-target" hidden>
+                  <span id="tugon-target-text"></span>
+                  <button type="button" class="tugon-target-clear" id="tugon-target-clear" aria-label="Huwag nang tumugon sa obserbasyong ito">×</button>
+                </p>
+                <label class="sr-only" for="tugon-text">Iyong tugon</label>
+                <textarea id="tugon-text" maxlength="500" placeholder="Type here" aria-describedby="tugon-count tugon-error"></textarea>
+                <div class="tugon-foot">
+                  <span class="tugon-count" id="tugon-count">0/500</span>
+                  <span id="tugon-send"></span>
+                </div>
+              </div>
+              <p class="tugon-error" id="tugon-error" role="alert"></p>
+            </form>
+            <img class="tugon-teacher" src="assets/tugon-teacher.png" width="316" height="347" alt="">
+          </section>
+        </div>
+
         <!-- Section and lesson pages -->
         <div class="content" id="view-page" hidden>
           <article class="page-card">

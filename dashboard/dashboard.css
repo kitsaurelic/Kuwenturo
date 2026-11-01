@@ -749,6 +749,93 @@ button.day-story:hover { background: rgba(255, 255, 255, .35); }
   .day-name { font-size: 20px; left: 13px; }
 }
 
+/* ---------- Guro Konek (Figma 4557:12327) ---------- */
+.story-blue   { --tone: #2478FF; --edge: #0A4B95; --fade: #2478FF; }
+.story-orange { --tone: #F37F2F; --edge: #A24200; --fade: #F37F2F; }
+.pill-blue   { background: linear-gradient(90deg, #2478FF, #0A4B95); }
+.pill-orange { background: linear-gradient(90deg, #D9640F, #A24200); }
+
+/* Five 243px cards are wider than the page, so the row scrolls sideways as in the frame */
+.obs-cards {
+  display: flex; gap: 24px; margin: 17px -24px 0 -4px; padding: 4px 24px 12px 4px; list-style: none;
+  overflow-x: auto; scrollbar-width: thin; scroll-snap-type: x proximity; scroll-padding-left: 4px;
+}
+.obs-cards:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.obs-card {
+  flex: none; display: flex; flex-direction: column; width: 243px; min-height: 338px;
+  background: var(--tone); border: 4px solid #fff; border-radius: 13px;
+  box-shadow: 3px 4px 0 var(--edge); scroll-snap-align: start;
+}
+.obs-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+.obs-card.is-target { outline: 3px solid var(--navy); outline-offset: 1px; }
+.obs-head { margin: 0; padding: 3px 0 4px; text-align: center; font-size: 20px; line-height: 25px; font-weight: 700; color: #FFFBF4; }
+.story-yellow .obs-head, .story-orange .obs-head { color: var(--navy); } /* cream is 1.6:1 on yellow, 2.4:1 on orange */
+.obs-body {
+  flex: 1; display: flex; flex-direction: column; margin: 0 -4px -4px; padding: 18px 26px 12px;
+  background: linear-gradient(170deg, #FFF8E9 30%, var(--fade) 150%);
+  border: 4px solid #fff; border-radius: 13px;
+}
+.obs-people { font-size: 13px; line-height: 15px; color: var(--caption); }
+.obs-title { margin-top: 5px; font-size: 16px; line-height: 15px; font-weight: 700; }
+.obs-date { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; line-height: 16px; }
+.obs-date img { width: 12px; height: 12px; }
+.obs-label { margin-top: 8px; font-size: 13px; line-height: 15px; color: var(--caption); }
+.obs-text { flex: 1; margin-top: 2px; font-size: 13px; line-height: 15px; font-weight: 700; overflow-wrap: anywhere; }
+.obs-text.is-sent { max-height: 92px; overflow-y: auto; white-space: pre-line; }
+.obs-text.is-sent:focus-visible { outline: 2px solid var(--focus); }
+.obs-actions { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.obs-card .pill { flex: none; width: 84px; height: 27px; }
+button.pill:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.tugon-panel {
+  position: relative; margin-top: 26px; padding: 70px 37px 24px;
+  background: linear-gradient(90deg, #FFF4C0, #fff 50%, #FFF4C0);
+  border: 4px solid #fff; border-radius: 13px;
+  box-shadow: inset 0 34px 0 var(--navy), 3px 4px 0 var(--navy);
+}
+.tugon-sign { position: absolute; top: -39px; left: 98px; margin: 0; }
+.tugon-sign img { display: block; width: 323px; height: auto; }
+.tugon-form { width: 453px; max-width: 100%; }
+.tugon-field {
+  display: flex; flex-direction: column; gap: 6px; min-height: 224px; padding: 14px 16px 12px;
+  background: #E6E6E6; border: 1px solid #727272; border-radius: 13px; /* frame #D9D9D9 had no visible edge */
+}
+.tugon-field:focus-within { outline: 3px solid var(--focus); outline-offset: 1px; }
+.tugon-field:has([aria-invalid="true"]) { border: 2px solid var(--color-main-red); }
+.tugon-target { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; line-height: 1.2; font-weight: 700; }
+.tugon-target[hidden] { display: none; }
+.tugon-target-clear {
+  flex: none; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%;
+  background: #FFFBF4; color: var(--navy); font-size: 18px; line-height: 1; cursor: pointer;
+}
+.tugon-target-clear:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+#tugon-text {
+  flex: 1; width: 100%; min-height: 120px; padding: 0; border: 0; outline: 0; resize: none; background: none;
+  color: var(--navy); font: inherit; font-size: 16px; line-height: 1.4;
+}
+#tugon-text::placeholder { color: var(--caption); opacity: 1; } /* frame #727272 is 3.8:1 on the field */
+.tugon-foot { position: relative; display: flex; align-items: center; justify-content: center; min-height: 27px; }
+.tugon-count { position: absolute; left: 0; font-size: 13px; color: var(--caption); }
+#tugon-send .pill { width: 84px; height: 27px; }
+.tugon-error { margin-top: 6px; color: var(--color-main-red); font-size: 14px; font-weight: 700; }
+.tugon-error:empty { display: none; }
+.tugon-teacher { position: absolute; right: 54px; bottom: 15px; width: 316px; height: auto; pointer-events: none; }
+
+@media (max-width: 1199px) {
+  .tugon-teacher { right: 8px; width: 240px; }
+}
+@media (max-width: 1023px) {
+  .obs-cards { margin-right: -24px; }
+  .tugon-teacher { display: none; }
+  .tugon-form { width: 100%; }
+}
+@media (max-width: 640px) {
+  .obs-cards { margin: 20px -16px 0 -4px; padding-right: 16px; }
+  .tugon-panel { padding: 62px 12px 16px; }
+  .tugon-sign { left: 50%; translate: -50% 0; width: min(280px, calc(100% - 16px)); }
+  .tugon-sign img { width: 100%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
 }

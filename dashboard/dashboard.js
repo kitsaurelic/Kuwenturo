@@ -563,8 +563,148 @@
   $('street-prev').addEventListener('click', () => stepStreet(-1));
   $('street-next').addEventListener('click', () => stepStreet(1));
 
-  // ---------- Routing (#/, #/gabay-aralin, #/tulong-aralin, #/aralin/<id>) ----------
-  const VIEWS = ['view-dashboard', 'view-gabay', 'view-tulong', 'view-page'];
+  // ---------- Guro Konek (Figma 4557:12327) ----------
+  // Sent replies and Salamat marks are kept in this browser; there is no back end yet.
+  const OBSERVATIONS = [
+    { id: 'juan', tone: 'green', student: 'Juan Dela Cruz', parent: 'Marisol Dela Cruz', story: 'ang-pamilyang-puno-ng-pagmamahal', text: 'Minsan po ay nahihirapan siyang intindihin ang mga salitang hindi niya pamilyar. Mas naiintindihan niya kapag ipinapaliwanag ko ito gamit ang mga simpleng halimbawa.' },
+    { id: 'joan', tone: 'yellow', student: 'Joan Santos', parent: 'Jose Santos', story: 'ang-kaniyang-munting-ngiti', text: 'Nagbasa po kami ng kuwento kagabi. Nahihirapan pa siyang alalahanin ang pagkakasunod-sunod ng mga pangyayari, kaya tinulungan ko siyang balikan ang mga larawan.' },
+    { id: 'beth', tone: 'red', student: 'Beth De Leon', parent: 'Ricardo De Leon', story: 'sa-likod-ng-kompyuter', text: 'Kaya na po niyang ikuwento ang mga nangyari sa binasa namin gamit ang sarili niyang mga salita.' },
+    { id: 'jun', tone: 'blue', student: 'Jun Perez', parent: 'Celia Perez', story: 'ang-timpla-ng-taho', text: 'Napansin kong mas nakakapagpokus siya kapag maikli ang babasahin at may mga larawan.' },
+    { id: 'bong', tone: 'orange', student: 'Bong Maligaya', parent: 'Danilo Maligaya', story: 'ang-piraso-ng-biyaya', text: 'Kailangan pa po niya ng kaunting gabay sa pagtukoy ng problema at solusyon sa kuwento.' },
+  ];
+  const OBSERVATION_DATE = 'Marso 1, 2026';
+  const findObservation = (id) => OBSERVATIONS.find((o) => o.id === id);
+  const readList = (key) => {
+    try {
+      const list = JSON.parse(storage.get(key));
+      return Array.isArray(list) ? list : [];
+    } catch { return []; }
+  };
+  let sentReplies = readList('kuwenturo.tugon').filter((r) => r && typeof r.text === 'string' && r.text.trim() && typeof r.date === 'string');
+  let thanked = readList('kuwenturo.salamat').filter(findObservation);
+  let replyTarget = null; // the observation being answered, or null for a message to the teacher
+
+  function infoCard({ id, tone, head, people, title, date, label, text, sent, actions }) {
+    return `
+      <li class="obs-card story-${tone}${id === replyTarget ? ' is-target' : ''}"${sent ? ` data-sent="${sent}" tabindex="-1"` : ''}>
+        <h2 class="obs-head">${head}</h2>
+        <div class="obs-body">
+          <p class="obs-people">${people.join('<br>')}</p>
+          <p class="obs-title">${title}</p>
+          <p class="obs-date"><img src="assets/icon-time.svg" alt="">${date}</p>
+          <p class="obs-label">${label}</p>
+          <p class="obs-text${sent ? ' is-sent' : ''}"${sent ? ' tabindex="0"' : ''}>${text}</p>
+          <div class="obs-actions">${actions}</div>
+        </div>
+      </li>`;
+  }
+
+  function renderObsCards() {
+    const replies = sentReplies.map((r) => {
+      const o = findObservation(r.to);
+      return infoCard({
+        tone: o ? o.tone : 'green',
+        head: 'Iyong Tugon',
+        people: o ? [`Estudyante: ${o.student}`, `Magulang: ${o.parent}`] : ['Para sa: Guro'],
+        title: o ? LESSONS[o.story].title : 'Mensahe sa Guro',
+        date: r.date,
+        label: 'Iyong tugon',
+        text: escapeHtml(r.text),
+        sent: escapeHtml(r.id),
+        actions: pill({ tone: 'light', label: 'Alisin', name: `Alisin ang tugon: ${r.text.slice(0, 40)}`, gloss: 'light', attrs: `data-tugon-remove="${escapeHtml(r.id)}"` }),
+      });
+    });
+    const observations = OBSERVATIONS.map((o) => {
+      const done = thanked.includes(o.id);
+      return infoCard({
+        ...o,
+        head: 'Naging Obserbasyon',
+        people: [`Estudyante: ${o.student}`, `Magulang: ${o.parent}`],
+        title: LESSONS[o.story].title,
+        date: OBSERVATION_DATE,
+        label: 'Obserbasyon',
+        actions: pill({ tone: 'light', label: 'Tumugon', name: `Tumugon kay ${o.parent}`, gloss: 'light', attrs: `data-tugon-to="${o.id}"` })
+          + pill({ tone: o.tone, label: done ? '✓ Salamat' : 'Salamat', name: `Pasalamatan si ${o.parent}`, attrs: `data-salamat="${o.id}" aria-pressed="${done}"` }),
+      });
+    });
+    $('obs-cards').innerHTML = [...replies, ...observations].join('');
+  }
+
+  function setReplyTarget(id) {
+    replyTarget = id;
+    const o = findObservation(id);
+    $('tugon-target').hidden = !o;
+    $('tugon-target-text').textContent = o ? `Tumutugon kay ${o.parent} (${o.student})` : '';
+    renderObsCards();
+  }
+
+  function clearTugonError() {
+    $('tugon-error').textContent = '';
+    $('tugon-text').removeAttribute('aria-invalid');
+  }
+
+  function sendTugon() {
+    const text = $('tugon-text').value.trim();
+    if (!text) {
+      $('tugon-error').textContent = 'Mag-type muna ng mensahe bago ipadala.';
+      $('tugon-text').setAttribute('aria-invalid', 'true');
+      $('tugon-text').focus();
+      return;
+    }
+    const now = new Date();
+    const id = `tugon-${now.getTime()}-${sentReplies.length}`;
+    sentReplies.unshift({ id, text, to: replyTarget, date: `${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}` });
+    storage.set('kuwenturo.tugon', JSON.stringify(sentReplies));
+    $('tugon-text').value = '';
+    $('tugon-count').textContent = '0/500';
+    clearTugonError();
+    setReplyTarget(null);
+    $('obs-cards').scrollLeft = 0;
+    $('obs-cards').querySelector(`[data-sent="${id}"]`).focus({ preventScroll: true });
+    announce('Naipadala ang iyong tugon.');
+  }
+
+  $('tugon-send').innerHTML = pill({ tone: 'navy', label: 'Ipadala', name: 'Ipadala ang tugon', gloss: 'navy', attrs: 'data-tugon-send' });
+  $('tugon-send').addEventListener('click', sendTugon);
+  $('tugon-form').addEventListener('submit', (event) => event.preventDefault());
+  $('tugon-text').addEventListener('input', () => {
+    $('tugon-count').textContent = `${$('tugon-text').value.length}/500`;
+    clearTugonError();
+  });
+  $('tugon-text').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) sendTugon();
+  });
+  $('tugon-target-clear').addEventListener('click', () => {
+    setReplyTarget(null);
+    $('tugon-text').focus();
+  });
+  $('obs-cards').addEventListener('click', (event) => {
+    const reply = event.target.closest('[data-tugon-to]');
+    const thanks = event.target.closest('[data-salamat]');
+    const remove = event.target.closest('[data-tugon-remove]');
+    if (reply) {
+      setReplyTarget(reply.dataset.tugonTo);
+      $('tugon-text').focus();
+    } else if (thanks) {
+      const id = thanks.dataset.salamat;
+      const scroll = $('obs-cards').scrollLeft;
+      thanked = thanked.includes(id) ? thanked.filter((t) => t !== id) : [...thanked, id];
+      storage.set('kuwenturo.salamat', JSON.stringify(thanked));
+      renderObsCards();
+      $('obs-cards').scrollLeft = scroll;
+      $('obs-cards').querySelector(`[data-salamat="${id}"]`).focus({ preventScroll: true });
+      if (thanked.includes(id)) announce(`Napasalamatan si ${findObservation(id).parent}.`);
+    } else if (remove) {
+      sentReplies = sentReplies.filter((r) => r.id !== remove.dataset.tugonRemove);
+      storage.set('kuwenturo.tugon', JSON.stringify(sentReplies));
+      renderObsCards();
+      $('tugon-text').focus({ preventScroll: true });
+      announce('Inalis ang tugon.');
+    }
+  });
+
+  // ---------- Routing (#/, #/gabay-aralin, #/tulong-aralin, #/guro-konek, #/aralin/<id>) ----------
+  const VIEWS = ['view-dashboard', 'view-gabay', 'view-tulong', 'view-guro', 'view-page'];
   function showView(viewId) {
     const wasHidden = $(viewId).hidden;
     VIEWS.forEach((v) => { $(v).hidden = v !== viewId; });
@@ -610,6 +750,13 @@
       renderDayCards();
       renderStoryCards();
       if (wasHidden) $('tulong-title').focus();
+    } else if (section === 'guro-konek') {
+      const wasHidden = showView('view-guro');
+      document.title = 'Guro Konek — Kuwenturo';
+      if (wasHidden) {
+        renderObsCards();
+        $('guro-title').focus();
+      }
     } else if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
     } else if (section === 'aralin' && LESSONS[id]) {
