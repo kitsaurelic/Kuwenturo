@@ -279,14 +279,14 @@
             <p class="gabay-sub">Makipag-ugnayan sa mga magulang ukol sa obserbasyon ng bata.</p>
           </header>
 
-          <!-- Figma 4557:12499: the file has one section, so both arrows stay disabled -->
+          <!-- Figma 4557:12499; the sections come from the profile step, Figma 4937:7133 -->
           <div class="week-nav tulong-week">
-            <button type="button" class="week-arrow week-prev" disabled>
+            <button type="button" class="week-arrow week-prev" id="section-prev">
               <img src="assets/chevron.svg" width="24" height="24" alt="">
               <span class="sr-only">Nakaraang seksyon</span>
             </button>
-            <p class="week-label">Sampaguita</p>
-            <button type="button" class="week-arrow week-next" disabled>
+            <p class="week-label" id="section-label" aria-live="polite"></p>
+            <button type="button" class="week-arrow week-next" id="section-next">
               <img src="assets/chevron.svg" width="24" height="24" alt="">
               <span class="sr-only">Susunod na seksyon</span>
             </button>

@@ -565,6 +565,9 @@
 
   // ---------- Guro Konek (Figma 4557:12327) ----------
   // Sent replies and Salamat marks are kept in this browser; there is no back end yet.
+  // The frames give observations for Sampaguita only, so the other sections start empty.
+  const GURO_SECTIONS = ['Rosal', 'Ilang-Ilang', 'Gumamela', 'Kalachuchi', 'Waling-Waling', 'Sampaguita'];
+  const OBSERVED_SECTION = 'Sampaguita';
   const OBSERVATIONS = [
     { id: 'juan', tone: 'green', student: 'Juan Dela Cruz', parent: 'Marisol Dela Cruz', story: 'ang-pamilyang-puno-ng-pagmamahal', text: 'Minsan po ay nahihirapan siyang intindihin ang mga salitang hindi niya pamilyar. Mas naiintindihan niya kapag ipinapaliwanag ko ito gamit ang mga simpleng halimbawa.' },
     { id: 'joan', tone: 'yellow', student: 'Joan Santos', parent: 'Jose Santos', story: 'ang-kaniyang-munting-ngiti', text: 'Nagbasa po kami ng kuwento kagabi. Nahihirapan pa siyang alalahanin ang pagkakasunod-sunod ng mga pangyayari, kaya tinulungan ko siyang balikan ang mga larawan.' },
@@ -583,6 +586,11 @@
   let sentReplies = readList('kuwenturo.tugon').filter((r) => r && typeof r.text === 'string' && r.text.trim() && typeof r.date === 'string');
   let thanked = readList('kuwenturo.salamat').filter(findObservation);
   let replyTarget = null; // the observation being answered, or null for a message to the teacher
+  let guroSection = GURO_SECTIONS.indexOf(OBSERVED_SECTION);
+  try {
+    const chosen = GURO_SECTIONS.indexOf(JSON.parse(storage.get('kuwenturo.profile')).section);
+    if (chosen >= 0) guroSection = chosen; // the section picked in the profile steps
+  } catch { /* no saved profile */ }
 
   function infoCard({ id, tone, head, people, title, date, label, text, sent, actions }) {
     return `
@@ -600,7 +608,9 @@
   }
 
   function renderObsCards() {
-    const replies = sentReplies.map((r) => {
+    const section = GURO_SECTIONS[guroSection];
+    $('section-label').textContent = section;
+    const replies = sentReplies.filter((r) => (r.section || OBSERVED_SECTION) === section).map((r) => {
       const o = findObservation(r.to);
       return infoCard({
         tone: o ? o.tone : 'green',
@@ -614,7 +624,7 @@
         actions: pill({ tone: 'light', label: 'Alisin', name: `Alisin ang tugon: ${r.text.slice(0, 40)}`, gloss: 'light', attrs: `data-tugon-remove="${escapeHtml(r.id)}"` }),
       });
     });
-    const observations = OBSERVATIONS.map((o) => {
+    const observations = (section === OBSERVED_SECTION ? OBSERVATIONS : []).map((o) => {
       const done = thanked.includes(o.id);
       return infoCard({
         ...o,
@@ -627,7 +637,8 @@
           + pill({ tone: o.tone, label: done ? '✓ Salamat' : 'Salamat', name: `Pasalamatan si ${o.parent}`, attrs: `data-salamat="${o.id}" aria-pressed="${done}"` }),
       });
     });
-    $('obs-cards').innerHTML = [...replies, ...observations].join('');
+    const empty = replies.length + observations.length ? [] : [`<li class="obs-empty">Wala pang obserbasyon sa ${section}.</li>`];
+    $('obs-cards').innerHTML = [...replies, ...observations, ...empty].join('');
   }
 
   function setReplyTarget(id) {
@@ -653,7 +664,7 @@
     }
     const now = new Date();
     const id = `tugon-${now.getTime()}-${sentReplies.length}`;
-    sentReplies.unshift({ id, text, to: replyTarget, date: `${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}` });
+    sentReplies.unshift({ id, text, to: replyTarget, section: GURO_SECTIONS[guroSection], date: `${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}` });
     storage.set('kuwenturo.tugon', JSON.stringify(sentReplies));
     $('tugon-text').value = '';
     $('tugon-count').textContent = '0/500';
@@ -663,6 +674,16 @@
     $('obs-cards').querySelector(`[data-sent="${id}"]`).focus({ preventScroll: true });
     announce('Naipadala ang iyong tugon.');
   }
+
+  // The arrows cycle through the sections
+  function stepSection(step) {
+    guroSection = (guroSection + step + GURO_SECTIONS.length) % GURO_SECTIONS.length;
+    clearTugonError();
+    setReplyTarget(null);
+    $('obs-cards').scrollLeft = 0;
+  }
+  $('section-prev').addEventListener('click', () => stepSection(-1));
+  $('section-next').addEventListener('click', () => stepSection(1));
 
   $('tugon-send').innerHTML = pill({ tone: 'navy', label: 'Ipadala', name: 'Ipadala ang tugon', gloss: 'navy', attrs: 'data-tugon-send' });
   $('tugon-send').addEventListener('click', sendTugon);

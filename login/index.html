@@ -3,71 +3,143 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sign in — Kuwenturo</title>
+  <title>Log in — Kuwenturo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fredoka+One&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../design-system/tokens.css">
   <link rel="stylesheet" href="login.css">
 </head>
 <body>
-  <!-- Figma 4582:748: the street scene fills the page (scene.jpg is the frame exported at 2x without the wash, logo and form); a white wash (Rectangle 4244) fades in behind the form -->
+  <!-- Figma 4937:3056: the street scene fills the page; a navy wash (Rectangle 4244) fades in from the right -->
   <div class="scene" aria-hidden="true">
     <div class="scene-stage">
-      <img class="scene-art" src="assets/scene.jpg" width="2400" height="1800" alt="">
+      <img class="scene-art" src="assets/scene.jpg" width="1200" height="900" alt="">
     </div>
   </div>
   <img class="logo" src="assets/logo.svg" width="87" height="45" alt="Kuwenturo">
 
-  <!-- Figma 4618:3546 -->
-  <main class="panel">
-    <div class="panel-inner">
-      <h1 class="title">Welcome back</h1>
+  <main>
+    <!-- Log in (Figma 4937:3995) -->
+    <div class="panel" id="view-login" hidden>
+      <div class="panel-inner">
+        <h1 class="title" id="login-title" tabindex="-1">Maligayang Pagbabalik!</h1>
 
-      <button type="button" class="btn btn-google" id="google-signin">
-        <img src="assets/google.svg" width="14" height="15" alt="" class="google-icon">
-        Continue with Google
-      </button>
+        <button type="button" class="btn btn-google" id="google-signin">
+          <img src="assets/google.svg" width="14" height="15" alt="" class="google-icon">
+          Continue with Google
+        </button>
 
-      <div class="divider" role="separator" aria-label="or use your email">
-        <span aria-hidden="true">or use your email</span>
+        <div class="divider" role="separator" aria-label="or use your email">
+          <span aria-hidden="true">or use your email</span>
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email"
+                   placeholder="name@work-email.com" required aria-describedby="email-error">
+            <p class="error" id="email-error"></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="password">Password</label>
+              <button type="button" class="link" data-open="forgot-dialog">Forgot password?</button>
+            </div>
+            <div class="password-wrap">
+              <input id="password" name="password" type="password" autocomplete="current-password"
+                     placeholder="At least 8 characters" required minlength="8"
+                     aria-describedby="password-error">
+              <button type="button" class="toggle-password" aria-controls="password" aria-label="Show password">Show</button>
+            </div>
+            <p class="error" id="password-error"></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+
+        <p class="signup">
+          No account yet?
+          <a class="link" href="#/sign-up">Create one</a>
+        </p>
       </div>
+    </div>
 
-      <form id="login-form" novalidate>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" inputmode="email"
-                 placeholder="name@work-email.com" required aria-describedby="email-error">
-          <p class="error" id="email-error"></p>
-        </div>
+    <!-- Create account (Figma 4937:4971) -->
+    <div class="panel" id="view-signup" hidden>
+      <div class="panel-inner">
+        <h1 class="sr-only" id="signup-title" tabindex="-1">Create your account</h1>
 
-        <div class="field">
-          <div class="label-row">
-            <label for="password">Password</label>
-            <button type="button" class="link" data-open="forgot-dialog">Forgot password?</button>
+        <form id="signup-form" novalidate>
+          <div class="field">
+            <label for="signup-name">Full name</label>
+            <input id="signup-name" type="text" autocomplete="name" required aria-describedby="signup-name-error">
+            <p class="error" id="signup-name-error"></p>
           </div>
-          <div class="password-wrap">
-            <input id="password" name="password" type="password" autocomplete="current-password"
-                   placeholder="At least 8 characters" required minlength="8"
-                   aria-describedby="password-error">
-            <button type="button" class="toggle-password" aria-controls="password" aria-label="Show password">Show</button>
+          <div class="field">
+            <label for="signup-email">Email</label>
+            <input id="signup-email" type="email" autocomplete="email" inputmode="email"
+                   placeholder="name@work-email.com" required aria-describedby="signup-email-error">
+            <p class="error" id="signup-email-error"></p>
           </div>
-          <p class="error" id="password-error"></p>
+          <div class="field">
+            <label for="signup-password">Password</label>
+            <div class="password-wrap">
+              <input id="signup-password" type="password" autocomplete="new-password"
+                     placeholder="At least 8 characters" required minlength="8" aria-describedby="signup-password-error">
+              <button type="button" class="toggle-password" aria-controls="signup-password" aria-label="Show password">Show</button>
+            </div>
+            <p class="error" id="signup-password-error"></p>
+          </div>
+          <div class="field">
+            <label for="signup-confirm">Confirm password</label>
+            <div class="password-wrap">
+              <input id="signup-confirm" type="password" autocomplete="new-password" required
+                     aria-describedby="signup-confirm-error">
+              <button type="button" class="toggle-password" aria-controls="signup-confirm" aria-label="Show password">Show</button>
+            </div>
+            <p class="error" id="signup-confirm-error"></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+
+        <p class="signup">
+          Already have an account?
+          <a class="link" href="#/">Log In</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Profile steps (Figma 4937:5018, 4937:6061, 4937:7133) -->
+    <div class="setup" id="view-setup" hidden>
+      <header class="setup-head">
+        <h1 class="setup-title" id="setup-title" tabindex="-1">Ihanda ang Iyong Paglalakbay!</h1>
+        <p class="setup-sub">Kumpletuhin ang iyong profile upang maiangkop namin ang Kuwenturo sa iyong pangangailangan.</p>
+      </header>
+
+      <section class="setup-panel" aria-labelledby="setup-prompt">
+        <div class="setup-bar">
+          <button type="button" class="setup-arrow" id="setup-prev" aria-label="Nakaraang hakbang">
+            <img src="../dashboard/assets/tulong-arrow-prev.png" width="77" height="82" alt="">
+          </button>
+          <img class="setup-sign" id="setup-sign" src="assets/setup-role.png" width="527" height="164" alt="">
+          <button type="button" class="setup-arrow" id="setup-next" aria-label="Susunod na hakbang">
+            <img src="../dashboard/assets/tulong-arrow-next.png" width="77" height="82" alt="">
+          </button>
         </div>
+        <h2 class="setup-prompt" id="setup-prompt"></h2>
+        <ul class="setup-choices" id="setup-choices"></ul>
+      </section>
 
-        <button type="submit" class="btn btn-primary">Sign in</button>
-      </form>
-
-      <p class="terms">By continuing, you agree to how Kuwenturo handles your information, as explained in our Terms of Use and Privacy Policy.</p>
-
-      <p class="signup">
-        No account yet?
-        <button type="button" class="link link-strong" data-open="signup-dialog">Create one</button>
-      </p>
-
-      <p class="sr-only" id="status" role="status" aria-live="polite"></p>
+      <ol class="setup-steps" id="setup-steps" aria-label="Mga hakbang">
+        <li></li><li></li><li></li>
+      </ol>
     </div>
   </main>
+
+  <p class="sr-only" id="status" role="status" aria-live="polite"></p>
 
   <!-- Forgot password -->
   <dialog id="forgot-dialog" class="dialog" aria-labelledby="forgot-title">
@@ -90,50 +162,7 @@
         <h2 class="dialog-title" tabindex="-1">Check your email</h2>
         <p class="subtitle">We sent a reset link to <strong data-email></strong>.</p>
         <div class="dialog-actions">
-          <button type="button" class="btn btn-primary" data-close>Back to sign in</button>
-        </div>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Create account -->
-  <dialog id="signup-dialog" class="dialog" aria-labelledby="signup-title">
-    <form id="signup-form" novalidate>
-      <div data-step="form">
-        <h2 id="signup-title" class="dialog-title">Create your account</h2>
-        <div class="field">
-          <label for="signup-name">Full name</label>
-          <input id="signup-name" type="text" autocomplete="name" required aria-describedby="signup-name-error">
-          <p class="error" id="signup-name-error"></p>
-        </div>
-        <div class="field">
-          <label for="signup-email">Email</label>
-          <input id="signup-email" type="email" autocomplete="email" inputmode="email"
-                 placeholder="name@work-email.com" required aria-describedby="signup-email-error">
-          <p class="error" id="signup-email-error"></p>
-        </div>
-        <div class="field">
-          <label for="signup-password">Password</label>
-          <input id="signup-password" type="password" autocomplete="new-password"
-                 placeholder="At least 8 characters" required minlength="8" aria-describedby="signup-password-error">
-          <p class="error" id="signup-password-error"></p>
-        </div>
-        <div class="field">
-          <label for="signup-confirm">Confirm password</label>
-          <input id="signup-confirm" type="password" autocomplete="new-password" required
-                 aria-describedby="signup-confirm-error">
-          <p class="error" id="signup-confirm-error"></p>
-        </div>
-        <div class="dialog-actions">
-          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
-          <button type="submit" class="btn btn-primary">Create account</button>
-        </div>
-      </div>
-      <div data-step="done" hidden>
-        <h2 class="dialog-title" tabindex="-1">Account created</h2>
-        <p class="subtitle">You can now sign in with <strong data-email></strong>.</p>
-        <div class="dialog-actions">
-          <button type="button" class="btn btn-primary" data-fill-login>Sign in</button>
+          <button type="button" class="btn btn-primary" data-close>Back to log in</button>
         </div>
       </div>
     </form>
