@@ -749,6 +749,7 @@
     'lk-saan': { x: 0, w: 1200, bg: [-93, -180, 1374, 1259] },
     'lk-street': { x: 0, w: 1200, bg: [-52, -52, 1289, 1117] },
     'lk-steps': { x: 0, w: 1200, bg: null },
+    'lk-bb': { x: 0, w: 1200, bg: [0, 0, 1200, 900] },
   };
   // Story cards and step signs built so far; other stories keep the "malapit na" page
   const LK_DETAIL = {
@@ -773,8 +774,14 @@
     const scene = $(lkScene);
     const stages = scene.querySelectorAll('.lk-stage');
     const bg = scene.querySelector('.lk-bg');
-    if (lkPhone.matches) {
-      stages.forEach((stage) => { stage.style.transform = ''; });
+    if (lkScene === 'lk-tall') {
+      const stageT = stages[0];
+      const sT = lkPhone.matches ? 0 : Math.min(scene.clientWidth / 1200, 1.4);
+      stageT.style.transform = sT ? `translateX(${(scene.clientWidth - 1200 * sT) / 2}px) scale(${sT})` : '';
+      $('bb-tall-size').style.height = sT ? `${3650 * sT}px` : '';
+      return;
+    }
+    if (lkPhone.matches) {      stages.forEach((stage) => { stage.style.transform = ''; });
       if (bg) bg.style.cssText = '';
       return;
     }
@@ -800,7 +807,7 @@
 
   function lkShow(sceneId) {
     const changed = lkScene !== sceneId;
-    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps'].forEach((id) => { $(id).hidden = id !== sceneId; });
+    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps', 'lk-bb', 'lk-tall'].forEach((id) => { $(id).hidden = id !== sceneId; });
     lkScene = sceneId;
     document.body.classList.add('lk-on');
     const full = sceneId !== 'lk-start';
@@ -860,6 +867,222 @@
       <img src="assets/lakbay/light-${s.light}.png" width="144" height="62" alt="">
     </a>`).join('');
 
+  // ---------- Lakbay: Bago Basahin (LAKBAY-INTERFACE 913:3399) ----------
+  // #/lakbay-aralin/kuwento/<id>/bago-basahin/<screen>; the arrows walk BB_ORDER, the X closes a pop-up
+  const BB_ORDER = ['simula', 'alam-1', 'panimula', 'alam-2', 'bokabularyo', 'tungkol-saan', 'hulaan', 'handa'];
+  const BB_TONES = {
+    red: { sign: ['#AF0414', '#E43D45', '#AF0414'], line: '#B42224' },
+    orange: { sign: ['#F36800', '#EF9163', '#F36800'], line: '#F36800' },
+    green: { sign: ['#136C39', '#29BF68', '#136C39'], line: '#136C39' },
+    blue: { sign: ['#0476BB', '#6EAFE5', '#0476BB'], line: '#0476BB' },
+    purple: { sign: ['#550868', '#9D4CB1', '#550868'], line: '#550868' },
+    navy: { sign: ['#001343', '#002581', '#001343'], line: '#001343' },
+  };
+  const BB_STORY = {
+    'ang-pamilyang-puno-ng-pagmamahal': {
+      misyon: 'Alamin na may iba’t ibang uri ng pamilya at tuklasin na ang pagmamahal, pag-aalaga, at pagtanggap ang mahalagang bumubuo sa isang pamilya.',
+      layunin: [
+        'Ang mga detalye ng kuwento na nagpapakita ng pagmamahal at pag-aalaga ng pamilya.',
+        'Ang aral ng kuwento tungkol sa pagtanggap at paggalang sa iba’t ibang uri ng pamilya.',
+        'Ang mga pangunahing tauhan, tagpuan, at mahahalagang pangyayari sa kuwento.',
+        'Ang pagkakasunod-sunod ng mahahalagang pangyayari mula simula, gitna, at wakas.',
+      ],
+      alam: 'Ang bawat bata ay may iba’t ibang uri ng pamilya at paraan ng pagmamahal',
+      panimula: 'Ano ang pagkakapareho ng lahat ng pamilya kahit iba-iba ang kanilang kasama sa bahay?',
+      salita: [
+        { slug: 'pamilya', button: 'PAMILYA', word: 'PAMILYA', tone: 'red', kahulugan: 'Mga taong nagmamahalan at nag-aalaga sa isa\'t isa.', kategorya: 'Pangngalan / Pangngalang Pambalana', halimbawa: 'Mahal ko ang aking pamilya.' },
+        { slug: 'barangay', button: 'BARANGAY', word: 'BARANGAY', tone: 'orange', kahulugan: 'Lugar kung saan nakatira ang mga tao at pamilya.', kategorya: 'Pangngalan / Pangngalang Pambalana', halimbawa: 'Nakatira kami sa isang barangay na malapit sa aming paaralan.' },
+        { slug: 'nagtataka', button: 'NAGTAKA', word: 'NAGTATAKA', tone: 'green', kahulugan: 'Nag-isip kung bakit o paano nangyari ang isang bagay / Gustong malaman ang isang bagay.', kategorya: 'Pandiwa', halimbawa: 'Nagtataka ako kung bakit hindi papasok sa paaralan ang aking kaibigan.' },
+        { slug: 'umiling', button: 'UMIILING', word: 'UMILING', tone: 'blue', kahulugan: 'Paggalaw ng ulo upang ipakita ang hindi pagpayag o hindi pagsang-ayon.', kategorya: 'Pandiwa', halimbawa: 'Umiiling si Biboy nang tanungin siya kung gusto niyang sumama.' },
+        { slug: 'naunawaan', button: 'NAUUNAWAAN', word: 'NAUNAWAAN', tone: 'purple', kahulugan: 'Naiintindihan ang isang bagay.', kategorya: 'Pandiwa', halimbawa: 'Nauunawaan ni Biboy ang kuwento dahil binasa niya itong mabuti.' },
+      ],
+      hulaan: {
+        tanong: 'Batay sa larawan, tungkol saan ang kwento?',
+        pagpipilian: [
+          { text: 'Matutuklasan ni Biboy na kahit iba ang pamilya ni Popoy, puno pa rin ito ng pagmamahal.', tama: true },
+          { text: 'Matutuklasan ni Biboy na kinakahiya ni Popoy ang kanyang pamilya.', tama: false },
+          { text: 'Matutuklasan ni Biboy na walang pamilyang nag-aalaga kay Popoy.', tama: false },
+        ],
+      },
+      handa: 'Nakarating na tayo sa bahay ni Popoy. Tara na’t basahin ang kuwentong naghihintay!',
+    },
+  };
+  const BB_ART = 'assets/lakbay/bago/';
+  const bbImg = (file, x, y, w, h, keep = '') => `<img class="bb-art ${keep}" src="${BB_ART}${file}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px" alt="">`;
+  const bbDash = (w, h, r, sw, gap, color = '#001343') => `<svg class="lk-dash" viewBox="0 0 ${w} ${h}" aria-hidden="true"><rect x="${sw / 2}" y="${sw / 2}" width="${w - sw}" height="${h - sw}" rx="${r}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-dasharray="${gap}"/></svg>`;
+  function bbPlate(x, y, w, h, fs, text) {
+    const r = h * 0.09;
+    return `<div class="lk-plate bb-plate" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:${r}px;font-size:${fs}px;line-height:${fs}px">
+      <span class="bb-dash" style="left:${h * 0.083}px;top:${h * 0.083}px;width:${w - h * 0.166}px;height:${h * 0.834}px">${bbDash(w - h * 0.166, h * 0.834, r * 0.95, h * 0.03, h * 0.14)}</span>
+      <p style="width:${w - h * 0.5}px">${text}</p></div>`;
+  }
+  function bbTitle(x, y, scale, fs, text, id = 'bb-title') {
+    return `<div class="lk-title bb-title" style="left:${x}px;top:${y}px;scale:${scale}">
+      <i class="lk-tab lk-tab-1"></i><i class="lk-tab lk-tab-2"></i>
+      <div class="lk-title-board"><h1 id="${id}" tabindex="-1" style="font-size:${fs}px">${text}</h1>
+      <svg class="lk-dash" viewBox="0 0 696.2 119.6" preserveAspectRatio="none" aria-hidden="true"><rect x="1.25" y="1.25" width="693.7" height="117.1" fill="none" stroke="#FFFBF4" stroke-width="2.5" stroke-dasharray="19.2"/></svg></div></div>`;
+  }
+  function bbCloseTab(href, x, y, label) {
+    return `<a class="lk-m-close bb-close" href="${href}" aria-label="${label}" style="left:${x}px;top:${y}px"><svg viewBox="0 0 75.3 54" aria-hidden="true"><defs><linearGradient id="bb-tab-red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#C9373C"/><stop offset="1" stop-color="#9D0A0A"/></linearGradient></defs><path d="M75.31 45.67V17.03C75.31 13.32 72.88 10.06 69.33 9L40.17.35C38.62-.11 36.97-.12 35.42.34L6 9.01C2.44 10.06 0 13.33 0 17.04V45.67C0 50.29 3.75 54.03 8.37 54.03H66.95C71.57 54.03 75.31 50.29 75.31 45.67Z" fill="url(#bb-tab-red)"/><g fill="none" stroke="#FFFBF4" stroke-width="3.1"><circle cx="37.6" cy="28" r="14"/><path d="M33 23.4l9.3 9.3M42.3 23.4l-9.3 9.3"/></g></svg></a>`;
+  }
+  function bbSign(x, y, w, h, tone, text, fs) {
+    const [a, b, c] = BB_TONES[tone].sign;
+    const id = `bb-sign-${tone}`;
+    const low = h * 0.684;
+    return `<div class="lk-m-sign bb-sign" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px">
+      <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="${id}"><stop stop-color="${a}"/><stop offset=".5" stop-color="${b}"/><stop offset="1" stop-color="${c}"/></linearGradient></defs>
+        <path d="M0 0H${w}V${low}L${w / 2} ${h}L0 ${low}Z" fill="url(#${id})"/>
+        <path d="M1.6 1.6H${w - 1.6}V${low - 1.5}L${w / 2} ${h - 1.6}L1.6 ${low - 1.5}Z" fill="none" stroke="#FFFBF4" stroke-width="3.14" stroke-dasharray="24"/>
+      </svg>
+      <h1 id="bb-card-title" tabindex="-1" style="font-size:${fs}px;line-height:${h * 0.68}px;padding-top:0">${text}</h1></div>`;
+  }
+  const bbTabs = (x, y, w1, tone) => {
+    const bg = `background:linear-gradient(0deg, ${BB_TONES[tone].sign.join(',')})`;
+    return `<i class="lk-tab bb-tab" style="left:${x}px;top:${y}px;width:${w1}px;height:${w1 * 0.8}px;${bg}"></i><i class="lk-tab bb-tab" style="left:${x + w1 * 0.75}px;top:${y + 4}px;width:${w1 * 0.54}px;height:${w1 * 0.83}px;${bg}"></i>`;
+  };
+  const bbPanel = (x, y, w, h, dx, dy, dw, dh, line) => `<div class="bb-panel" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><span class="bb-dash" style="left:${dx - x}px;top:${dy - y}px;width:${dw}px;height:${dh}px">${bbDash(dw, dh, 30, 5.2, 24, line)}</span></div>`;
+  const bbHead = (x, y, w) => `<img class="bb-head" src="assets/lakbay/k1-head.png" style="left:${x}px;top:${y}px;width:${w}px;height:${w * 0.714}px" alt="">`;
+
+  const bbState = { story: null, screen: null, picked: null };
+  const bbUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/bago-basahin/${screen}`;
+  const bbSteps = (id) => `#/lakbay-aralin/kuwento/${id}/hakbang`;
+
+  function bbScene(id, screen) {
+    const s = BB_STORY[id];
+    const alam = () => bbPlate(221, 175.3, 759, 112.3, 30, s.alam) + bbTitle(253.5, 41.1, 1, 75, 'ALAM MO BA?');
+    if (screen === 'alam-1' || screen === 'panimula') {
+      return { bg: ['bg-alam.jpg', [-27, -44, 1335, 950]], html: alam()
+        + bbImg('family1.png', 217, 327, 263, 415) + bbImg('nanay1.png', 732, 373, 220, 360)
+        + bbImg('biboy-think.png', 480, 371, 239, 437, 'bb-keep') + bbImg('jeep.png', 924, 290, 1647.5, 599.5) };
+    }
+    if (screen === 'alam-2') {
+      return { bg: ['bg-alam.jpg', [-27, -44, 1335, 950]], html: alam()
+        + bbImg('biboy-ride.png', 662, 276, 1853.5, 607) + bbImg('nanay2.png', 491, 385, 217.5, 360)
+        + bbImg('family2.png', 234, 327, 258, 417.5, 'bb-keep') };
+    }
+    if (screen === 'bokabularyo' || screen.startsWith('salita-')) {
+      const cols = s.salita.map((w, i) => `<a class="bb-word bb-t-${w.tone}" href="${bbUrl(id, `salita-${w.slug}`)}" style="top:${164 + 92 * i}px" aria-label="${w.word}: alamin ang ibig sabihin">${w.button}</a>`).join('');
+      return { bg: ['bg-boka.jpg', [-37, -107, 1909, 1010]], html: bbPlate(118, 134.4, 572, 83.6, 22.3, 'Pindutin ang mga salitang mababasa sa kuwento upang malaman ang kanilang ibig sabihin')
+        + bbTitle(142.5, 34.2, 0.7535, 78, 'BOKABULARYO') + bbImg('jeep.png', -979, 290, 1647.5, 599.5)
+        + bbImg('biboy-sit.png', 200, 246, 265.5, 367.5, 'bb-keep') + bbImg('spark.png', 305, 232, 72, 72)
+        + `<div class="bb-words">${cols}</div>` };
+    }
+    if (screen === 'tungkol-saan' || screen === 'hulaan') {
+      return { bg: ['bg-tungkol.jpg', [0, 0, 1200, 900]], html: bbImg('biboy-peek.png', 0, 359, 242, 444) + bbImg('popoy.png', 526, 14, 206, 228)
+        + bbImg('story-card.png', 401.7, 189.3, 416.8, 460.3, 'bb-keep') + bbImg('tita-a.png', 272, 173, 188, 480) + bbImg('tita-b.png', 718, 165, 271.7, 545)
+        + bbPlate(219, 718, 762, 111.3, 30, 'Hulaan natin kung tungkol saan ang kuwento') + bbTitle(251.6, 584.7, 1, 73, 'TUNGKOL SAAN?') };
+    }
+    return { bg: ['bg-handa.jpg', [0, 0, 1200, 900]], html: `<div class="bb-bubble"><svg class="bb-tail" viewBox="0 0 90 70" aria-hidden="true"><path d="M90 0V34L0 70L24 0Z" fill="#FFFBF4"/></svg><p>${s.handa}</p></div>
+        <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div>${bbImg('biboy-handa.png', 24, 182, 524, 718, 'bb-keep')}` };
+  }
+
+  function bbModal(id, screen) {
+    const s = BB_STORY[id];
+    if (screen === 'panimula') {
+      return bbHead(491, 91, 226) + bbTabs(64, 256, 112, 'navy') + bbCloseTab(bbUrl(id, 'alam-1'), 1041, 238, 'Isara ang Panimula')
+        + bbPanel(49, 279.4, 1094, 415.6, 78, 302.7, 1035, 370.7, '#001343')
+        + `<div class="bb-bar bb-bar-big"><p>${s.panimula}</p></div><img class="bb-pic" src="${BB_ART}panimula.jpg" style="left:78px;top:354.5px;width:252px;height:290.7px" alt="Ang iba't ibang pamilya sa barangay">`
+        + bbSign(241, 249, 711, 90, 'navy', 'PANIMULA', 47);
+    }
+    if (screen === 'hulaan') {
+      const q = s.hulaan;
+      const done = bbState.picked !== null;
+      const opts = q.pagpipilian.map((o, i) => {
+        const cls = !done ? '' : (o.tama ? ' is-tama' : ' is-mali');
+        const mark = !done ? '' : `<b class="bb-mark">${o.tama ? '✓ Tama' : '✗ Mali'}</b>`;
+        return `<button type="button" class="bb-opt${cls}" data-opt="${i}" style="top:${373.6 + 148.8 * i}px"${done ? ' aria-disabled="true"' : ''}><span>${o.text}</span>${mark}</button>`;
+      }).join('');
+      return bbHead(514, 41, 231) + bbTabs(85, 214, 106, 'navy') + bbCloseTab(bbUrl(id, 'tungkol-saan'), 1033, 193, 'Isara ang Hulaan')
+        + bbPanel(39, 235, 1114, 530, 69.5, 265, 1052.4, 472.3, '#001343')
+        + `<p class="bb-q" id="bb-q">${q.tanong}</p><div class="bb-opts" role="group" aria-labelledby="bb-q">${opts}</div>
+          <img class="bb-pic bb-pic-big" src="${BB_ART}hulaan.jpg" style="left:32.6px;top:307.9px;width:378.2px;height:480px" alt="Si Popoy kasama ang kanyang pamilya">`
+        + bbSign(242, 203.7, 775, 93.5, 'navy', 'HULAAN', 50);
+    }
+    const w = s.salita.find((x) => `salita-${x.slug}` === screen);
+    if (!w) return '';
+    const row = (label, text, i) => `<div class="bb-row" style="top:${372.6 + 100.5 * i}px"><span class="bb-label bb-t-${w.tone}">${label}</span><p>${escapeHtml(text)}</p></div>`;
+    return bbHead(490, 89, 236) + bbTabs(44, 263, 117, w.tone) + bbCloseTab(bbUrl(id, 'bokabularyo'), 1065, 243, 'Isara ang salita')
+      + bbPanel(27, 286, 1145, 435, 57.4, 310.5, 1083.3, 388, BB_TONES[w.tone].line)
+      + row('KAHULUGAN', w.kahulugan, 0) + row('KATEGORYA', w.kategorya, 1) + row('HALIMBAWA', w.halimbawa, 2)
+      + bbSign(228, 254.4, 744, 94, w.tone, w.word, 47);
+  }
+
+  function bbNav(id, screen) {
+    const at = BB_ORDER.indexOf(screen);
+    const isWord = at < 0;
+    $('bb-prev').hidden = isWord;
+    $('bb-next').hidden = isWord;
+    if (isWord) return;
+    $('bb-prev').href = at === 0 ? bbSteps(id) : bbUrl(id, BB_ORDER[at - 1]);
+    $('bb-next').href = at === BB_ORDER.length - 1 ? bbSteps(id) : bbUrl(id, BB_ORDER[at + 1]);
+    $('bb-prev').setAttribute('aria-label', at === 0 ? 'Bumalik sa mga hakbang' : 'Nakaraan');
+    $('bb-next').setAttribute('aria-label', at === BB_ORDER.length - 1 ? 'Tapos na: bumalik sa mga hakbang' : 'Susunod');
+  }
+
+  function bbRenderTall(id) {
+    const s = BB_STORY[id];
+    $('bb-tall-misyon').textContent = s.misyon;
+    $('bb-tall-layunin').innerHTML = s.layunin.map((t) => `<li><svg viewBox="0 0 86 86" aria-hidden="true"><path d="M43 2l12.6 25.5 28.2 4.1-20.4 19.9 4.8 28.1L43 66.4 17.8 79.6l4.8-28.1L2.2 31.6l28.2-4.1z" fill="#FFBE33"/></svg><span>${t}</span></li>`).join('');
+    $('bb-tall-prev').href = bbSteps(id);
+    $('bb-tall-next').href = bbUrl(id, 'alam-1');
+  }
+
+  function lkBago(id, screen) {
+    const known = BB_ORDER.includes(screen) || BB_STORY[id].salita.some((w) => `salita-${w.slug}` === screen);
+    const name = known ? screen : 'simula';
+    showView('view-lakbay');
+    document.title = `Bago Basahin — ${LESSONS[id].title} — Kuwenturo`;
+    if (name === 'simula') {
+      bbRenderTall(id);
+      const changed = lkShow('lk-tall');
+      bbState.screen = name;
+      $('lk-tall').scrollTop = 0;
+      if (changed) $('bb-tall-title').focus({ preventScroll: true });
+      return;
+    }
+    if (name !== 'hulaan') bbState.picked = null;
+    const prev = bbState.screen;
+    const sc = bbScene(id, name);
+    const popup = bbModal(id, name);
+    LK_DESIGN['lk-bb'].bg = sc.bg[1];
+    const bg = $('lk-bb').querySelector('.lk-bg');
+    const file = BB_ART + sc.bg[0];
+    if (!bg.src.endsWith(file)) bg.src = file;
+    $('bb-stage').innerHTML = sc.html;
+    $('bb-stage').inert = !!popup;
+    $('bb-veil').hidden = !popup;
+    $('bb-modal').hidden = !popup;
+    $('bb-modal').innerHTML = popup;
+    $('bb-modal').setAttribute('aria-labelledby', popup ? 'bb-card-title' : 'bb-title');
+    bbNav(id, name);
+    bbState.story = id;
+    bbState.screen = name;
+    lkShow('lk-bb');
+    lkFit();
+    if (prev !== name) {
+      const title = $(popup ? 'bb-card-title' : 'bb-title');
+      if (title) title.focus({ preventScroll: true });
+      else if ($('bb-card-title')) $('bb-card-title').focus({ preventScroll: true });
+    }
+  }
+
+  $('bb-modal').addEventListener('click', (event) => {
+    const btn = event.target.closest('.bb-opt');
+    if (!btn || bbState.picked !== null) return;
+    bbState.picked = Number(btn.dataset.opt);
+    const opt = BB_STORY[bbState.story].hulaan.pagpipilian[bbState.picked];
+    $('bb-modal').innerHTML = bbModal(bbState.story, 'hulaan');
+    const again = $('bb-modal').querySelector(`[data-opt="${bbState.picked}"]`);
+    if (again) again.focus({ preventScroll: true });
+    announce(opt.tama ? 'Magaling! Tama ang iyong sagot.' : 'Subukan muli sa susunod. Mali ang iyong sagot.');
+  });
+
+  function bbEscape() {
+    const close = $('bb-modal').hidden ? null : $('bb-modal').querySelector('.bb-close');
+    location.hash = close ? close.getAttribute('href') : bbSteps(bbState.story || Object.keys(BB_STORY)[0]);
+  }
+
   function lkModal(open) {
     $('lk-veil').hidden = !open;
     $('lk-modal').hidden = !open;
@@ -897,8 +1120,13 @@
       </a>`).join('');
   }
 
-  function lkRoute(id, sub, step) {
+  function lkRoute(id, sub, step, screen) {
     const street = LK_STREETS.find((s) => s.slug === id);
+    if (id === 'kuwento' && BB_STORY[sub] && step === 'bago-basahin') {
+      lkModal(false);
+      lkBago(sub, screen);
+      return;
+    }
     if (id === 'kuwento' && LK_DETAIL[sub] && step === 'hakbang') {
       lkModal(false);
       showView('view-lakbay');
@@ -966,8 +1194,14 @@
   lkPhone.addEventListener('change', lkFit);
   document.addEventListener('keydown', (event) => {
     if (!lkScene || lkScene === 'lk-start' || document.querySelector('dialog[open]')) return;
-    const modalOpen = !$('lk-modal').hidden;
-    if (event.key === 'Escape') {
+    if (lkScene === 'lk-bb' || lkScene === 'lk-tall') {
+      const nav = lkScene === 'lk-tall' ? ['bb-tall-prev', 'bb-tall-next'] : ['bb-prev', 'bb-next'];
+      if (event.key === 'Escape') { event.preventDefault(); bbEscape(); }
+      else if (event.key === 'ArrowLeft' && !$(nav[0]).hidden) location.hash = $(nav[0]).getAttribute('href');
+      else if (event.key === 'ArrowRight' && !$(nav[1]).hidden) location.hash = $(nav[1]).getAttribute('href');
+      return;
+    }
+    const modalOpen = !$('lk-modal').hidden;    if (event.key === 'Escape') {
       event.preventDefault();
       location.hash = (modalOpen ? $('lk-m-close') : $(lkScene).querySelector('.lk-stage > .lk-close')).getAttribute('href');
     } else if (lkScene === 'lk-street' && !modalOpen && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
@@ -994,7 +1228,7 @@
 
   function route() {
     const path = location.hash.replace(/^#\/?/, '');
-    const [section, id, sub, step] = path.split('/');
+    const [section, id, sub, step, screen] = path.split('/');
     // #/gabay-aralin/<story id>/<part>; the older #/gabay-aralin/<part> uses the current story
     const guidePart = section !== 'gabay-aralin' ? null : (GUIDE_PARTS[id] ? id : (GUIDE_PARTS[sub] ? sub : null));
     const navKey = section === 'aralin' ? 'dashboard' : (SECTIONS[section] ? section : 'dashboard');
@@ -1007,7 +1241,7 @@
     let keepScroll = false;
     if (section !== 'lakbay-aralin') lkHide();
     if (section === 'lakbay-aralin') {
-      lkRoute(id, sub, step);
+      lkRoute(id, sub, step, screen);
     } else if (section === 'gabay-aralin') {
       const wasHidden = showView('view-gabay');
       keepScroll = !wasHidden;
