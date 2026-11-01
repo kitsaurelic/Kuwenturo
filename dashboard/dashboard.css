@@ -238,22 +238,30 @@ main:focus { outline: none; }
 .week-prev img { rotate: 90deg; }
 .week-next img { rotate: -90deg; }
 
-/* ---------- Lesson cards: header shape + body shape + badge, 232px apart ---------- */
+/* ---------- Lesson cards (Figma 4810:1951, 4810:2064): 220 × 218, 244px apart ---------- */
+#view-dashboard { overflow-x: clip; } /* the last ribbon runs past the page edge, as in the frame */
 .lessons-wrap { container-type: inline-size; margin-top: 22px; }
-.lessons { display: grid; grid-template-columns: repeat(4, 232px); margin-left: 5px; row-gap: 40px; }
-@container (max-width: 942px) { .lessons { grid-template-columns: repeat(2, 247px); column-gap: 16px; margin-left: 0; } }
-@container (max-width: 509px) { .lessons { grid-template-columns: 247px; justify-content: center; } }
+.lessons { display: grid; grid-template-columns: repeat(4, 220px); justify-content: space-between; column-gap: 12px; row-gap: 40px; } /* 24px apart in the frame; less beside a scrollbar */
+@container (max-width: 915px) { .lessons { grid-template-columns: repeat(2, 220px); justify-content: start; column-gap: 24px; } }
+@container (max-width: 463px) { .lessons { grid-template-columns: 220px; justify-content: center; } }
 
-.lesson { position: relative; width: 247px; height: 220px; }
-.lesson-head { position: absolute; left: 4.05px; top: 0; width: 238.89px; height: 220px; }
-.lesson-body { position: absolute; left: 0; top: 50.5px; width: 239px; height: 169.5px; }
-.lesson-badge { position: absolute; left: 170px; top: -23px; width: 104px; height: 122px; pointer-events: none; }
-.lesson-text { position: absolute; left: 36.47px; top: 14.19px; width: 173px; display: flex; flex-direction: column; gap: 35px; }
-.lesson-street { color: var(--cream); font-size: 24.85px; font-weight: 700; letter-spacing: -0.994px; text-align: center; white-space: nowrap; }
+.lesson {
+  position: relative; display: flex; flex-direction: column; width: 220px; height: 218px;
+  background: var(--card); border: 4px solid #fff; border-radius: 13px;
+  box-shadow: 3px 4px 0 var(--shade);
+}
+.lesson-street { flex: none; height: 35px; padding: 5px 0 0 19px; color: var(--cream); font-size: 20px; line-height: 25px; font-weight: 700; white-space: nowrap; }
+.lesson-yellow .lesson-street { color: var(--navy); } /* cream on yellow is 1.6:1 */
+.lesson-text {
+  flex: 1; display: flex; flex-direction: column; margin: 0 -4px -4px; padding: 23px 19px 0;
+  background: linear-gradient(150deg, #FFF8E9 25%, var(--fade) 140%);
+  border: 4px solid #fff; border-radius: 8px;
+}
+.lesson-badge { position: absolute; z-index: 1; left: 152px; top: -32px; width: 104px; height: 122px; pointer-events: none; }
 .lesson-info { display: flex; flex-direction: column; gap: 13px; }
-.lesson-copy { display: flex; flex-direction: column; gap: 9px; }
+.lesson-copy { display: flex; flex-direction: column; gap: 15px; }
 .lesson-heading { display: flex; flex-direction: column; gap: 5px; }
-.lesson-title { width: var(--title-w, 135px); font-size: 16px; line-height: 15px; font-weight: 700; color: var(--navy); }
+.lesson-title { width: var(--title-w, 135px); min-height: 30px; font-size: 16px; line-height: 15px; font-weight: 700; color: var(--navy); }
 .lesson-part { width: 110px; font-size: 12px; line-height: 12px; color: var(--caption); }
 .lesson-progress {
   position: relative; width: 100%; height: 14px;
@@ -263,14 +271,12 @@ main:focus { outline: none; }
 .lesson-progress > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(-90deg, var(--cream) 17.811%, var(--tone) 74.085%); }
 .lesson-row { display: flex; align-items: center; justify-content: space-between; }
 .lesson-percent { font-size: 12px; line-height: 12px; color: var(--navy); }
-.lesson .pill { width: 92px; height: 27px; }
+.lesson .pill { width: 84px; height: 27px; }
+.lesson.is-done .lesson-progress > span { background: var(--tone); } /* Natapos: a full, solid bar */
 
-.lesson-green  { --tone: rgb(12, 147, 88);  --shade: #04673C; }
-.lesson-yellow { --tone: rgb(255, 190, 51); --shade: #BE8A0F; }
-.lesson-red    { --tone: rgb(180, 34, 36);  --shade: #7B0D0D; }
-/* Per-card offsets from the frame */
-.lesson-yellow .lesson-badge { left: 174px; }
-.lesson-red .lesson-text { left: 33.47px; }
+.lesson-green  { --tone: rgb(12, 147, 88);  --shade: #066A3E; --card: #00834A; --fade: #04673C; }
+.lesson-yellow { --tone: rgb(255, 190, 51); --shade: #BE8A0D; --card: #FFBE33; --fade: #FFBE33; }
+.lesson-red    { --tone: rgb(180, 34, 36);  --shade: #7C0E0F; --card: #B42224; --fade: #B42224; }
 
 /* Glossy pill (Component 92) */
 .pill {

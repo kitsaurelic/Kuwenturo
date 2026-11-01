@@ -129,12 +129,12 @@
     const list = CARDS[filter];
     $('lessons').innerHTML = list.map((c) => {
       const l = LESSONS[c.id];
+      const done = c.progress === 100; // Natapos cards get the ribbon and Balikan (Figma 4548:3609)
+      const action = done ? 'Balikan' : 'Ituloy';
       return `
-      <li class="lesson lesson-${c.tone}">
-        <img class="lesson-head" src="assets/card-head-${c.tone}.svg" alt="">
-        <img class="lesson-body" src="assets/card-body-${c.tone}.svg" alt="">
+      <li class="lesson lesson-${c.tone}${done ? ' is-done' : ''}">
+        <p class="lesson-street">${l.street}</p>
         <div class="lesson-text">
-          <p class="lesson-street">${l.street}</p>
           <div class="lesson-info">
             <div class="lesson-copy">
               <div class="lesson-heading">
@@ -144,12 +144,12 @@
               ${progressBar(l.title, c.progress)}
             </div>
             <div class="lesson-row">
-              ${pill({ tone: c.tone, label: 'Ituloy', name: `Ituloy: ${l.title}`, href: `#/aralin/${c.id}` })}
+              ${pill({ tone: c.tone, label: action, name: `${action}: ${l.title}`, href: `#/aralin/${c.id}` })}
               <p class="lesson-percent" aria-hidden="true">${c.progress}%</p>
             </div>
           </div>
         </div>
-        <img class="lesson-badge" src="assets/${BADGES[c.tone]}" alt="">
+        ${done ? `<img class="lesson-badge" src="assets/${BADGES[c.tone]}" alt="">` : ''}
       </li>`;
     }).join('');
     const empty = $('lessons-empty');
