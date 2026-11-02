@@ -781,6 +781,22 @@
       $('bb-tall-size').style.height = sT ? `${3650 * sT}px` : '';
       return;
     }
+    if (lkScene === 'lk-tk') {
+      // Inside the room the art and the pieces move as one and cover the window; the instructions fit it
+      const W = scene.clientWidth;
+      const H = scene.clientHeight;
+      const fit = Math.min(W / 1182, H / 887);
+      scene.style.setProperty('--tk-s', fit);
+      scene.style.setProperty('--tk-z', (W - 32) / 1182);
+      if (!tkState.room && lkPhone.matches) { stages[0].style.transform = ''; return; }
+      if (tkState.room && lkPhone.matches) { stages[0].style.transform = `translate(0, 72px) scale(${W / 1182})`; return; }
+      // Upright windows fit the room instead, or the pieces at its sides would fall off the screen
+      const wide = W / H >= 1182 / 887;
+      const s = tkState.room && wide ? W / 1182 : fit;
+      const y = tkState.room && wide ? -Math.min(TK_ROOM_TOP, 887 - H / s) * s : (H - 887 * s) / 2;
+      stages[0].style.transform = `translate(${(W - 1182 * s) / 2}px, ${y}px) scale(${s})`;
+      return;
+    }
     if (lkPhone.matches) {      stages.forEach((stage) => { stage.style.transform = ''; });
       $('st-art').style.transform = '';
       if (bg) bg.style.cssText = '';
@@ -831,7 +847,7 @@
 
   function lkShow(sceneId) {
     const changed = lkScene !== sceneId;
-    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps', 'lk-bb', 'lk-tall', 'lk-story'].forEach((id) => { $(id).hidden = id !== sceneId; });
+    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps', 'lk-bb', 'lk-tall', 'lk-story', 'lk-tk'].forEach((id) => { $(id).hidden = id !== sceneId; });
     lkScene = sceneId;
     document.body.classList.add('lk-on');
     const full = sceneId !== 'lk-start';
@@ -1014,7 +1030,7 @@
         + bbImg('biboy-stand.png', 20, 426, 254, 364, 'bb-top') };
     }
     return { bg: ['bg-handa.jpg', [-520, -700, 2240, 1600]], html: `${bbBubble(s.handa)}
-        <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div>${bbImg('biboy-handa.png', 24, 179, 517, 721, 'bb-keep')}` };
+        <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div><img class="bb-art bb-keep" src="${TK_ART}biboy-kaway.png" style="left:24.4px;top:181.7px;width:524.3px;height:865.4px" alt="">` };
   }
 
   function bbModal(id, screen) {
@@ -1123,7 +1139,7 @@
         { f: 'f17', t: 'Napangiti ako.<br>Doon ko naunawaan.' },
         { f: 'f18', oy: 70, t: 'Magkaiba man ang pamilya namin, pareho naman kaming minamahal.' },
         { f: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', spot: [416, 0, 365, 478, 'Si Biboy na nag-iisip'], tanong: 'Ano ang natutunan ni Biboy<br>tungkol sa pamilya?' },
-        { f: 'subukan', pic: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, bastaâ€™t puno ng pagmamahal.</strong>', subukan: 'Ang galing ninyo sa pagbasa! Pero hindi pa tayo tapos! Subukan natin kung gaano ninyo naunawaan ang kuwento.' },
+        { f: 'subukan', pic: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', subukan: 'Ang galing ninyo sa pagbasa! Pero hindi pa tayo tapos! Subukan natin kung gaano ninyo naunawaan ang kuwento.' },
       ],
       hamon: 'Oras na para subukan ang iyong pagkaunawa sa kuwento! Balikan ang mga pangyayari at gamitin ang iyong natutuhan upang masagutan ang mga gawain.',
       gawain: [
@@ -1252,11 +1268,12 @@
   // ---------- Lakbay: Pagkatapos Basahin (LAKBAY-INTERFACE 9:64624) ----------
   function pkShow(id, screen) {
     const s = AB_STORY[id];
+    if (screen && screen.startsWith('tuklasin')) { tkShow(id, screen); return; }
     const act = s.gawain.find((g) => g.slug === screen);
     if (act) {
       lkHide();
       showPage({
-        kicker: `Pagkatapos Basahin Â· ${LESSONS[id].title}`,
+        kicker: `Pagkatapos Basahin · ${LESSONS[id].title}`,
         title: act.name[0] + act.name.slice(1).toLowerCase(),
         body: `<p>Malapit na ang gawaing ito.</p>
           <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: pkUrl(id) })}</div>`,
@@ -1264,7 +1281,7 @@
       return;
     }
     showView('view-lakbay');
-    document.title = `Pagkatapos Basahin â€” ${LESSONS[id].title} â€” Kuwenturo`;
+    document.title = `Pagkatapos Basahin — ${LESSONS[id].title} — Kuwenturo`;
     bbState.story = id;
     abState.esc = bbSteps(id);
     const gawain = s.gawain.map((g, i) => `<a class="pk-card" href="${pkUrl(id, g.slug)}" style="top:${196 + 282 * i}px" aria-label="${g.name}: ${g.head}. ${g.text}">
@@ -1279,7 +1296,118 @@
     if (changed) $('bb-tall-title').focus({ preventScroll: true });
   }
 
+  // ---------- Lakbay: Tuklasin, Ang Nawawalang Larawan (LAKBAY-INTERFACE 1049:3008, 1049:4657) ----------
+  const TK_ART = 'assets/lakbay/tuklasin/';
+  const TK_ROOM_TOP = 40; // on wide windows the room starts this far down its picture, keeping the pieces clear of the buttons
+  // left, top, width, height in the frame; the last value turns the piece as the frame does
+  const TK_PIECES = [
+    ['piece-f', 1026, 116, 101.7, 85.5, ''],
+    ['piece-e', 74, 113, 102.8, 113.4, ''],
+    ['piece-e', 818.2, 147, 102.8, 113.4, 'rotate(180deg)'],
+    ['piece-c', 69, 344, 115.8, 122.3, ''],
+    ['piece-b', 283, 148, 82.8, 92, ''],
+    ['piece-d', 818, 267, 116.7, 85.8, ''],
+    ['piece-a', 1023, 344, 82.9, 105, ''],
+    ['piece-a', 238, 280, 82.9, 105, 'scaleY(-1)'],
+  ];
+  const TK_DALOY = [
+    'May mga piraso<br>ng <em>puzzle</em> na<br>nakapalibot.',
+    'Mayroong mga piraso na tama, at mayroon ding mali.',
+    'Kada pili ng piraso, lalabas ang katumbas na detalye ng kuwento.',
+    'Kapag tama ang detalye na ito. pinudutin ang &ldquo;Opo!&rdquo;',
+    'Kapag hindi ito detalye ng kuwento, pindutin naman ang &ldquo;Hindi po&rdquo;',
+    'Sa bawat tamang sagot ng mga mag-aaral, mapupunta ang piraso sa frame.',
+    'Mabubuo lamang ang larawan kapag tama ang mga napiling piraso.',
+    'Pindutin ang nasa itaas para sa makita ang tamang sagot at mga kagamitan.',
+  ];
+  const TK_KEYS = [
+    ['gl1', 'sort', 72.44, 67.61, 183.9, 206.2, 'Pindutin upang makita ang daloy ng gawain'],
+    ['gl2', 'star', 57.34, 51.36, 217.3, 217.3, 'Pindutin upang makita ang tamang sagot at paliwanag nito'],
+    ['gl3', 'alarm', 74.04, 62.51, 183.9, 217.3, 'Pindutin upang makita ang mga kagamitan'],
+  ];
+  const TK_SOON = { sagot: 'Mga Tamang Sagot', kagamitan: 'Mga Kagamitan', laro: 'Ang Nawawalang Larawan' };
+  const tkState = { room: false, from: null };
+  const tkUrl = (id, screen) => pkUrl(id, screen ? `tuklasin-${screen}` : 'tuklasin');
+  const tkRename = (sign) => sign.replaceAll('bb-sign-navy', 'tk-sign').replace('bb-card-title', 'tk-title');
+  const tkSign = (text, y, fs = 49.5) => tkRename(bbSign(224, y, 733.3, 92.7, 'navy', text, fs));
+  const tkTabs = (y) => {
+    const bg = `background:linear-gradient(0deg, ${BB_TONES.navy.sign.join(',')})`;
+    return `<i class="lk-tab bb-tab" style="left:31.7px;top:${y + 10}px;width:115.5px;height:91.8px;${bg}"></i><i class="lk-tab bb-tab" style="left:121.5px;top:${y + 5}px;width:62.4px;height:95.4px;${bg}"></i>`;
+  };
+  // A cream card with its dashes, its folder tabs and the banner across its top
+  const tkCard = (y, h, inset, sign) => tkTabs(y) + bbPanel(24, y + 46, 1133.5, h, 45.7, y + 46 + inset, 1089, h - inset * 2, '#001343').replace('rx="30"', 'rx="16"') + sign;
+  const tkScreens = {
+    start: () => `<img class="tk-cork" src="${TK_ART}cork.png" alt="Bakanteng frame na may hugis ng anim na piraso ng puzzle">${tkCard(443, 261, 23, tkSign('TUKLASIN #1', 452))}
+      <p class="tk-box tk-name">ANG NAWAWALANG<br>LARAWAN</p>`,
+    pindutin: () => `${tkCard(176, 475, 22, tkSign('PINDUTIN', 185))}
+      <ul class="tk-keys">${TK_KEYS.map(([gl, icon, x, y, w, h, text], i) => `<li style="left:${[83, 421, 763][i]}px">
+        <span class="tk-ico"><span class="tk-gl tk-${gl}"><img src="${TK_ART}${gl}.svg" alt=""></span><img class="tk-sym" src="${TK_ART}${icon}.svg" alt="" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"></span>
+        <p>${text}</p></li>`).join('')}</ul>`,
+    biboy: (id) => `<div class="tk-1200">${bbBubble('Nawawala po ang larawan ng pamilya ni Popoy! Maaari niyo po ba ako tulungan na buuin ito?', 'tk-bubble-clip')}
+      <div class="bb-handa-sign">${tkRename(bbSign(409, 64, 702, 80, 'navy', 'TUKLASIN NATIN!', 47))}</div>
+      <img class="bb-art bb-keep" src="${TK_ART}biboy-kaway.png" style="left:24.4px;top:181.7px;width:524.3px;height:865.4px" alt="">
+      <div class="tk-opts"><a class="tk-opt tk-opo" id="tk-opo" href="${tkUrl(id, 'panuto')}"><img src="${TK_ART}opo.png" alt="Opo!"></a><a class="tk-opt tk-hindi" id="tk-hindi" href="${pkUrl(id)}"><img src="${TK_ART}hindi.png" alt="Hindi Po"></a></div></div>`,
+    panuto: () => `<div class="tk-pieces"><img src="${TK_ART}pieces.png" alt="Anim na bakanteng puwang sa frame at mga piraso ng puzzle sa paligid nito"><img class="tk-glow" src="${TK_ART}piece-a.png" alt=""></div>${tkCard(461, 261, 23.3, tkSign('PANUTO', 470))}
+      <p class="tk-box tk-panuto">Tulungan si Biboy buuin ang larawan ng pamilya ni Popoy. Piliin ang mga piraso ng <em>puzzle</em> na may tamang detalye mula sa kuwento. Tukuyin kung ang detalye ay angkop sa tauhan, tagpuan, pangyayari, at aral.</p>`,
+    daloy: () => `${tkCard(114, 610, 32, tkSign('DALOY NG GAWAIN', 126, 47))}
+      <img class="tk-line" src="${TK_ART}line.svg" alt="" style="top:262px"><img class="tk-line" src="${TK_ART}line.svg" alt="" style="top:489px">
+      <ol class="tk-daloy">${TK_DALOY.map((text, i) => `<li><b>${i + 1}</b><span>${text}</span></li>`).join('')}</ol>`,
+    simula: () => `<h1 class="tk-vh" id="tk-title" tabindex="-1">Ang Nawawalang Larawan</h1><img class="tk-room" src="${TK_ART}room.jpg" alt="">
+      ${TK_PIECES.map(([file, x, y, w, h, turn]) => `<img class="tk-piece" src="${TK_ART}${file}.png" alt="" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:${turn || 'none'}">`).join('')}
+      <img class="tk-kid" src="${TK_ART}biboy-tayo.png" alt="Si Biboy">`,
+  };
+  const TK_FLOW = {
+    start: { bg: 'bg-1', title: 'Tuklasin #1', back: (id) => pkUrl(id), next: 'pindutin' },
+    pindutin: { bg: 'bg-2', title: 'Pindutin', back: (id) => tkUrl(id), next: 'biboy', top: true },
+    biboy: { bg: 'bg-3', title: 'Tuklasin Natin', back: (id) => tkUrl(id, 'pindutin'), next: 'panuto', bare: true },
+    panuto: { bg: 'bg-1', title: 'Panuto', back: (id) => tkUrl(id, 'biboy'), next: 'daloy' },
+    daloy: { bg: 'bg-2', title: 'Daloy ng Gawain', back: (id) => tkUrl(id, tkState.from || 'panuto'), next: 'simula' },
+    simula: { title: 'Ang Nawawalang Larawan', back: (id) => tkUrl(id, 'daloy'), next: 'laro', top: true, room: true },
+  };
+
+  function tkShow(id, screen) {
+    const name = screen.replace(/^tuklasin-?/, '') || 'start';
+    if (TK_SOON[name]) {
+      lkHide();
+      showPage({
+        kicker: `Tuklasin ${String.fromCharCode(183)} ${LESSONS[id].title}`,
+        title: TK_SOON[name],
+        body: `<p>Malapit na ang bahaging ito ng gawain.</p>
+          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: tkUrl(id, tkState.from || 'simula') })}</div>`,
+      });
+      return;
+    }
+    const key = tkScreens[name] ? name : 'start';
+    const step = TK_FLOW[key];
+    if (key !== 'daloy') tkState.from = null;
+    showView('view-lakbay');
+    document.title = `${step.title} ${String.fromCharCode(8212)} ${LESSONS[id].title} ${String.fromCharCode(8212)} Kuwenturo`;
+    bbState.story = id;
+    tkState.room = !!step.room;
+    $('tk-stage').innerHTML = tkScreens[key](id);
+    $('lk-tk').className = `lk-scene lk-full lk-tk is-${key}`;
+    $('tk-bg').hidden = !step.bg;
+    if (step.bg) $('tk-bg').src = `${TK_ART}${step.bg}.jpg`;
+    $('tk-top').hidden = !step.top;
+    $('tk-daloy').href = tkUrl(id, 'daloy');
+    $('tk-sagot').href = tkUrl(id, 'sagot');
+    $('tk-gamit').href = tkUrl(id, 'kagamitan');
+    $('tk-nav').hidden = !!step.bare; // Biboy asks instead: the frame has Opo and Hindi Po, no arrows
+    $('tk-prev').href = step.back(id);
+    $('tk-next').href = tkUrl(id, step.next);
+    lkShow('lk-tk');
+    lkFit();
+    $('lk-tk').scrollTop = 0;
+    $('tk-title').focus({ preventScroll: true });
+  }
+  $('tk-top').addEventListener('click', (event) => {
+    if (!event.target.closest('a')) return;
+    const m = location.hash.match(/tuklasin-(\w+)$/);
+    tkState.from = m ? m[1] : null;
+  });
+
   function bbEscape() {
+    if (lkScene === 'lk-tk') { location.hash = pkUrl(bbState.story); return; }
     if (lkScene === 'lk-story' || $('lk-tall').matches('.is-ang, .is-pk')) { location.hash = abState.esc; return; }
     const close = $('bb-modal').hidden ? null : $('bb-modal').querySelector('.bb-close');
     location.hash = close ? close.getAttribute('href') : bbSteps(bbState.story || Object.keys(BB_STORY)[0]);
@@ -1344,7 +1472,7 @@
       showView('view-lakbay');
       lkRenderSteps(sub);
       const changed = lkShow('lk-steps');
-      document.title = `${LESSONS[sub].title} â€” Kuwenturo`;
+      document.title = `${LESSONS[sub].title} — Kuwenturo`;
       if (changed) $('lk-steps-title').focus({ preventScroll: true });
       return;
     }
@@ -1366,7 +1494,7 @@
       lkShow('lk-street');
       const wasOpen = !$('lk-modal').hidden;
       lkModal(true);
-      document.title = `${LESSONS[sub].title} â€” Kuwenturo`;
+      document.title = `${LESSONS[sub].title} — Kuwenturo`;
       if (!wasOpen) $('lk-modal-no').focus({ preventScroll: true });
       return;
     }
@@ -1406,8 +1534,8 @@
   lkPhone.addEventListener('change', lkFit);
   document.addEventListener('keydown', (event) => {
     if (!lkScene || lkScene === 'lk-start' || document.querySelector('dialog[open]')) return;
-    if (lkScene === 'lk-bb' || lkScene === 'lk-tall' || lkScene === 'lk-story') {
-      const nav = { 'lk-tall': ['bb-tall-prev', 'bb-tall-next'], 'lk-story': ['st-prev', 'st-next'], 'lk-bb': ['bb-prev', 'bb-next'] }[lkScene];
+    if (lkScene === 'lk-bb' || lkScene === 'lk-tall' || lkScene === 'lk-story' || lkScene === 'lk-tk') {
+      const nav = { 'lk-tall': ['bb-tall-prev', 'bb-tall-next'], 'lk-story': ['st-prev', 'st-next'], 'lk-bb': ['bb-prev', 'bb-next'], 'lk-tk': ['tk-prev', 'tk-next'] }[lkScene];
       if (event.key === 'Escape') { event.preventDefault(); bbEscape(); }
       else if (event.key === 'ArrowLeft' && !$(nav[0]).closest('[inert]')) location.hash = $(nav[0]).getAttribute('href');
       else if (event.key === 'ArrowRight' && !$(nav[1]).closest('[inert]')) location.hash = $(nav[1]).getAttribute('href');

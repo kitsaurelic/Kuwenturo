@@ -9,7 +9,10 @@
     (() => {
       let session = null;
       try { session = sessionStorage.getItem('kuwenturo.session'); } catch { /* storage unavailable */ }
-      if (!session) location.replace('../login/index.html');
+      if (!session) {
+        try { sessionStorage.setItem('kuwenturo.next', location.hash); } catch { /* storage unavailable */ }
+        location.replace('../login/index.html');
+      }
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fredoka+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../design-system/tokens.css">
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="lakbay.css">
+  <link rel="stylesheet" href="lakbay.css?v=2">
 </head>
 <body>
   <a class="skip-link" href="#main">Lumaktaw sa nilalaman</a>
@@ -515,6 +518,22 @@
               <a class="bb-nav bb-next" id="st-next" href="#/" aria-label="Susunod"><img src="assets/lakbay/bago/arrow-go.png" alt=""></a>
             </div>
           </section>
+
+          <!-- Tuklasin, Ang Nawawalang Larawan: Figma 1049:3008, 1049:4657 -->
+          <section class="lk-scene lk-full lk-tk" id="lk-tk" aria-label="Tuklasin" hidden>
+            <img class="tk-bg" id="tk-bg" src="assets/lakbay/tuklasin/bg-1.jpg" alt="">
+            <div class="lk-stage" id="tk-stage"></div>
+            <nav class="tk-top" id="tk-top" aria-label="Mga gabay sa gawain" hidden>
+              <img src="assets/lakbay/tuklasin/top.png" alt="">
+              <a id="tk-daloy" href="#/" aria-label="Daloy ng Gawain"></a>
+              <a id="tk-sagot" href="#/" aria-label="Tamang sagot at paliwanag"></a>
+              <a id="tk-gamit" href="#/" aria-label="Mga kagamitan"></a>
+            </nav>
+            <div class="bb-nav-stage" id="tk-nav">
+              <a class="bb-nav bb-prev" id="tk-prev" href="#/" aria-label="Nakaraan"><img src="assets/lakbay/bago/arrow-back.png" alt=""></a>
+              <a class="bb-nav bb-next" id="tk-next" href="#/" aria-label="Susunod"><img src="assets/lakbay/bago/arrow-go.png" alt=""></a>
+            </div>
+          </section>
         </div>
 
         <!-- Section and lesson pages -->
@@ -606,6 +625,6 @@
   </dialog>
 
   <script src="guides.js"></script>
-  <script src="dashboard.js"></script>
+  <script src="dashboard.js?v=2"></script>
 </body>
 </html>

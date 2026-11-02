@@ -53,7 +53,13 @@
 
   function startSession(email, provider, name) {
     store.set(sessionStorage, 'kuwenturo.session', { email, provider, name });
-    window.location.href = DASHBOARD_URL;
+    // A link opened while signed out carries on to the page it pointed to
+    let next = '';
+    try {
+      next = sessionStorage.getItem('kuwenturo.next') || '';
+      sessionStorage.removeItem('kuwenturo.next');
+    } catch { /* storage unavailable */ }
+    window.location.href = DASHBOARD_URL + (next.startsWith('#/') ? next : '');
   }
 
   // --- Log in ---
