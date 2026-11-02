@@ -653,7 +653,53 @@
   .tk-top a { width: 48px; height: 48px; }
   .tk-piece::before { content: ""; position: absolute; inset: -20px; }
 }
+/* Kagamitan and the name wheel */
+.tk-q { position: absolute; left: 0; top: 0; width: 1182px; height: 887px; }
+.tk-qcard { position: absolute; left: 0; top: 0; width: 1182px; height: 735.5px; max-width: none; pointer-events: none; }
+.tk-tool { position: absolute; display: block; transition: transform .15s ease, filter .15s ease; }
+.tk-tool img { display: block; width: 100%; height: 100%; max-width: none; }
+/* design.md: lighter with the small shadow on hover, darker when pressed, a 4px ring for focus */
+.tk-tool:hover { transform: translateY(-3px); filter: brightness(1.08) drop-shadow(0 2px 2px rgba(0, 0, 0, .25)); }
+.tk-tool:active { transform: translateY(1px); filter: brightness(.85); }
+.tk-tool:focus-visible, .tk-wheel:focus-visible, .tk-chosen:focus-visible { outline: 4px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 9px var(--navy); }
+.tk-x { left: 1093px; top: 22px; width: 58.5px; height: 57px; z-index: 5; }
+.tk-wheel { position: absolute; order: -2; padding: 0; font: inherit; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: filter .15s ease; }
+.tk-wheel:hover { filter: brightness(1.05) drop-shadow(0 2px 2px rgba(0, 0, 0, .25)); }
+.tk-wheel:active { filter: brightness(.9); }
+.tk-wheel.is-spin { cursor: progress; filter: none; }
+.tk-wheel > svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#tk-spin { transform-origin: 500px 500px; }
+.tk-spokes line { stroke: var(--navy); stroke-width: 6; }
+.tk-words text { fill: var(--navy); font-family: inherit; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+.tk-hub { position: absolute; left: 40.6%; top: 41%; width: 18.8%; height: auto; max-width: none; pointer-events: none; }
+.tk-pin { position: absolute; left: 30.85%; top: -.4%; width: 38.3%; height: auto; overflow: visible; filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .3)); }
+.tk-pin text { fill: var(--cream); font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; }
+.tk-navy { position: absolute; left: 21px; top: 519px; width: 1142px; height: 275px; border-radius: 20.5px; background: linear-gradient(90deg, #001343, #002581 50%, #001343); }
+.tk-names { position: absolute; left: 72px; top: 586px; width: 1040px; height: 160px; padding: 6px 10px; border: 0; border-radius: 10px; background: none; color: var(--navy); font-family: inherit; font-weight: 700; font-size: 28px; line-height: 34px; resize: none; }
+.tk-names::placeholder { color: var(--navy); opacity: .7; }
+.tk-names:focus { outline: 4px solid var(--navy); outline-offset: 2px; }
+.tk-note { position: absolute; left: 241px; top: 690px; width: 700px; margin: 0; padding: 14px 24px; border-radius: 16px; background: var(--navy); color: var(--cream); font-weight: 700; font-size: 26px; line-height: 32px; text-align: center; }
+.tk-note[hidden] { display: none; }
+.tk-chosen { position: absolute; inset: 0; display: block; }
+.tk-ring { position: absolute; left: 200.3px; top: 55.3px; width: 779.5px; height: 779.5px; border-radius: 50%; background: linear-gradient(135deg, #001343, #002581 50%, #001343); }
+.tk-face { position: absolute; left: 228px; top: 83px; width: 724px; height: 724px; border-radius: 50%; background: linear-gradient(90deg, #FFF4C0, #FFFFFF 50%, #FFF4C0); }
+.tk-bighead { position: absolute; left: 376px; top: 140px; width: 430px; height: auto; max-width: none; }
+.tk-chosen .tk-pin { left: 445px; top: 53px; width: 303px; }
+.tk-plate { position: absolute; left: 51.7px; top: 523.7px; width: 1080px; height: 308.2px; max-width: none; }
+.tk-name2 { position: absolute; left: 137px; top: 620px; width: 914px; height: 106px; margin: 0; overflow: hidden; display: block; color: var(--cream); font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-weight: 400; font-size: 90px; line-height: 106px; text-align: center; white-space: nowrap; pointer-events: none; }
+@media (max-width: 700px), (max-width: 900px) and (max-height: 500px) {
+  .lk-tk .tk-wheel { position: relative; left: auto !important; top: auto !important; flex: none; width: min(100%, 420px) !important; height: auto !important; aspect-ratio: 1; }
+  .tk-x { position: fixed; left: auto; right: 8px; top: 8px; width: 48px; height: 48px; }
+  .tk-navy { display: none; }
+  .tk-names { position: static; width: 100%; height: 220px; flex: none; border: 4px dashed var(--navy); border-radius: 16px; background: linear-gradient(90deg, #FFF4C0 0%, #FFFFFF 50%, #FFF4C0 100%); font-size: 22px; line-height: 28px; }
+  .tk-note { position: static; width: 100%; font-size: 20px; line-height: 26px; }
+  .lk-tk.is-kagamitan .lk-stage, .lk-tk.is-napili .lk-stage { padding: 16px; justify-content: center; }
+  .tk-q { position: relative; zoom: var(--tk-z, .3); flex: none; }
+  .tk-q .tk-x { position: absolute; left: 1093px; right: auto; top: 22px; width: 150px; height: 146px; left: 1020px; }
+}
 @media (prefers-reduced-motion: reduce) {
+  .tk-tool, .tk-wheel { transition: none; }
+  .tk-tool:hover, .tk-tool:active { transform: none; }
   .tk-opt, .tk-top a, .tk-piece { transition: none; }
   .tk-top a:hover, .tk-top a:active, .tk-piece:hover, .tk-piece:active { transform: none; }
 }

@@ -1325,8 +1325,39 @@
     ['gl2', 'star', 57.34, 51.36, 217.3, 217.3, 'Pindutin upang makita ang tamang sagot at paliwanag nito'],
     ['gl3', 'alarm', 74.04, 62.51, 183.9, 217.3, 'Pindutin upang makita ang mga kagamitan'],
   ];
-  const TK_SOON = { sagot: 'Mga Tamang Sagot', kagamitan: 'Mga Kagamitan', laro: 'Ang Nawawalang Larawan' };
-  const tkState = { room: false, from: null };
+  const TK_SOON = { sagot: 'Mga Tamang Sagot', laro: 'Ang Nawawalang Larawan', patahimikin: 'Patahimikin Na' };
+  const TK_TOOLS = ['kagamitan', 'piliin', 'gulong', 'napili'];
+  const TK_NAMES_KEY = 'kuwenturo.pangalan';
+  const TK_NAMES_MAX = 60;
+  const TK_SPIN_MS = 5000;
+  const tkState = { room: false, from: null, turn: 0, spin: 0, name: '' };
+  const tkNames = (text) => text.split(/[\n,]/).map((n) => n.trim()).filter(Boolean).slice(0, TK_NAMES_MAX);
+  const tkSaved = () => storage.get(TK_NAMES_KEY) || '';
+  // The slices, drawn on a 1000-unit wheel. Slice 0 starts centred at the top, as in the frame; with no names yet the wheel keeps the frame's 24 spokes
+  function tkSlices(names) {
+    const n = names.length || 24;
+    const step = 360 / n;
+    const spoke = (i) => `<line x1="500" y1="500" x2="500" y2="36" transform="rotate(${(i + 0.5) * step} 500 500)"/>`;
+    // One size for every name: the longest sets it, and only a very long name is cut short here (the result shows it whole)
+    const room = 230;
+    const base = n <= 8 ? 42 : n <= 16 ? 34 : n <= 28 ? 26 : n <= 40 ? 20 : 16;
+    const size = Math.max(Math.min(base, 18), Math.min(base, room / (Math.max(1, ...names.map((name) => name.length)) * 0.56)));
+    const fits = Math.floor(room / (size * 0.56) + 0.01);
+    const words = names.map((name, i) => {
+      const shown = name.length > fits ? `${name.slice(0, fits - 1)}${String.fromCharCode(8230)}` : name;
+      return `<text x="790" y="500" font-size="${size.toFixed(1)}" transform="rotate(${i * step - 90} 500 500)">${escapeHtml(shown)}</text>`;
+    }).join('');
+    return `<g class="tk-spokes">${Array.from({ length: n }, (_, i) => spoke(i)).join('')}</g><g class="tk-words">${words}</g>`;
+  }
+  const tkWheelArt = (names) => `<svg viewBox="0 0 1000 1000" aria-hidden="true"><defs>
+      <linearGradient id="tk-ring" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#001343"/><stop offset=".5" stop-color="#002581"/><stop offset="1" stop-color="#001343"/></linearGradient>
+      <linearGradient id="tk-disc"><stop stop-color="#FFF4C0"/><stop offset=".5" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FFF4C0"/></linearGradient></defs>
+      <circle cx="500" cy="500" r="500" fill="url(#tk-ring)"/>
+      <g id="tk-spin" style="transform:rotate(${tkState.turn}deg)"><circle cx="500" cy="500" r="464" fill="url(#tk-disc)"/>${tkSlices(names)}</g></svg>
+    <img class="tk-hub" src="${TK_ART}qt-head.png" alt="">`;
+  const tkPin = () => `<svg class="tk-pin" viewBox="0 0 303 69" aria-hidden="true"><defs><linearGradient id="tk-pin"><stop stop-color="#AF0414"/><stop offset=".5" stop-color="#E43D45"/><stop offset="1" stop-color="#AF0414"/></linearGradient></defs>
+      <path d="M0 0H303V46L151.5 67L0 46Z" fill="url(#tk-pin)"/><path d="M1.2 1.2H301.8V45L151.5 65.6L1.2 45Z" fill="none" stroke="#FFFBF4" stroke-width="1.6" stroke-dasharray="9"/>
+      <text x="151.5" y="39" text-anchor="middle" font-size="40.6">PINIPILI KO</text></svg>`;
   const tkUrl = (id, screen) => pkUrl(id, screen ? `tuklasin-${screen}` : 'tuklasin');
   const tkRename = (sign) => sign.replaceAll('bb-sign-navy', 'tk-sign').replace('bb-card-title', 'tk-title');
   const tkSign = (text, y, fs = 49.5) => tkRename(bbSign(224, y, 733.3, 92.7, 'navy', text, fs));
@@ -1352,6 +1383,23 @@
     daloy: () => `${tkCard(114, 610, 32, tkSign('DALOY NG GAWAIN', 126, 47))}
       <img class="tk-line" src="${TK_ART}line.svg" alt="" style="top:262px"><img class="tk-line" src="${TK_ART}line.svg" alt="" style="top:489px">
       <ol class="tk-daloy">${TK_DALOY.map((text, i) => `<li><b>${i + 1}</b><span>${text}</span></li>`).join('')}</ol>`,
+    kagamitan: (id) => `<div class="tk-q"><h1 class="tk-vh" id="tk-title" tabindex="-1">Kagamitan</h1><img class="tk-qcard" src="${TK_ART}qt-card.png" alt="">
+      <a class="tk-tool" id="tk-pili" href="${tkUrl(id, 'piliin')}" aria-label="Pilian Na" style="left:115.6px;top:258px;width:480.2px;height:450px"><img src="${TK_ART}qt-pili.png" alt=""></a>
+      <a class="tk-tool" id="tk-tahimik" href="${tkUrl(id, 'patahimikin')}" aria-label="Patahimikin Na" style="left:607.2px;top:257px;width:480.2px;height:450px"><img src="${TK_ART}qt-tahimik.png" alt=""></a>
+      <a class="tk-tool" id="tk-isara" href="${tkUrl(id, tkState.from || 'simula')}" aria-label="Isara ang Kagamitan" style="left:1016.5px;top:173px;width:89px;height:65px"><img src="${TK_ART}qt-isara.png" alt=""></a></div>`,
+    piliin: (id) => `<a class="tk-tool tk-x" id="tk-x" href="${tkUrl(id, 'kagamitan')}" aria-label="Isara"><img src="${TK_ART}qt-x.png" alt=""></a>
+      <button class="tk-wheel" id="tk-wheel" type="button" aria-label="Buksan ang gulong" style="left:367.5px;top:28.5px;width:447px;height:447px">${tkWheelArt(tkNames(tkSaved()))}${tkPin()}</button>
+      <i class="tk-navy"></i>${tkTabs(471)}${bbPanel(27.2, 525.6, 1129.9, 260.2, 48.8, 548.9, 1085.7, 215.9, '#001343').replace('rx="30"', 'rx="16"')}
+      ${tkRename(bbSign(226.6, 491.3, 731, 92.4, 'navy', 'MGA PANGALAN', 47))}
+      <label class="tk-vh" for="tk-names">Mga pangalan ng mag-aaral. Isang pangalan sa bawat linya.</label>
+      <textarea class="tk-names" id="tk-names" placeholder="Isulat dito ang mga pangalan, isa sa bawat linya" spellcheck="false">${escapeHtml(tkSaved())}</textarea>`,
+    gulong: (id) => `<a class="tk-tool tk-x" id="tk-x" href="${tkUrl(id, 'piliin')}" aria-label="Isara"><img src="${TK_ART}qt-x.png" alt=""></a>
+      <h1 class="tk-vh" id="tk-title" tabindex="-1">Pinipili Ko</h1>
+      <button class="tk-wheel" id="tk-wheel" type="button" aria-label="Paikutin ang gulong" style="left:194px;top:49px;width:792px;height:792px">${tkWheelArt(tkNames(tkSaved()))}${tkPin()}</button>
+      <p class="tk-note" id="tk-note" role="status" hidden>Magsulat muna ng mga pangalan sa kahon ng Mga Pangalan.</p>`,
+    napili: (id) => `<div class="tk-q"><a class="tk-tool tk-x" id="tk-x" href="${tkUrl(id, 'gulong')}" aria-label="Isara"><img src="${TK_ART}qt-x.png" alt=""></a>
+      <a class="tk-chosen" href="${tkUrl(id, 'gulong')}" aria-label="Paikutin muli ang gulong"><i class="tk-ring"></i><i class="tk-face"></i><img class="tk-bighead" src="${TK_ART}qt-head.png" alt="">${tkPin()}<img class="tk-plate" src="${TK_ART}qt-plate.svg" alt=""></a>
+      <h1 class="tk-name2" id="tk-title" tabindex="-1">${escapeHtml(tkState.name.toUpperCase())}</h1></div>`,
     simula: () => `<h1 class="tk-vh" id="tk-title" tabindex="-1">Ang Nawawalang Larawan</h1><img class="tk-room" src="${TK_ART}room.jpg" alt="">
       ${TK_PIECES.map(([file, x, y, w, h, turn], i) => `<button class="tk-piece" type="button" aria-label="Piraso ${i + 1} ng puzzle" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><img src="${TK_ART}${file}.png" alt="" style="transform:${turn || 'none'}"></button>`).join('')}
       <img class="tk-kid" src="${TK_ART}biboy-tayo.png" alt="Si Biboy">`,
@@ -1363,23 +1411,30 @@
     panuto: { bg: 'bg-1', title: 'Panuto', back: (id) => tkUrl(id, 'biboy'), next: 'daloy' },
     daloy: { bg: 'bg-2', title: 'Daloy ng Gawain', back: (id) => tkUrl(id, tkState.from || 'panuto'), next: 'simula' },
     simula: { title: 'Ang Nawawalang Larawan', back: (id) => tkUrl(id, 'daloy'), next: 'laro', top: true, room: true },
+    kagamitan: { bg: 'bg-1', title: 'Kagamitan', back: (id) => tkUrl(id, tkState.from || 'simula'), next: 'piliin', bare: true },
+    piliin: { bg: 'bg-1', title: 'Piliin Na', back: (id) => tkUrl(id, 'kagamitan'), next: 'gulong', bare: true },
+    gulong: { bg: 'bg-1', title: 'Pinipili Ko', back: (id) => tkUrl(id, 'piliin'), next: 'gulong', bare: true },
+    napili: { bg: 'bg-1', title: 'Pinipili Ko', back: (id) => tkUrl(id, 'gulong'), next: 'gulong', bare: true },
   };
 
   function tkShow(id, screen) {
     const name = screen.replace(/^tuklasin-?/, '') || 'start';
+    clearTimeout(tkState.spin);
+    tkState.spin = 0;
+    if (name === 'napili' && !tkState.name) { location.replace(tkUrl(id, 'gulong')); return; }
     if (TK_SOON[name]) {
       lkHide();
       showPage({
         kicker: `Tuklasin ${String.fromCharCode(183)} ${LESSONS[id].title}`,
         title: TK_SOON[name],
         body: `<p>Malapit na ang bahaging ito ng gawain.</p>
-          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: tkUrl(id, tkState.from || 'simula') })}</div>`,
+          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: tkUrl(id, name === 'patahimikin' ? 'kagamitan' : tkState.from || 'simula') })}</div>`,
       });
       return;
     }
     const key = tkScreens[name] ? name : 'start';
     const step = TK_FLOW[key];
-    if (key !== 'daloy') tkState.from = null;
+    if (key !== 'daloy' && !TK_TOOLS.includes(key)) tkState.from = null;
     showView('view-lakbay');
     document.title = `${step.title} ${String.fromCharCode(8212)} ${LESSONS[id].title} ${String.fromCharCode(8212)} Kuwenturo`;
     bbState.story = id;
@@ -1398,8 +1453,50 @@
     lkShow('lk-tk');
     lkFit();
     $('lk-tk').scrollTop = 0;
-    $('tk-title').focus({ preventScroll: true });
+    const title = $('tk-title');
+    title.focus({ preventScroll: true });
+    if (key === 'napili') tkFitName();
   }
+  // Long names shrink until they sit inside the plate
+  function tkFitName() {
+    const el = $('tk-title');
+    let size = 90;
+    el.style.fontSize = `${size}px`;
+    while (el.scrollWidth > el.clientWidth && size > 28) { size -= 2; el.style.fontSize = `${size}px`; }
+  }
+  // The name is read from the wheel itself: whichever slice stopped under the point is the one chosen
+  function tkSpin() {
+    if (tkState.spin) return;
+    const names = tkNames(tkSaved());
+    if (!names.length) { $('tk-note').hidden = false; return; }
+    const random = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
+    const step = 360 / names.length;
+    const aim = Math.floor(random() * names.length) * step + (random() - 0.5) * step * 0.7;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const turn = tkState.turn + (still ? 0 : 2160) + ((((-aim - tkState.turn) % 360) + 360) % 360);
+    tkState.turn = turn;
+    $('tk-spin').style.transition = still ? 'none' : `transform ${TK_SPIN_MS}ms cubic-bezier(.12, .7, .1, 1)`;
+    $('tk-spin').style.transform = `rotate(${turn}deg)`;
+    $('tk-wheel').classList.add('is-spin');
+    tkState.spin = setTimeout(() => {
+      const top = ((-turn % 360) + 360) % 360;
+      tkState.name = names[Math.round(top / step) % names.length];
+      announce(`Napili si ${tkState.name}.`);
+      tkState.spin = setTimeout(() => { location.hash = tkUrl(bbState.story, 'napili'); }, 700);
+    }, still ? 300 : TK_SPIN_MS + 80);
+  }
+  $('lk-tk').addEventListener('click', (event) => {
+    if (!event.target.closest('#tk-wheel')) return;
+    if (location.hash.endsWith('tuklasin-piliin')) location.hash = tkUrl(bbState.story, 'gulong');
+    else tkSpin();
+  });
+  $('lk-tk').addEventListener('input', (event) => {
+    if (event.target.id !== 'tk-names') return;
+    storage.set(TK_NAMES_KEY, event.target.value);
+    const turned = $('tk-spin');
+    turned.querySelectorAll('.tk-spokes, .tk-words').forEach((g) => g.remove());
+    turned.insertAdjacentHTML('beforeend', tkSlices(tkNames(event.target.value)));
+  });
   $('tk-top').addEventListener('click', (event) => {
     if (!event.target.closest('a')) return;
     const m = location.hash.match(/tuklasin-(\w+)$/);
@@ -1407,7 +1504,11 @@
   });
 
   function bbEscape() {
-    if (lkScene === 'lk-tk') { location.hash = pkUrl(bbState.story); return; }
+    if (lkScene === 'lk-tk') {
+      const x = $('tk-x') || $('tk-isara');
+      location.hash = x ? x.getAttribute('href') : pkUrl(bbState.story);
+      return;
+    }
     if (lkScene === 'lk-story' || $('lk-tall').matches('.is-ang, .is-pk')) { location.hash = abState.esc; return; }
     const close = $('bb-modal').hidden ? null : $('bb-modal').querySelector('.bb-close');
     location.hash = close ? close.getAttribute('href') : bbSteps(bbState.story || Object.keys(BB_STORY)[0]);
@@ -1537,6 +1638,7 @@
     if (lkScene === 'lk-bb' || lkScene === 'lk-tall' || lkScene === 'lk-story' || lkScene === 'lk-tk') {
       const nav = { 'lk-tall': ['bb-tall-prev', 'bb-tall-next'], 'lk-story': ['st-prev', 'st-next'], 'lk-bb': ['bb-prev', 'bb-next'], 'lk-tk': ['tk-prev', 'tk-next'] }[lkScene];
       if (event.key === 'Escape') { event.preventDefault(); bbEscape(); }
+      else if (lkScene === 'lk-tk' && ($('tk-x') || $('tk-isara'))) return; // the wheel screens close with their X, and arrows move the text cursor
       else if (event.key === 'ArrowLeft' && !$(nav[0]).closest('[inert]')) location.hash = $(nav[0]).getAttribute('href');
       else if (event.key === 'ArrowRight' && !$(nav[1]).closest('[inert]')) location.hash = $(nav[1]).getAttribute('href');
       return;
