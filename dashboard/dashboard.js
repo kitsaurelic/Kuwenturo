@@ -1106,7 +1106,7 @@
         { f: 'f8', t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
         { f: 'f9', t: '<em>“Kapag may sakit ako, inaalagaan nila ako.”</em>' },
         { f: 'f10', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>' },
-        { f: 'f11', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>', spot: [265, 0, 730, 478, 'Si Popoy at ang kanyang dalawang mama'], tanong: 'Mahal ba ng dalawang<br>mama si Popoy?' },
+        { f: 'f11', oy: 50, t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>', spot: [265, 0, 730, 478, 'Si Popoy at ang kanyang dalawang mama'], tanong: 'Mahal ba ng dalawang<br>mama si Popoy?' },
         { f: 'f13', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
         { f: 'f14', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
         { f: 'f15', oy: 40, t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
