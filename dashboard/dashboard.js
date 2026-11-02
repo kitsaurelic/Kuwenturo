@@ -796,7 +796,7 @@
       const up = Math.min(abState.oy, 900 - H / sA);
       $('st-art').style.transform = `translate(${(W - 1200 * sA) / 2}px, ${-up * sA}px) scale(${sA})`;
       const sS = Math.min(W / 1200, H / 900);
-      const y0 = H * 478 / 900 - 478 * sS;
+      const y0 = abState.sub ? H - 900 * sS : H * 478 / 900 - 478 * sS;
       stages[0].style.transform = `translate(${(W - 1200 * sS) / 2}px, ${y0}px) scale(${sS})`;
       // The words sit in the middle of the box, below its grey rim
       stages[0].style.setProperty('--st-mid', `${(H * AB_MID - y0) / sS}px`);
@@ -980,6 +980,8 @@
   const bbUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/bago-basahin/${screen}`;
   const bbSteps = (id) => `#/lakbay-aralin/kuwento/${id}/hakbang`;
 
+  const bbBubble = (text, id = 'bb-bubble-clip') => `<div class="bb-bubble"><svg class="bb-tail" viewBox="0 0 852 245" aria-hidden="true"><defs><clipPath id="${id}"><path d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></clipPath></defs><g clip-path="url(#${id})"><rect width="852" height="245" fill="#C9C7C2"/><path transform="translate(10 10)" fill="#FFFBF4" d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></g></svg><p>${text}</p></div>`;
+
   function bbScene(id, screen) {
     const s = BB_STORY[id];
     const alam = () => bbPlate(221, 175.3, 759, 112.3, 30, s.alam) + bbTitle(253.5, 41.1, 1, 75, 'ALAM MO BA?');
@@ -1011,7 +1013,7 @@
         + bbPlate(219, 718, 762, 111.3, 30, 'Hulaan natin kung tungkol saan ang kuwento') + bbTitle(251.6, 584.7, 1, 73, 'TUNGKOL SAAN?')
         + bbImg('biboy-stand.png', 20, 426, 254, 364, 'bb-top') };
     }
-    return { bg: ['bg-handa.jpg', [-520, -700, 2240, 1600]], html: `<div class="bb-bubble"><svg class="bb-tail" viewBox="0 0 852 245" aria-hidden="true"><defs><clipPath id="bb-bubble-clip"><path d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></clipPath></defs><g clip-path="url(#bb-bubble-clip)"><rect width="852" height="245" fill="#C9C7C2"/><path transform="translate(10 10)" fill="#FFFBF4" d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></g></svg><p>${s.handa}</p></div>
+    return { bg: ['bg-handa.jpg', [-520, -700, 2240, 1600]], html: `${bbBubble(s.handa)}
         <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div>${bbImg('biboy-handa.png', 24, 179, 517, 721, 'bb-keep')}` };
   }
 
@@ -1063,8 +1065,12 @@
   }
 
   // Bago Basahin and Ang Basahin share one tall page; only the words and the sign colour change
-  function tallFill({ ang, no, board, title, head1, text1, head2, lead, items, next, back }) {
-    $('lk-tall').classList.toggle('is-ang', ang);
+  function tallFill({ tone, no, board, title, note = 'Maghanda bago basahin ang kuwento', head1, text1, head2, lead, items = [], gawain = '', next, back }) {
+    $('lk-tall').classList.toggle('is-ang', tone === 'ang');
+    $('lk-tall').classList.toggle('is-pk', tone === 'pk');
+    $('bb-tall-note').textContent = note;
+    $('bb-tall-gawain').innerHTML = gawain;
+    $('bb-tall-gawain').hidden = !gawain;
     $('bb-tall-no').textContent = no;
     $('bb-tall-board').innerHTML = board;
     $('bb-tall-title').textContent = title;
@@ -1078,7 +1084,7 @@
   }
   function bbRenderTall(id) {
     const s = BB_STORY[id];
-    tallFill({ ang: false, no: '1', board: 'BAGO<br>BASAHIN', title: 'Bago Basahin', head1: 'MISYON', text1: s.misyon, head2: 'LAYUNIN',
+    tallFill({ tone: 'bb', no: '1', board: 'BAGO<br>BASAHIN', title: 'Bago Basahin', head1: 'MISYON', text1: s.misyon, head2: 'LAYUNIN',
       lead: 'Sa pagtatapos ng aralin, ito ang mga inaasahang matutukoy ng mga mag-aaral:', items: s.layunin, back: bbSteps(id), next: bbUrl(id, 'alam-1') });
   }
 
@@ -1117,18 +1123,31 @@
         { f: 'f17', t: 'Napangiti ako.<br>Doon ko naunawaan.' },
         { f: 'f18', oy: 70, t: 'Magkaiba man ang pamilya namin, pareho naman kaming minamahal.' },
         { f: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', spot: [416, 0, 365, 478, 'Si Biboy na nag-iisip'], tanong: 'Ano ang natutunan ni Biboy<br>tungkol sa pamilya?' },
+        { f: 'subukan', pic: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, bastaâ€™t puno ng pagmamahal.</strong>', subukan: 'Ang galing ninyo sa pagbasa! Pero hindi pa tayo tapos! Subukan natin kung gaano ninyo naunawaan ang kuwento.' },
+      ],
+      hamon: 'Oras na para subukan ang iyong pagkaunawa sa kuwento! Balikan ang mga pangyayari at gamitin ang iyong natutuhan upang masagutan ang mga gawain.',
+      gawain: [
+        { slug: 'tuklasin', name: 'TUKLASIN', head: 'MAY GABAY NG GURO', text: 'Ang mga katanungan sa gawain na ito ay mayroong katumbas na mga pagpipiliang sagot at pahiwatig.' },
+        { slug: 'suriin', name: 'SURIIN', head: 'SARILING PAG-IISIP', text: 'Ang mga katanungan sa gawaing ito ay sasagutin sa pamamagitan ng direktang pagsagot sa guro.' },
+        { slug: 'paglalagom', name: 'PAGLALAGOM', head: 'SARILING PAG-UNAWA', text: 'Ilahad muli ang mga bahagi ng kuwento mula simula hanggang wakas base sa sariling pag-unawa.' },
       ],
     },
   };
+  const pkUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/pagkatapos-basahin${screen ? `/${screen}` : ''}`;
   const abUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/ang-babasahin${screen ? `/${screen}` : ''}`;
   const AB_BOX = 0.625; // the box starts here, as a share of the window; see .st-box
   const AB_MID = 0.82; // the middle of the box below its rim
-  const abState = { esc: null, oy: 0, white: 900 };
+  const abState = { esc: null, oy: 0, white: 900, sub: false };
   const abTabs = (a, b) => `<i class="st-tab" style="left:${a[0]}px;top:${a[1]}px;width:${a[2]}px;height:${a[3]}px"></i><i class="st-tab" style="left:${b[0]}px;top:${b[1]}px;width:${b[2]}px;height:${b[3]}px"></i>`;
 
   function abPage(id, p, tanong) {
-    const pic = tanong ? `p${p.f.slice(1)}` : p.f;
+    const pic = tanong ? `p${p.f.slice(1)}` : (p.pic || p.f);
     $('st-art').innerHTML = `<img src="${AB_ART}${pic}.jpg" alt="">${!tanong && p.spot ? `<a class="st-spot" id="st-spot" href="${abUrl(id, `${p.f}-tanong`)}" aria-label="${p.spot[4]}: buksan ang tanong" style="--x:${p.spot[0]};--y:${p.spot[1]};--w:${p.spot[2]};--h:${p.spot[3]}"></a>` : ''}`;
+    if (p.subukan) {
+      return `<p class="st-text st-ghost" aria-hidden="true">${p.t}</p><i class="st-veil"></i>
+        <img class="st-biboy" src="${AB_ART}biboy-subukan.png" alt="">${bbBubble(p.subukan, 'st-bubble-clip')}
+        <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'SUBUKAN NATIN!', 47).replaceAll('bb-sign-navy', 'st-sign').replace('bb-card-title', 'st-focus')}</div>`;
+    }
     if (tanong) {
       return `<div class="st-band">${abTabs([28.6, 565, 126, 99], [126, 565.7, 69, 102.5])}</div>
         <h1 class="st-q" id="st-focus" tabindex="-1">${p.tanong}</h1>`;
@@ -1153,7 +1172,7 @@
     bbState.story = id;
     abState.esc = tanong ? abUrl(id, name) : bbSteps(id);
     if (!page) {
-      tallFill({ ang: true, no: '2', board: 'ANG<br>BASAHIN', title: 'Ang Basahin', head1: 'PAALALA', text1: s.paalala, head2: 'TANDAAN',
+      tallFill({ tone: 'ang', no: '2', board: 'ANG<br>BASAHIN', title: 'Ang Basahin', head1: 'PAALALA', text1: s.paalala, head2: 'TANDAAN',
         lead: s.lead, items: s.tandaan, back: bbSteps(id), next: abUrl(id, 'f0') });
       const changedT = lkShow('lk-tall') || bbState.screen !== 'ab-simula';
       bbState.screen = 'ab-simula';
@@ -1163,15 +1182,17 @@
     }
     const after = s.pahina[at + 1];
     $('st-prev').href = tanong ? abUrl(id, name) : (at ? abUrl(id, s.pahina[at - 1].f) : abUrl(id));
-    $('st-next').href = after ? abUrl(id, after.f) : bbSteps(id);
-    $('st-next').setAttribute('aria-label', after ? 'Susunod' : 'Tapos na: bumalik sa mga hakbang');
+    $('st-next').href = after ? abUrl(id, after.f) : pkUrl(id);
+    $('st-next').setAttribute('aria-label', after ? 'Susunod' : 'Susunod: Pagkatapos Basahin');
     $('st-stage').innerHTML = abPage(id, page, tanong);
     $('st-stage').dataset.page = screen;
     $('lk-story').classList.toggle('is-q', tanong);
     $('lk-story').classList.toggle('is-whole', tanong || name === 'f0');
+    $('lk-story').classList.toggle('is-sub', !!page.subukan);
+    abState.sub = !!page.subukan;
     abState.oy = tanong ? 0 : (page.oy || 0);
     abState.white = tanong ? 900 : (page.w || 900);
-    if (after) new Image().src = `${AB_ART}${after.f}.jpg`; // the next page is usually a tap away
+    if (after) new Image().src = `${AB_ART}${after.pic || after.f}.jpg`; // the next page is usually a tap away
     bbState.screen = screen;
     lkShow('lk-story');
     $('lk-story').scrollTop = 0;
@@ -1228,8 +1249,38 @@
     announce(opt.tama ? 'Magaling! Tama ang iyong sagot.' : 'Subukan muli sa susunod. Mali ang iyong sagot.');
   });
 
+  // ---------- Lakbay: Pagkatapos Basahin (LAKBAY-INTERFACE 9:64624) ----------
+  function pkShow(id, screen) {
+    const s = AB_STORY[id];
+    const act = s.gawain.find((g) => g.slug === screen);
+    if (act) {
+      lkHide();
+      showPage({
+        kicker: `Pagkatapos Basahin Â· ${LESSONS[id].title}`,
+        title: act.name[0] + act.name.slice(1).toLowerCase(),
+        body: `<p>Malapit na ang gawaing ito.</p>
+          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: pkUrl(id) })}</div>`,
+      });
+      return;
+    }
+    showView('view-lakbay');
+    document.title = `Pagkatapos Basahin â€” ${LESSONS[id].title} â€” Kuwenturo`;
+    bbState.story = id;
+    abState.esc = bbSteps(id);
+    const gawain = s.gawain.map((g, i) => `<a class="pk-card" href="${pkUrl(id, g.slug)}" style="top:${196 + 282 * i}px" aria-label="${g.name}: ${g.head}. ${g.text}">
+      <i class="pk-bar"></i>
+      <span class="pk-thumb"><img src="${AB_ART}gawain-${g.slug}.jpg" alt=""><b>${g.name}</b></span>
+      <span class="pk-t"><b>${g.head}</b><span>${g.text}</span></span></a>`).join('');
+    tallFill({ tone: 'pk', no: '3', board: 'PAGKATAPOS<br>BASAHIN', title: 'Pagkatapos Basahin', note: 'Sagutan ang mga gawain at magbuod', head1: 'HAMON', text1: s.hamon, head2: 'GAWAIN',
+      lead: 'Pumili ng gawain:', gawain, back: abUrl(id, 'subukan'), next: bbSteps(id) });
+    const changed = lkShow('lk-tall') || bbState.screen !== 'pk-simula';
+    bbState.screen = 'pk-simula';
+    $('lk-tall').scrollTop = 0;
+    if (changed) $('bb-tall-title').focus({ preventScroll: true });
+  }
+
   function bbEscape() {
-    if (lkScene === 'lk-story' || $('lk-tall').classList.contains('is-ang')) { location.hash = abState.esc; return; }
+    if (lkScene === 'lk-story' || $('lk-tall').matches('.is-ang, .is-pk')) { location.hash = abState.esc; return; }
     const close = $('bb-modal').hidden ? null : $('bb-modal').querySelector('.bb-close');
     location.hash = close ? close.getAttribute('href') : bbSteps(bbState.story || Object.keys(BB_STORY)[0]);
   }
@@ -1281,6 +1332,11 @@
     if (id === 'kuwento' && AB_STORY[sub] && step === 'ang-babasahin') {
       lkModal(false);
       abShow(sub, screen);
+      return;
+    }
+    if (id === 'kuwento' && AB_STORY[sub] && step === 'pagkatapos-basahin') {
+      lkModal(false);
+      pkShow(sub, screen);
       return;
     }
     if (id === 'kuwento' && LK_DETAIL[sub] && step === 'hakbang') {

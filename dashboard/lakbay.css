@@ -456,6 +456,32 @@
 .lk-tall.is-ang #bb-green stop:nth-child(1), .lk-tall.is-ang #bb-green stop:nth-child(3) { stop-color: #FFAE00; }
 .lk-tall.is-ang #bb-green stop:nth-child(2) { stop-color: #FBCB39; }
 
+/* Pagkatapos Basahin: the Starting Page in red, with the Gawain list */
+.bb-clip { display: none; left: 473px; top: 138px; width: 436px; height: 511px; }
+.lk-tall.is-pk .bb-clip { display: block; }
+.lk-tall.is-pk .bb-books { display: none; }
+.lk-tall.is-pk .bb-t-board { background: linear-gradient(90deg, #AF0414, #E43D45 50%, #AF0414); font-size: 98px; line-height: 121px; }
+.lk-tall.is-pk .lk-step-no { border-color: #AF0414; color: #AF0414; }
+.lk-tall.is-pk .bb-t-note span { border-color: #AF0414; color: #AF0414; }
+.lk-tall.is-pk .bb-misyon p { font-size: 46.3px; line-height: 46.3px; }
+.lk-tall.is-pk #bb-green stop:nth-child(1), .lk-tall.is-pk #bb-green stop:nth-child(3) { stop-color: #AF0414; }
+.lk-tall.is-pk #bb-green stop:nth-child(2) { stop-color: #E43D45; }
+#bb-tall-layunin:empty { display: none; }
+.lk-tall.is-pk .bb-layunin-lead { z-index: 1; height: auto; padding-top: 158px; background: none; }
+.pk-gawain { position: absolute; left: 24px; top: 32px; width: 742px; height: 1051px; border-radius: 53px; background: var(--cream); }
+.pk-gawain::before { content: ""; position: absolute; inset: 27px 21px; border: 8.9px solid #AF0414; border-radius: 38px; }
+.pk-card { position: absolute; left: -21px; width: 790px; height: 263px; color: var(--cream); text-decoration: none; transition: transform .15s ease; }
+.pk-card:hover { transform: translateY(-3px); }
+.pk-card:active { transform: translateY(1px); }
+.pk-card:focus-visible { outline: 5px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 10px var(--navy); border-radius: 32px; }
+.pk-bar { position: absolute; left: 0; top: 51px; width: 790px; height: 162px; border: 10.6px solid var(--cream); border-radius: 32px; background: linear-gradient(90deg, #AF0414, #E43D45 50%, #AF0414); }
+.pk-thumb { position: absolute; left: 46px; top: 0; width: 269px; height: 263px; }
+.pk-thumb img { position: absolute; left: 4px; top: 5px; width: 259px; height: 258px; max-width: none; border: 4.4px solid var(--cream); border-radius: 12px; object-fit: cover; }
+.pk-thumb b { position: absolute; left: 0; top: 0; width: 269px; height: 58px; display: flex; align-items: center; justify-content: center; background: linear-gradient(90deg, #AF0414, #E43D45 50%, #AF0414); clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%); font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-weight: 400; font-size: 35.5px; }
+.pk-t { position: absolute; left: 341px; top: 82px; width: 378px; }
+.pk-t b { display: block; font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-weight: 400; font-size: 24.5px; line-height: 32px; }
+.pk-t span { display: block; margin-top: 4px; font-weight: 700; font-size: 19px; line-height: 20px; }
+
 /* Ang Basahin: the story */
 .lk-story { background: #FFFBF4; overflow: hidden; }
 .st-art, .st-art > img { position: absolute; left: 0; top: 0; width: 1200px; height: 900px; max-width: none; }
@@ -463,6 +489,11 @@
 /* The box takes the bottom 37.5% of the window. Its image is solid for the top 79% of its height, so that part fills it */
 .st-box { position: absolute; left: -8.5%; top: 62.5%; width: 117%; height: 47.35%; max-width: none; pointer-events: none; }
 .lk-story.is-whole .st-box { display: none; }
+/* Subukan Natin: the last page behind a navy veil, with Biboy and his bubble on top */
+.lk-story.is-sub .st-art, .lk-story.is-sub .st-box, .st-ghost { filter: blur(15px); }
+.st-veil { position: absolute; left: -3000px; top: -3000px; width: 7200px; height: 7200px; background: rgba(0, 19, 67, .7); }
+.lk-story .bb-bubble p { left: 97px; width: 740px; }
+.st-biboy { position: absolute; left: 24px; top: 179px; width: 517px; height: 853px; max-width: none; z-index: 2; }
 #st-stage { pointer-events: none; }
 #st-stage a { pointer-events: auto; }
 .st-spot { position: absolute; left: calc(var(--x) * 1px); top: calc(var(--y) * 1px); width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); cursor: pointer; }
@@ -494,6 +525,27 @@
   .st-art > img { position: static; display: block; width: 100%; height: auto; }
   .lk-story.is-whole .st-art { aspect-ratio: 4 / 3; }
   .st-box { display: none; }
+  .lk-story.is-sub { background: var(--navy); }
+  .lk-story.is-sub .st-art, .st-ghost, .st-veil { display: none; }
+  .lk-story.is-sub .lk-stage { padding: 16px 16px 96px; }
+  .bb-handa-sign .bb-sign, .lk-story.is-sub .bb-bubble { margin-bottom: 16px; }
+  .st-biboy { position: static; order: 3; display: block; width: 200px; height: auto; margin: 0 auto; }
+  .lk-story.is-sub .lk-stage { display: flex; flex-direction: column; }
+  .lk-tall .bb-clip, .lk-tall .bb-open-book { width: 200px; height: auto; margin: 0 auto; }
+  .lk-tall.is-pk .bb-t-board { font-size: 34px; line-height: 40px; }
+  .lk-tall.is-ang .bb-misyon p, .lk-tall.is-pk .bb-misyon p { font-size: 18px; line-height: 26px; }
+  .lk-story .bb-bubble p { width: auto; }
+  .pk-gawain { position: static; width: auto; height: auto; padding: 10px; border-radius: 20px; }
+  .pk-gawain::before { display: none; }
+  .lk-tall.is-pk .bb-layunin-lead { padding-top: 10px; }
+  .pk-card { position: relative; left: auto; top: auto !important; display: flex; gap: 10px; align-items: center; width: auto; height: auto; margin-top: 10px; padding: 10px; border-radius: 16px; background: linear-gradient(90deg, #AF0414, #E43D45 50%, #AF0414); }
+  .pk-bar { display: none; }
+  .pk-thumb { position: relative; left: auto; flex: none; width: 96px; height: 120px; }
+  .pk-thumb img { position: static; display: block; width: 96px; height: 96px; margin-top: 24px; border-width: 2px; }
+  .pk-thumb b { width: 96px; height: 26px; font-size: 12px; }
+  .pk-t { position: static; width: auto; }
+  .pk-t b { font-size: 18px; line-height: 24px; }
+  .pk-t span { font-size: 16px; line-height: 22px; }
   .st-spot { left: calc(var(--x) / 12 * 1%); top: 0; width: calc(var(--w) / 12 * 1%); height: 100%; }
   .st-text { position: static; width: auto; transform: none; padding: 24px 20px; font-size: 24px; line-height: 32px; }
   .st-band, .st-tab { display: none; }
@@ -508,5 +560,5 @@
   .st-go { width: 180px; height: 56px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bb-nav, .bb-word, .bb-opt { transition: none; }
+  .bb-nav, .bb-word, .bb-opt, .pk-card { transition: none; }
 }
