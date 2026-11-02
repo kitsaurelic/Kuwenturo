@@ -776,7 +776,7 @@
     const bg = scene.querySelector('.lk-bg');
     if (lkScene === 'lk-tall') {
       const stageT = stages[0];
-      const sT = lkPhone.matches ? 0 : Math.min(scene.clientWidth / 1200, 1.4);
+      const sT = lkPhone.matches ? 0 : scene.clientWidth / 1200;
       stageT.style.transform = sT ? `translateX(${(scene.clientWidth - 1200 * sT) / 2}px) scale(${sT})` : '';
       $('bb-tall-size').style.height = sT ? `${3650 * sT}px` : '';
       return;
@@ -788,6 +788,16 @@
     const d = LK_DESIGN[lkScene];
     const W = scene.clientWidth;
     const H = scene.clientHeight;
+    if (lkScene === 'lk-bb') {
+      // One scale and one origin for the art and everything on it, so nothing drifts off its background
+      const [ax, ay, aw, ah] = d.bg;
+      const sB = Math.max(Math.min(W / 1200, H / 900), W / aw, H / (900 - ay));
+      const left = (W - 1200 * sB) / 2;
+      const top = H - 900 * sB;
+      stages.forEach((stage) => { stage.style.transform = `translate(${left}px, ${top}px) scale(${sB})`; });
+      bg.style.cssText = `left:${left + ax * sB}px;top:${top + ay * sB}px;width:${aw * sB}px;height:${ah * sB}px`;
+      return;
+    }
     const s = Math.min(W / d.w, H / 900);
     const ox = (W - d.w * s) / 2 - d.x * s;
     const oy = H - 900 * s; // tall windows keep the road at the bottom, extra sky on top
@@ -960,34 +970,34 @@
     const s = BB_STORY[id];
     const alam = () => bbPlate(221, 175.3, 759, 112.3, 30, s.alam) + bbTitle(253.5, 41.1, 1, 75, 'ALAM MO BA?');
     if (screen === 'alam-1' || screen === 'panimula') {
-      return { bg: ['bg-alam.jpg', [-317, -44, 1837, 950]], html: alam()
+      return { bg: ['bg-alam.jpg', [-520, -700, 2240, 1600]], html: alam()
         + bbImg('family1.png', 217, 327, 263, 415) + bbImg('nanay1.png', 732, 373, 220, 360)
         + bbImg('biboy-think.png', 480, 371, 239, 437, 'bb-keep') + bbImg('jeep.png', 924, 290, 1647.5, 599.5) };
     }
     if (screen === 'alam-2') {
-      return { bg: ['bg-alam.jpg', [-317, -44, 1837, 950]], html: alam()
+      return { bg: ['bg-alam.jpg', [-520, -700, 2240, 1600]], html: alam()
         + bbImg('biboy-ride.png', 662, 276, 1853.5, 607) + bbImg('nanay2.png', 491, 385, 217.5, 360)
         + bbImg('family2.png', 234, 327, 258, 417.5, 'bb-keep') };
     }
     if (screen === 'bokabularyo' || screen.startsWith('salita-')) {
       const cols = s.salita.map((w, i) => `<a class="bb-word bb-t-${w.tone}" href="${bbUrl(id, `salita-${w.slug}`)}" style="top:${164 + 92 * i}px" aria-label="${w.button}: alamin ang ibig sabihin">${w.button}</a>`).join('');
-      return { bg: ['bg-boka.jpg', [-240, -106.7, 1680, 1006.7]], html: bbPlate(118, 134.4, 572, 83.6, 22.3, 'Pindutin ang mga salitang mababasa sa kuwento upang malaman ang kanilang ibig sabihin')
+      return { bg: ['bg-boka.jpg', [-520, -700, 2240, 1600]], html: bbPlate(118, 134.4, 572, 83.6, 22.3, 'Pindutin ang mga salitang mababasa sa kuwento upang malaman ang kanilang ibig sabihin')
         + bbTitle(142.5, 34.2, 0.7535, 78, 'BOKABULARYO') + bbImg('spark-boka.png', 356, 226, 119.7, 118.2) + bbImg('jeep.png', -979, 290, 1647.5, 599.5)
         + bbImg('biboy-sit.png', 200, 246, 265.5, 367.5, 'bb-keep')
         + `<div class="bb-words">${cols}</div>` };
     }
     if (screen === 'hulaan') {
-      return { bg: ['bg-hulaan.jpg', [0, 0, 1200, 900]], html: bbImg('biboy-peek.png', 0, 359, 242, 443.8) + bbImg('popoy.png', 526, 14, 206, 228)
+      return { bg: ['bg-hulaan.jpg', [-520, -700, 2240, 1600]], html: bbImg('biboy-peek.png', 0, 359, 242, 443.8) + bbImg('popoy.png', 526, 14, 206, 228)
         + bbImg('story-card.png', 401.7, 189.3, 416.8, 460.3, 'bb-keep bb-under') + bbImg('tita-a.png', 272, 173, 188, 480) + bbImg('tita-b.png', 718, 165, 271.7, 545)
         + bbPlate(219, 718, 762, 111.3, 30, 'Hulaan natin kung tungkol saan ang kuwento') + bbTitle(251.6, 584.7, 1, 73, 'TUNGKOL SAAN?') };
     }
     if (screen === 'tungkol-saan') {
-      return { bg: ['bg-tungkol.jpg', [-323, -60, 1846, 960]], html: bbImg('popoy.png', 526, 14, 206, 228)
+      return { bg: ['bg-tungkol.jpg', [-520, -700, 2240, 1600]], html: bbImg('popoy.png', 526, 14, 206, 228)
         + bbImg('story-card.png', 401.7, 189.3, 416.8, 460.3, 'bb-keep bb-under') + bbImg('tita-a.png', 272, 173, 188, 480) + bbImg('tita-b.png', 718, 165, 271.7, 545)
         + bbPlate(219, 718, 762, 111.3, 30, 'Hulaan natin kung tungkol saan ang kuwento') + bbTitle(251.6, 584.7, 1, 73, 'TUNGKOL SAAN?')
-        + bbImg('biboy-stand.png', 19, 424, 253.5, 363.1, 'bb-top') };
+        + bbImg('biboy-stand.png', 20, 426, 254, 364, 'bb-top') };
     }
-    return { bg: ['bg-handa.jpg', [0, 0, 1200, 900]], html: `<div class="bb-bubble"><svg class="bb-tail" viewBox="0 0 852 245" aria-hidden="true"><defs><clipPath id="bb-bubble-clip"><path d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></clipPath></defs><g clip-path="url(#bb-bubble-clip)"><rect width="852" height="245" fill="#C9C7C2"/><path transform="translate(10 10)" fill="#FFFBF4" d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></g></svg><p>${s.handa}</p></div>
+    return { bg: ['bg-handa.jpg', [-520, -700, 2240, 1600]], html: `<div class="bb-bubble"><svg class="bb-tail" viewBox="0 0 852 245" aria-hidden="true"><defs><clipPath id="bb-bubble-clip"><path d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></clipPath></defs><g clip-path="url(#bb-bubble-clip)"><rect width="852" height="245" fill="#C9C7C2"/><path transform="translate(10 10)" fill="#FFFBF4" d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></g></svg><p>${s.handa}</p></div>
         <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div>${bbImg('biboy-handa.png', 24, 179, 517, 721, 'bb-keep')}` };
   }
 
@@ -1027,7 +1037,7 @@
   function bbNav(id, screen) {
     // Pop-ups dim the arrows like the frames: their X is the way on
     const links = BB_LINKS[screen];
-    const stage = document.querySelector('.bb-nav-stage');
+    const stage = $('bb-nav');
     stage.inert = !links;
     stage.classList.toggle('is-dim', !links);
     if (!links) return;
