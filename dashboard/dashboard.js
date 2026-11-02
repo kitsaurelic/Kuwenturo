@@ -1353,7 +1353,7 @@
       <img class="tk-line" src="${TK_ART}line.svg" alt="" style="top:262px"><img class="tk-line" src="${TK_ART}line.svg" alt="" style="top:489px">
       <ol class="tk-daloy">${TK_DALOY.map((text, i) => `<li><b>${i + 1}</b><span>${text}</span></li>`).join('')}</ol>`,
     simula: () => `<h1 class="tk-vh" id="tk-title" tabindex="-1">Ang Nawawalang Larawan</h1><img class="tk-room" src="${TK_ART}room.jpg" alt="">
-      ${TK_PIECES.map(([file, x, y, w, h, turn]) => `<img class="tk-piece" src="${TK_ART}${file}.png" alt="" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:${turn || 'none'}">`).join('')}
+      ${TK_PIECES.map(([file, x, y, w, h, turn], i) => `<button class="tk-piece" type="button" aria-label="Piraso ${i + 1} ng puzzle" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><img src="${TK_ART}${file}.png" alt="" style="transform:${turn || 'none'}"></button>`).join('')}
       <img class="tk-kid" src="${TK_ART}biboy-tayo.png" alt="Si Biboy">`,
   };
   const TK_FLOW = {
