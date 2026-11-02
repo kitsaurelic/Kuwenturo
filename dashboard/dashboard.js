@@ -782,6 +782,7 @@
       return;
     }
     if (lkPhone.matches) {      stages.forEach((stage) => { stage.style.transform = ''; });
+      $('st-art').style.transform = '';
       if (bg) bg.style.cssText = '';
       return;
     }
@@ -789,9 +790,13 @@
     const W = scene.clientWidth;
     const H = scene.clientHeight;
     if (lkScene === 'lk-story') {
-      // The story pictures show whole: the same picture, blurred, fills what is left of the window
+      // The illustration covers the window. Its bottom is white, so the box always starts above that: at
+      // the frame's height (478 of 900) on any window. The words scale with the screen and start on the box.
+      const sA = Math.max(W / 1200, H / 900);
+      const up = Math.min(abState.oy, 900 - H / sA);
+      $('st-art').style.transform = `translate(${(W - 1200 * sA) / 2}px, ${-up * sA}px) scale(${sA})`;
       const sS = Math.min(W / 1200, H / 900);
-      stages[0].style.transform = `translate(${(W - 1200 * sS) / 2}px, ${(H - 900 * sS) / 2}px) scale(${sS})`;
+      stages[0].style.transform = `translate(${(W - 1200 * sS) / 2}px, ${H * 478 / 900 - 478 * sS}px) scale(${sS})`;
       return;
     }
     if (lkScene === 'lk-bb') {
@@ -1090,10 +1095,10 @@
       ],
       pamagat: 'ANG PAMILYANG PUNONG-PUNO NG PAGMAMAHAL',
       pahina: [
-        { f: 'f0' },
+        { f: 'f0', oy: 120 },
         { f: 'f1', t: 'Habang naglalakad sa aming barangay, nakita ko ang kaibigan kong si Popoy.' },
         { f: 'f2', t: '<em>“Popoy! Papasok ka na ba sa paaralan? Sabay na tayo!”</em> tawag ko.<br><em>“Hindi. Aalis kami ng mga mama ko,”</em> sagot niya.' },
-        { f: 'f3', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.', spot: [440, 0, 445, 478, 'Si Biboy na nagtataka'], tanong: 'Anong emosyon kaya ito?<br>Ipakita mo rin!' },
+        { f: 'f3', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.', spot: [416, 0, 365, 478, 'Si Biboy na nagtataka'], tanong: 'Anong emosyon kaya ito?<br>Ipakita mo rin!' },
         { f: 'f4', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.' },
         { f: 'f5', t: 'Umiling si Popoy.<br><em>“Dalawa ang mama ko.”</em>' },
         { f: 'f6', t: '<em>“Dalawa ang mama ko at mahal na mahal nila ako.”</em>' },
@@ -1101,35 +1106,35 @@
         { f: 'f8', t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
         { f: 'f9', t: '<em>“Kapag may sakit ako, inaalagaan nila ako.”</em>' },
         { f: 'f10', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>' },
-        { f: 'f11', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>', spot: [290, 0, 680, 478, 'Si Popoy at ang kanyang dalawang mama'], tanong: 'Mahal ba ng dalawang<br>mama si Popoy?' },
+        { f: 'f11', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>', spot: [265, 0, 730, 478, 'Si Popoy at ang kanyang dalawang mama'], tanong: 'Mahal ba ng dalawang<br>mama si Popoy?' },
         { f: 'f13', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
         { f: 'f14', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
-        { f: 'f15', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f15', oy: 40, t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
         { f: 'f16', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
         { f: 'f17', t: 'Napangiti ako.<br>Doon ko naunawaan.' },
-        { f: 'f18', t: 'Magkaiba man ang pamilya namin, pareho naman kaming minamahal.' },
-        { f: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', spot: [470, 0, 380, 478, 'Si Biboy na nag-iisip'], tanong: 'Ano ang natutunan ni Biboy<br>tungkol sa pamilya?' },
+        { f: 'f18', oy: 70, t: 'Magkaiba man ang pamilya namin, pareho naman kaming minamahal.' },
+        { f: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', spot: [416, 0, 365, 478, 'Si Biboy na nag-iisip'], tanong: 'Ano ang natutunan ni Biboy<br>tungkol sa pamilya?' },
       ],
     },
   };
   const abUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/ang-babasahin${screen ? `/${screen}` : ''}`;
-  const abState = { esc: null };
+  const abState = { esc: null, oy: 0 };
   const abTabs = (a, b) => `<i class="st-tab" style="left:${a[0]}px;top:${a[1]}px;width:${a[2]}px;height:${a[3]}px"></i><i class="st-tab" style="left:${b[0]}px;top:${b[1]}px;width:${b[2]}px;height:${b[3]}px"></i>`;
 
   function abPage(id, p, tanong) {
     const pic = tanong ? `p${p.f.slice(1)}` : p.f;
-    const art = `<div class="st-art"><img src="${AB_ART}${pic}.jpg" alt="">${!tanong && p.spot ? `<a class="st-spot" id="st-spot" href="${abUrl(id, `${p.f}-tanong`)}" aria-label="${p.spot[4]}: buksan ang tanong" style="--x:${p.spot[0]};--y:${p.spot[1]};--w:${p.spot[2]};--h:${p.spot[3]}"></a>` : ''}</div>`;
+    $('st-art').innerHTML = `<img src="${AB_ART}${pic}.jpg" alt="">${!tanong && p.spot ? `<a class="st-spot" id="st-spot" href="${abUrl(id, `${p.f}-tanong`)}" aria-label="${p.spot[4]}: buksan ang tanong" style="--x:${p.spot[0]};--y:${p.spot[1]};--w:${p.spot[2]};--h:${p.spot[3]}"></a>` : ''}`;
     if (tanong) {
-      return `${art}<div class="st-band">${abTabs([28.6, 565, 126, 99], [126, 565.7, 69, 102.5])}</div>
+      return `<div class="st-band">${abTabs([28.6, 565, 126, 99], [126, 565.7, 69, 102.5])}</div>
         <h1 class="st-q" id="st-focus" tabindex="-1">${p.tanong}</h1>`;
     }
     if (p.f === 'f0') {
-      return `${art}<div class="st-cover">${abTabs([31.7, 64, 115.5, 91.8], [121.5, 65.7, 62.4, 95.4])}
+      return `<div class="st-cover">${abTabs([31.7, 64, 115.5, 91.8], [121.5, 65.7, 62.4, 95.4])}
         <div class="st-plate"><h1 id="st-focus" tabindex="-1">${AB_STORY[id].pamagat}</h1></div>
         <div class="st-tag"><img class="st-tag-bg" src="${AB_ART}tab.svg" alt=""><img class="st-tag-dash" src="${AB_ART}tab-dash.png" alt=""><span>KUWENTO #1</span></div>
         <div class="st-go">${pill({ tone: 'green', label: 'Simulan', name: 'Simulan ang kuwento', href: abUrl(id, 'f1') })}</div></div>`;
     }
-    return `${art}<p class="st-text" id="st-focus" tabindex="-1">${p.t}</p>`;
+    return `<p class="st-text" id="st-focus" tabindex="-1">${p.t}</p>`;
   }
 
   function abShow(id, screen) {
@@ -1158,7 +1163,8 @@
     $('st-stage').innerHTML = abPage(id, page, tanong);
     $('st-stage').dataset.page = screen;
     $('lk-story').classList.toggle('is-q', tanong);
-    $('st-blur').src = `${AB_ART}${tanong ? `p${name.slice(1)}` : name}.jpg`;
+    $('lk-story').classList.toggle('is-whole', tanong || name === 'f0');
+    abState.oy = tanong ? 0 : (page.oy || 0);
     if (after) new Image().src = `${AB_ART}${after.f}.jpg`; // the next page is usually a tap away
     bbState.screen = screen;
     lkShow('lk-story');
