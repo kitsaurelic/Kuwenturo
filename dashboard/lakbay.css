@@ -301,7 +301,7 @@
 .bb-t-blue { background: linear-gradient(90deg, #0476BB, #4A97D6 50%, #0476BB 97%); }
 .bb-t-purple { background: linear-gradient(90deg, #550868, #9D4CB1 50%, #550868 98%); }
 .bb-words { position: absolute; left: 0; top: 0; }
-.bb-word { position: absolute; left: 805px; width: 271px; height: 58px; display: flex; align-items: center; justify-content: center; border: 3px solid #FFFBF4; border-radius: 10.8px; color: #FFFBF4; font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-size: 30px; line-height: 1; text-decoration: none; filter: drop-shadow(0 5px 5px rgba(0, 0, 0, .3)); transition: transform .15s ease; }
+.bb-word { position: absolute; left: 797px; width: 271px; height: 58px; display: flex; align-items: center; justify-content: center; border: 3px solid #FFFBF4; border-radius: 10.8px; color: #FFFBF4; font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-size: 30px; line-height: 1; text-decoration: none; filter: drop-shadow(0 5px 5px rgba(0, 0, 0, .3)); transition: transform .15s ease; }
 .bb-word:hover { transform: translateY(-3px); }
 .bb-word:active { transform: translateY(1px); }
 .bb-head { position: absolute; pointer-events: none; max-width: none; }

@@ -976,7 +976,12 @@
         + bbImg('biboy-sit.png', 200, 246, 265.5, 367.5, 'bb-keep')
         + `<div class="bb-words">${cols}</div>` };
     }
-    if (screen === 'tungkol-saan' || screen === 'hulaan') {
+    if (screen === 'hulaan') {
+      return { bg: ['bg-hulaan.jpg', [0, 0, 1200, 900]], html: bbImg('biboy-peek.png', 0, 359, 242, 443.8) + bbImg('popoy.png', 526, 14, 206, 228)
+        + bbImg('story-card.png', 401.7, 189.3, 416.8, 460.3, 'bb-keep bb-under') + bbImg('tita-a.png', 272, 173, 188, 480) + bbImg('tita-b.png', 718, 165, 271.7, 545)
+        + bbPlate(219, 718, 762, 111.3, 30, 'Hulaan natin kung tungkol saan ang kuwento') + bbTitle(251.6, 584.7, 1, 73, 'TUNGKOL SAAN?') };
+    }
+    if (screen === 'tungkol-saan') {
       return { bg: ['bg-tungkol.jpg', [-323, -60, 1846, 960]], html: bbImg('popoy.png', 526, 14, 206, 228)
         + bbImg('story-card.png', 401.7, 189.3, 416.8, 460.3, 'bb-keep bb-under') + bbImg('tita-a.png', 272, 173, 188, 480) + bbImg('tita-b.png', 718, 165, 271.7, 545)
         + bbPlate(219, 718, 762, 111.3, 30, 'Hulaan natin kung tungkol saan ang kuwento') + bbTitle(251.6, 584.7, 1, 73, 'TUNGKOL SAAN?')
