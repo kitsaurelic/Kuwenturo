@@ -971,7 +971,7 @@
     }
     if (screen === 'bokabularyo' || screen.startsWith('salita-')) {
       const cols = s.salita.map((w, i) => `<a class="bb-word bb-t-${w.tone}" href="${bbUrl(id, `salita-${w.slug}`)}" style="top:${164 + 92 * i}px" aria-label="${w.button}: alamin ang ibig sabihin">${w.button}</a>`).join('');
-      return { bg: ['bg-boka.jpg', [-37, -107, 1909, 1010]], html: bbPlate(118, 134.4, 572, 83.6, 22.3, 'Pindutin ang mga salitang mababasa sa kuwento upang malaman ang kanilang ibig sabihin')
+      return { bg: ['bg-boka.jpg', [-240, -106.7, 1680, 1006.7]], html: bbPlate(118, 134.4, 572, 83.6, 22.3, 'Pindutin ang mga salitang mababasa sa kuwento upang malaman ang kanilang ibig sabihin')
         + bbTitle(142.5, 34.2, 0.7535, 78, 'BOKABULARYO') + bbImg('spark-boka.png', 356, 226, 119.7, 118.2) + bbImg('jeep.png', -979, 290, 1647.5, 599.5)
         + bbImg('biboy-sit.png', 200, 246, 265.5, 367.5, 'bb-keep')
         + `<div class="bb-words">${cols}</div>` };
@@ -988,7 +988,7 @@
         + bbImg('biboy-stand.png', 19, 424, 253.5, 363.1, 'bb-top') };
     }
     return { bg: ['bg-handa.jpg', [0, 0, 1200, 900]], html: `<div class="bb-bubble"><svg class="bb-tail" viewBox="0 0 852 245" aria-hidden="true"><defs><clipPath id="bb-bubble-clip"><path d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></clipPath></defs><g clip-path="url(#bb-bubble-clip)"><rect width="852" height="245" fill="#C9C7C2"/><path transform="translate(10 10)" fill="#FFFBF4" d="M30 0H822Q852 0 852 30V160Q852 190 822 190H207L148 245L87 190H30Q0 190 0 160V30Q0 0 30 0Z"/></g></svg><p>${s.handa}</p></div>
-        <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div>${bbImg('biboy-handa.png', 24, 182, 524, 718, 'bb-keep')}` };
+        <div class="bb-handa-sign">${bbSign(409, 64, 702, 80, 'navy', 'HANDA NA BA?', 47)}</div>${bbImg('biboy-handa.png', 24, 179, 517, 721, 'bb-keep')}` };
   }
 
   function bbModal(id, screen) {

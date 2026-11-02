@@ -285,13 +285,13 @@
 .lk-bb .lk-title-board h1 { line-height: 1; }
 .bb-veil { background: rgba(0, 19, 67, .7); -webkit-backdrop-filter: blur(7.5px); backdrop-filter: blur(7.5px); }
 .bb-nav-stage { z-index: 6; pointer-events: none; }
-.bb-nav { position: absolute; top: 819px; width: 80px; height: 58px; pointer-events: auto; transition: transform .15s ease; }
+.bb-nav { position: absolute; top: 819px; width: 77px; height: 57px; pointer-events: auto; transition: transform .15s ease; }
 .bb-nav[hidden] { display: none; }
 .bb-nav-stage.is-dim { opacity: .3; }
 .bb-nav-stage.is-dim .bb-nav { pointer-events: none; }
 .bb-nav img { display: block; width: 100%; height: 100%; }
-.bb-prev { left: 22px; }
-.bb-next { left: 1098px; }
+.bb-prev { left: 23px; }
+.bb-next { left: 1101px; }
 .bb-nav:hover { transform: translateY(-2px); }
 .bb-nav:active { transform: translateY(1px); }
 .bb-nav:focus-visible, .bb-word:focus-visible, .bb-opt:focus-visible { outline: 4px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 9px var(--navy); }
