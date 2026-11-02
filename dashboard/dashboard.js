@@ -788,6 +788,12 @@
     const d = LK_DESIGN[lkScene];
     const W = scene.clientWidth;
     const H = scene.clientHeight;
+    if (lkScene === 'lk-story') {
+      // The story pictures show whole: the same picture, blurred, fills what is left of the window
+      const sS = Math.min(W / 1200, H / 900);
+      stages[0].style.transform = `translate(${(W - 1200 * sS) / 2}px, ${(H - 900 * sS) / 2}px) scale(${sS})`;
+      return;
+    }
     if (lkScene === 'lk-bb') {
       // One scale and one origin for the art and everything on it, so nothing drifts off its background
       const [ax, ay, aw, ah] = d.bg;
@@ -817,7 +823,7 @@
 
   function lkShow(sceneId) {
     const changed = lkScene !== sceneId;
-    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps', 'lk-bb', 'lk-tall'].forEach((id) => { $(id).hidden = id !== sceneId; });
+    ['lk-start', 'lk-saan', 'lk-street', 'lk-steps', 'lk-bb', 'lk-tall', 'lk-story'].forEach((id) => { $(id).hidden = id !== sceneId; });
     lkScene = sceneId;
     document.body.classList.add('lk-on');
     const full = sceneId !== 'lk-start';
@@ -1043,17 +1049,121 @@
     if (!links) return;
     const last = links[1] === null;
     $('bb-prev').href = bbUrl(id, links[0]);
-    $('bb-next').href = last ? bbSteps(id) : bbUrl(id, links[1]);
+    $('bb-next').href = last ? abUrl(id) : bbUrl(id, links[1]);
     $('bb-prev').setAttribute('aria-label', 'Nakaraan');
-    $('bb-next').setAttribute('aria-label', last ? 'Tapos na: bumalik sa mga hakbang' : 'Susunod');
+    $('bb-next').setAttribute('aria-label', last ? 'Susunod: Ang Basahin' : 'Susunod');
   }
 
+  // Bago Basahin and Ang Basahin share one tall page; only the words and the sign colour change
+  function tallFill({ ang, no, board, title, head1, text1, head2, lead, items, next, back }) {
+    $('lk-tall').classList.toggle('is-ang', ang);
+    $('bb-tall-no').textContent = no;
+    $('bb-tall-board').innerHTML = board;
+    $('bb-tall-title').textContent = title;
+    $('bb-misyon-h').textContent = head1;
+    $('bb-tall-misyon').textContent = text1;
+    $('bb-layunin-h').textContent = head2;
+    $('bb-tall-lead').textContent = lead;
+    $('bb-tall-layunin').innerHTML = items.map((t) => `<li><svg viewBox="0 0 86 86" aria-hidden="true"><path d="M43 2l12.6 25.5 28.2 4.1-20.4 19.9 4.8 28.1L43 66.4 17.8 79.6l4.8-28.1L2.2 31.6l28.2-4.1z" fill="#FFBE33"/></svg><span>${t}</span></li>`).join('');
+    $('bb-tall-prev').href = back;
+    $('bb-tall-next').href = next;
+  }
   function bbRenderTall(id) {
     const s = BB_STORY[id];
-    $('bb-tall-misyon').textContent = s.misyon;
-    $('bb-tall-layunin').innerHTML = s.layunin.map((t) => `<li><svg viewBox="0 0 86 86" aria-hidden="true"><path d="M43 2l12.6 25.5 28.2 4.1-20.4 19.9 4.8 28.1L43 66.4 17.8 79.6l4.8-28.1L2.2 31.6l28.2-4.1z" fill="#FFBE33"/></svg><span>${t}</span></li>`).join('');
-    $('bb-tall-prev').href = bbSteps(id);
-    $('bb-tall-next').href = bbUrl(id, 'alam-1');
+    tallFill({ ang: false, no: '1', board: 'BAGO<br>BASAHIN', title: 'Bago Basahin', head1: 'MISYON', text1: s.misyon, head2: 'LAYUNIN',
+      lead: 'Sa pagtatapos ng aralin, ito ang mga inaasahang matutukoy ng mga mag-aaral:', items: s.layunin, back: bbSteps(id), next: bbUrl(id, 'alam-1') });
+  }
+
+  // ---------- Lakbay: Ang Basahin (LAKBAY-INTERFACE 965:50723, story 1012:4296) ----------
+  // #/lakbay-aralin/kuwento/<id>/ang-basahin page, then .../ang-babasahin/<page>; each page is one frame.
+  // A page with `spot` has a highlighted part that opens <page>-tanong; Next on the page itself skips it.
+  const AB_ART = 'assets/lakbay/kuwento/';
+  const AB_STORY = {
+    'ang-pamilyang-puno-ng-pagmamahal': {
+      paalala: 'Ang kuwentong ito ay tungkol sa uri ng pamilya at pagmamahal. Hindi ito naglalayong magturo ng anumang hindi angkop para sa mga bata.',
+      lead: 'Habang nagbabasa ng kuwento, ito ang mga inaasahang gawin ng mga mag-aaral:',
+      tandaan: [
+        'Tingnan at sundan ang mga salita habang nagbabasa.',
+        'Huwag magmadali para mas maintindihan ang kuwento.',
+        'Isipin kung ano ang ibig sabihin ng mga pangyayari.',
+        'Alalahanin ang mga aral at mahahalagang pangyayari.',
+      ],
+      pamagat: 'ANG PAMILYANG PUNONG-PUNO NG PAGMAMAHAL',
+      pahina: [
+        { f: 'f0' },
+        { f: 'f1', t: 'Habang naglalakad sa aming barangay, nakita ko ang kaibigan kong si Popoy.' },
+        { f: 'f2', t: '<em>“Popoy! Papasok ka na ba sa paaralan? Sabay na tayo!”</em> tawag ko.<br><em>“Hindi. Aalis kami ng mga mama ko,”</em> sagot niya.' },
+        { f: 'f3', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.', spot: [440, 0, 445, 478, 'Si Biboy na nagtataka'], tanong: 'Anong emosyon kaya ito?<br>Ipakita mo rin!' },
+        { f: 'f4', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.' },
+        { f: 'f5', t: 'Umiling si Popoy.<br><em>“Dalawa ang mama ko.”</em>' },
+        { f: 'f6', t: '<em>“Dalawa ang mama ko at mahal na mahal nila ako.”</em>' },
+        { f: 'f7', t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
+        { f: 'f8', t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
+        { f: 'f9', t: '<em>“Kapag may sakit ako, inaalagaan nila ako.”</em>' },
+        { f: 'f10', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>' },
+        { f: 'f11', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>', spot: [290, 0, 680, 478, 'Si Popoy at ang kanyang dalawang mama'], tanong: 'Mahal ba ng dalawang<br>mama si Popoy?' },
+        { f: 'f13', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f14', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f15', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f16', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f17', t: 'Napangiti ako.<br>Doon ko naunawaan.' },
+        { f: 'f18', t: 'Magkaiba man ang pamilya namin, pareho naman kaming minamahal.' },
+        { f: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', spot: [470, 0, 380, 478, 'Si Biboy na nag-iisip'], tanong: 'Ano ang natutunan ni Biboy<br>tungkol sa pamilya?' },
+      ],
+    },
+  };
+  const abUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/ang-babasahin${screen ? `/${screen}` : ''}`;
+  const abState = { esc: null };
+  const abTabs = (a, b) => `<i class="st-tab" style="left:${a[0]}px;top:${a[1]}px;width:${a[2]}px;height:${a[3]}px"></i><i class="st-tab" style="left:${b[0]}px;top:${b[1]}px;width:${b[2]}px;height:${b[3]}px"></i>`;
+
+  function abPage(id, p, tanong) {
+    const pic = tanong ? `p${p.f.slice(1)}` : p.f;
+    const art = `<div class="st-art"><img src="${AB_ART}${pic}.jpg" alt="">${!tanong && p.spot ? `<a class="st-spot" id="st-spot" href="${abUrl(id, `${p.f}-tanong`)}" aria-label="${p.spot[4]}: buksan ang tanong" style="--x:${p.spot[0]};--y:${p.spot[1]};--w:${p.spot[2]};--h:${p.spot[3]}"></a>` : ''}</div>`;
+    if (tanong) {
+      return `${art}<div class="st-band">${abTabs([28.6, 565, 126, 99], [126, 565.7, 69, 102.5])}</div>
+        <h1 class="st-q" id="st-focus" tabindex="-1">${p.tanong}</h1>`;
+    }
+    if (p.f === 'f0') {
+      return `${art}<div class="st-cover">${abTabs([31.7, 64, 115.5, 91.8], [121.5, 65.7, 62.4, 95.4])}
+        <div class="st-plate"><h1 id="st-focus" tabindex="-1">${AB_STORY[id].pamagat}</h1></div>
+        <div class="st-tag"><img class="st-tag-bg" src="${AB_ART}tab.svg" alt=""><img class="st-tag-dash" src="${AB_ART}tab-dash.png" alt=""><span>KUWENTO #1</span></div>
+        <div class="st-go">${pill({ tone: 'green', label: 'Simulan', name: 'Simulan ang kuwento', href: abUrl(id, 'f1') })}</div></div>`;
+    }
+    return `${art}<p class="st-text" id="st-focus" tabindex="-1">${p.t}</p>`;
+  }
+
+  function abShow(id, screen) {
+    const s = AB_STORY[id];
+    const name = screen && screen.replace(/-tanong$/, '');
+    const at = s.pahina.findIndex((p) => p.f === name);
+    const page = s.pahina[at];
+    const tanong = !!page && screen.endsWith('-tanong') && !!page.tanong;
+    showView('view-lakbay');
+    document.title = `Ang Basahin — ${LESSONS[id].title} — Kuwenturo`;
+    bbState.story = id;
+    abState.esc = tanong ? abUrl(id, name) : bbSteps(id);
+    if (!page) {
+      tallFill({ ang: true, no: '2', board: 'ANG<br>BASAHIN', title: 'Ang Basahin', head1: 'PAALALA', text1: s.paalala, head2: 'TANDAAN',
+        lead: s.lead, items: s.tandaan, back: bbSteps(id), next: abUrl(id, 'f0') });
+      const changedT = lkShow('lk-tall') || bbState.screen !== 'ab-simula';
+      bbState.screen = 'ab-simula';
+      $('lk-tall').scrollTop = 0;
+      if (changedT) $('bb-tall-title').focus({ preventScroll: true });
+      return;
+    }
+    const after = s.pahina[at + 1];
+    $('st-prev').href = tanong ? abUrl(id, name) : (at ? abUrl(id, s.pahina[at - 1].f) : abUrl(id));
+    $('st-next').href = after ? abUrl(id, after.f) : bbSteps(id);
+    $('st-next').setAttribute('aria-label', after ? 'Susunod' : 'Tapos na: bumalik sa mga hakbang');
+    $('st-stage').innerHTML = abPage(id, page, tanong);
+    $('st-stage').dataset.page = screen;
+    $('lk-story').classList.toggle('is-q', tanong);
+    $('st-blur').src = `${AB_ART}${tanong ? `p${name.slice(1)}` : name}.jpg`;
+    if (after) new Image().src = `${AB_ART}${after.f}.jpg`; // the next page is usually a tap away
+    bbState.screen = screen;
+    lkShow('lk-story');
+    $('lk-story').scrollTop = 0;
+    $('st-focus').focus({ preventScroll: true });
   }
 
   function lkBago(id, screen) {
@@ -1107,6 +1217,7 @@
   });
 
   function bbEscape() {
+    if (lkScene === 'lk-story' || $('lk-tall').classList.contains('is-ang')) { location.hash = abState.esc; return; }
     const close = $('bb-modal').hidden ? null : $('bb-modal').querySelector('.bb-close');
     location.hash = close ? close.getAttribute('href') : bbSteps(bbState.story || Object.keys(BB_STORY)[0]);
   }
@@ -1153,6 +1264,11 @@
     if (id === 'kuwento' && BB_STORY[sub] && step === 'bago-basahin') {
       lkModal(false);
       lkBago(sub, screen);
+      return;
+    }
+    if (id === 'kuwento' && AB_STORY[sub] && step === 'ang-babasahin') {
+      lkModal(false);
+      abShow(sub, screen);
       return;
     }
     if (id === 'kuwento' && LK_DETAIL[sub] && step === 'hakbang') {
@@ -1222,8 +1338,8 @@
   lkPhone.addEventListener('change', lkFit);
   document.addEventListener('keydown', (event) => {
     if (!lkScene || lkScene === 'lk-start' || document.querySelector('dialog[open]')) return;
-    if (lkScene === 'lk-bb' || lkScene === 'lk-tall') {
-      const nav = lkScene === 'lk-tall' ? ['bb-tall-prev', 'bb-tall-next'] : ['bb-prev', 'bb-next'];
+    if (lkScene === 'lk-bb' || lkScene === 'lk-tall' || lkScene === 'lk-story') {
+      const nav = { 'lk-tall': ['bb-tall-prev', 'bb-tall-next'], 'lk-story': ['st-prev', 'st-next'], 'lk-bb': ['bb-prev', 'bb-next'] }[lkScene];
       if (event.key === 'Escape') { event.preventDefault(); bbEscape(); }
       else if (event.key === 'ArrowLeft' && !$(nav[0]).closest('[inert]')) location.hash = $(nav[0]).getAttribute('href');
       else if (event.key === 'ArrowRight' && !$(nav[1]).closest('[inert]')) location.hash = $(nav[1]).getAttribute('href');

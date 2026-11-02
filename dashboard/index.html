@@ -453,10 +453,11 @@
                 <img class="bb-cloud" src="assets/lakbay/cloud.png" style="left:846px;top:2883px" alt="">
                 <i class="bb-pole"></i>
                 <img class="bb-a bb-books" src="assets/lakbay/bago/books.png" alt="">
+                <img class="bb-a bb-open-book" src="assets/lakbay/kuwento/open-book.svg" alt="">
                 <div class="bb-tall-sign">
                   <span class="bb-t-frame">
-                    <b class="lk-step-no">1</b>
-                    <span class="bb-t-board"><span>BAGO<br>BASAHIN</span></span>
+                    <b class="lk-step-no" id="bb-tall-no">1</b>
+                    <span class="bb-t-board"><span id="bb-tall-board">BAGO<br>BASAHIN</span></span>
                     <span class="bb-t-note"><span>Maghanda bago basahin ang kuwento</span></span>
                   </span>
                 </div>
@@ -475,7 +476,7 @@
                     </svg>
                     <h2 id="bb-layunin-h">LAYUNIN</h2>
                   </div>
-                  <p class="bb-layunin-lead">Sa pagtatapos ng aralin, ito ang mga inaasahang matutukoy ng mga mag-aaral:</p>
+                  <p class="bb-layunin-lead" id="bb-tall-lead">Sa pagtatapos ng aralin, ito ang mga inaasahang matutukoy ng mga mag-aaral:</p>
                   <ul id="bb-tall-layunin"></ul>
                 </section>
                 <img class="bb-a bb-hill" src="assets/lakbay/bago/hill.png" alt="">
@@ -499,6 +500,16 @@
             <div class="bb-nav-stage" id="bb-nav">
               <a class="bb-nav bb-prev" id="bb-prev" href="#/"><img src="assets/lakbay/bago/arrow-back.png" alt=""></a>
               <a class="bb-nav bb-next" id="bb-next" href="#/"><img src="assets/lakbay/bago/arrow-go.png" alt=""></a>
+            </div>
+          </section>
+
+          <!-- Ang Basahin, the story: Figma 1012:4296 -->
+          <section class="lk-scene lk-full lk-story" id="lk-story" aria-label="Ang Basahin" hidden>
+            <img class="st-blur" id="st-blur" alt="">
+            <div class="lk-stage" id="st-stage"></div>
+            <div class="bb-nav-stage">
+              <a class="bb-nav bb-prev" id="st-prev" href="#/" aria-label="Nakaraan"><img src="assets/lakbay/bago/arrow-back.png" alt=""></a>
+              <a class="bb-nav bb-next" id="st-next" href="#/" aria-label="Susunod"><img src="assets/lakbay/bago/arrow-go.png" alt=""></a>
             </div>
           </section>
         </div>
