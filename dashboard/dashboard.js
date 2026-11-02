@@ -790,13 +790,16 @@
     const W = scene.clientWidth;
     const H = scene.clientHeight;
     if (lkScene === 'lk-story') {
-      // The illustration covers the window. Its bottom is white, so the box always starts above that: at
-      // the frame's height (478 of 900) on any window. The words scale with the screen and start on the box.
-      const sA = Math.max(W / 1200, H / 900);
+      // The illustration covers the window and the box takes the bottom 37.5%. Each picture ends in white
+      // (abState.white, frame units), so a picture that ends high is enlarged until the box hides that.
+      const sA = Math.max(W / 1200, H / 900, H * AB_BOX / (abState.white - abState.oy));
       const up = Math.min(abState.oy, 900 - H / sA);
       $('st-art').style.transform = `translate(${(W - 1200 * sA) / 2}px, ${-up * sA}px) scale(${sA})`;
       const sS = Math.min(W / 1200, H / 900);
-      stages[0].style.transform = `translate(${(W - 1200 * sS) / 2}px, ${H * 478 / 900 - 478 * sS}px) scale(${sS})`;
+      const y0 = H * 478 / 900 - 478 * sS;
+      stages[0].style.transform = `translate(${(W - 1200 * sS) / 2}px, ${y0}px) scale(${sS})`;
+      // The words sit in the middle of the box, below its grey rim
+      stages[0].style.setProperty('--st-mid', `${(H * AB_MID - y0) / sS}px`);
       return;
     }
     if (lkScene === 'lk-bb') {
@@ -1096,21 +1099,21 @@
       pamagat: 'ANG PAMILYANG PUNONG-PUNO NG PAGMAMAHAL',
       pahina: [
         { f: 'f0', oy: 120 },
-        { f: 'f1', t: 'Habang naglalakad sa aming barangay, nakita ko ang kaibigan kong si Popoy.' },
+        { f: 'f1', w: 540, t: 'Habang naglalakad sa aming barangay, nakita ko ang kaibigan kong si Popoy.' },
         { f: 'f2', t: '<em>“Popoy! Papasok ka na ba sa paaralan? Sabay na tayo!”</em> tawag ko.<br><em>“Hindi. Aalis kami ng mga mama ko,”</em> sagot niya.' },
         { f: 'f3', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.', spot: [416, 0, 365, 478, 'Si Biboy na nagtataka'], tanong: 'Anong emosyon kaya ito?<br>Ipakita mo rin!' },
         { f: 'f4', t: '<em>“Mga mama? Hindi ba mama at papa ang bumubuo ng pamilya?”</em> pagtataka ko.' },
         { f: 'f5', t: 'Umiling si Popoy.<br><em>“Dalawa ang mama ko.”</em>' },
         { f: 'f6', t: '<em>“Dalawa ang mama ko at mahal na mahal nila ako.”</em>' },
-        { f: 'f7', t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
+        { f: 'f7', w: 530, t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
         { f: 'f8', t: '<em>“Kapag nalulungkot ako, niyayakap nila ako.”</em>' },
         { f: 'f9', t: '<em>“Kapag may sakit ako, inaalagaan nila ako.”</em>' },
         { f: 'f10', t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>' },
         { f: 'f11', oy: 50, t: '<em>“Kapag nahihirapan ako, tinutulungan nila ako.”</em>', spot: [265, 0, 730, 478, 'Si Popoy at ang kanyang dalawang mama'], tanong: 'Mahal ba ng dalawang<br>mama si Popoy?' },
         { f: 'f13', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
-        { f: 'f14', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
-        { f: 'f15', oy: 40, t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
-        { f: 'f16', t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f14', w: 525, t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f15', oy: 40, w: 528, t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
+        { f: 'f16', w: 528, t: 'Lumabas ang dalawang mama niya at niyakap siya.' },
         { f: 'f17', t: 'Napangiti ako.<br>Doon ko naunawaan.' },
         { f: 'f18', oy: 70, t: 'Magkaiba man ang pamilya namin, pareho naman kaming minamahal.' },
         { f: 'f19', t: '<strong>Hindi kailangang magkapareho ang mga pamilya, basta’t puno ng pagmamahal.</strong>', spot: [416, 0, 365, 478, 'Si Biboy na nag-iisip'], tanong: 'Ano ang natutunan ni Biboy<br>tungkol sa pamilya?' },
@@ -1118,7 +1121,9 @@
     },
   };
   const abUrl = (id, screen) => `#/lakbay-aralin/kuwento/${id}/ang-babasahin${screen ? `/${screen}` : ''}`;
-  const abState = { esc: null, oy: 0 };
+  const AB_BOX = 0.625; // the box starts here, as a share of the window; see .st-box
+  const AB_MID = 0.82; // the middle of the box below its rim
+  const abState = { esc: null, oy: 0, white: 900 };
   const abTabs = (a, b) => `<i class="st-tab" style="left:${a[0]}px;top:${a[1]}px;width:${a[2]}px;height:${a[3]}px"></i><i class="st-tab" style="left:${b[0]}px;top:${b[1]}px;width:${b[2]}px;height:${b[3]}px"></i>`;
 
   function abPage(id, p, tanong) {
@@ -1165,6 +1170,7 @@
     $('lk-story').classList.toggle('is-q', tanong);
     $('lk-story').classList.toggle('is-whole', tanong || name === 'f0');
     abState.oy = tanong ? 0 : (page.oy || 0);
+    abState.white = tanong ? 900 : (page.w || 900);
     if (after) new Image().src = `${AB_ART}${after.f}.jpg`; // the next page is usually a tap away
     bbState.screen = screen;
     lkShow('lk-story');
