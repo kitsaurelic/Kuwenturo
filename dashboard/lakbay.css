@@ -663,6 +663,15 @@
 .tk-tool:active { transform: translateY(1px); filter: brightness(.85); }
 .tk-tool:focus-visible, .tk-wheel:focus-visible, .tk-chosen:focus-visible { outline: 4px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 9px var(--navy); }
 .tk-x { left: 1093px; top: 22px; width: 58.5px; height: 57px; z-index: 5; }
+.tk-shh-go { position: absolute; left: 200.3px; top: 55.3px; width: 779.5px; height: 779.5px; border-radius: 50%; }
+.tk-disc { position: absolute; inset: 0; pointer-events: none; transition: filter .15s ease; }
+.tk-disc .tk-pin { left: 445px; top: 53px; width: 303px; }
+.tk-shh-go:hover + .tk-disc { filter: brightness(1.05) drop-shadow(0 2px 2px rgba(0, 0, 0, .25)); }
+.tk-shh-go:active + .tk-disc { filter: brightness(.9); }
+.tk-shh-go:focus-visible { outline: 4px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 9px var(--navy); }
+.tk-shh-art { position: absolute; max-width: none; }
+.tk-shh-plate { position: absolute; left: 49.7px; top: 514.7px; width: 1079.9px; height: 308.2px; max-width: none; pointer-events: none; }
+.tk-shh-text { position: absolute; left: 135.3px; top: 597px; width: 913.7px; margin: 0; color: var(--cream); font-family: 'Fredoka One', ui-rounded, 'Nunito', system-ui, sans-serif; font-weight: 400; font-size: 67px; line-height: 67px; text-align: center; outline: none; }
 .tk-wheel { position: absolute; order: -2; padding: 0; font: inherit; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: filter .15s ease; }
 .tk-wheel:hover { filter: brightness(1.05) drop-shadow(0 2px 2px rgba(0, 0, 0, .25)); }
 .tk-wheel:active { filter: brightness(.9); }
@@ -698,7 +707,7 @@
   .tk-q .tk-x { position: absolute; left: 1093px; right: auto; top: 22px; width: 150px; height: 146px; left: 1020px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tk-tool, .tk-wheel { transition: none; }
+  .tk-tool, .tk-wheel, .tk-disc { transition: none; }
   .tk-tool:hover, .tk-tool:active { transform: none; }
   .tk-opt, .tk-top a, .tk-piece { transition: none; }
   .tk-top a:hover, .tk-top a:active, .tk-piece:hover, .tk-piece:active { transform: none; }

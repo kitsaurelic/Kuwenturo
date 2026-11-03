@@ -1325,8 +1325,8 @@
     ['gl2', 'star', 57.34, 51.36, 217.3, 217.3, 'Pindutin upang makita ang tamang sagot at paliwanag nito'],
     ['gl3', 'alarm', 74.04, 62.51, 183.9, 217.3, 'Pindutin upang makita ang mga kagamitan'],
   ];
-  const TK_SOON = { sagot: 'Mga Tamang Sagot', laro: 'Ang Nawawalang Larawan', patahimikin: 'Patahimikin Na' };
-  const TK_TOOLS = ['kagamitan', 'piliin', 'gulong', 'napili'];
+  const TK_SOON = { sagot: 'Mga Tamang Sagot', laro: 'Ang Nawawalang Larawan' };
+  const TK_TOOLS = ['kagamitan', 'piliin', 'gulong', 'napili', 'patahimikin', 'shh'];
   const TK_NAMES_KEY = 'kuwenturo.pangalan';
   const TK_NAMES_MAX = 60;
   const TK_SPIN_MS = 5000;
@@ -1355,9 +1355,11 @@
       <circle cx="500" cy="500" r="500" fill="url(#tk-ring)"/>
       <g id="tk-spin" style="transform:rotate(${tkState.turn}deg)"><circle cx="500" cy="500" r="464" fill="url(#tk-disc)"/>${tkSlices(names)}</g></svg>
     <img class="tk-hub" src="${TK_ART}qt-head.png" alt="">`;
-  const tkPin = () => `<svg class="tk-pin" viewBox="0 0 303 69" aria-hidden="true"><defs><linearGradient id="tk-pin"><stop stop-color="#AF0414"/><stop offset=".5" stop-color="#E43D45"/><stop offset="1" stop-color="#AF0414"/></linearGradient></defs>
+  const tkPin = (text = 'PINIPILI KO') => `<svg class="tk-pin" viewBox="0 0 303 69" aria-hidden="true"><defs><linearGradient id="tk-pin"><stop stop-color="#AF0414"/><stop offset=".5" stop-color="#E43D45"/><stop offset="1" stop-color="#AF0414"/></linearGradient></defs>
       <path d="M0 0H303V46L151.5 67L0 46Z" fill="url(#tk-pin)"/><path d="M1.2 1.2H301.8V45L151.5 65.6L1.2 45Z" fill="none" stroke="#FFFBF4" stroke-width="1.6" stroke-dasharray="9"/>
-      <text x="151.5" y="39" text-anchor="middle" font-size="40.6">PINIPILI KO</text></svg>`;
+      <text x="151.5" y="39" text-anchor="middle" font-size="40.6">${text}</text></svg>`;
+  // The ring, the disc and the banner of Patahimikin Na; the art inside is one picture, drawn smaller once the message shows
+  const tkShh = (box) => `<div class="tk-disc"><i class="tk-ring"></i><i class="tk-face"></i><img class="tk-shh-art" src="${TK_ART}pt-art.png" alt="" style="${box}">${tkPin('SHHHHHHH')}</div>`;
   const tkUrl = (id, screen) => pkUrl(id, screen ? `tuklasin-${screen}` : 'tuklasin');
   const tkRename = (sign) => sign.replaceAll('bb-sign-navy', 'tk-sign').replace('bb-card-title', 'tk-title');
   const tkSign = (text, y, fs = 49.5) => tkRename(bbSign(224, y, 733.3, 92.7, 'navy', text, fs));
@@ -1400,6 +1402,14 @@
     napili: (id) => `<div class="tk-q"><a class="tk-tool tk-x" id="tk-x" href="${tkUrl(id, 'gulong')}" aria-label="Isara"><img src="${TK_ART}qt-x.png" alt=""></a>
       <a class="tk-chosen" href="${tkUrl(id, 'gulong')}" aria-label="Paikutin muli ang gulong"><i class="tk-ring"></i><i class="tk-face"></i><img class="tk-bighead" src="${TK_ART}qt-head.png" alt="">${tkPin()}<img class="tk-plate" src="${TK_ART}qt-plate.svg" alt=""></a>
       <h1 class="tk-name2" id="tk-title" tabindex="-1">${escapeHtml(tkState.name.toUpperCase())}</h1></div>`,
+    patahimikin: (id) => `<div class="tk-q"><h1 class="tk-vh" id="tk-title" tabindex="-1">Patahimikin Na</h1>
+      <a class="tk-tool tk-x" id="tk-x" href="${tkUrl(id, 'kagamitan')}" aria-label="Isara"><img src="${TK_ART}qt-x.png" alt=""></a>
+      <a class="tk-shh-go" id="tk-shh" href="${tkUrl(id, 'shh')}" aria-label="Ipakita ang paalala na tumahimik"></a>
+      ${tkShh('left:293.1px;top:132.7px;width:591.7px;height:598.2px')}</div>`,
+    shh: (id) => `<div class="tk-q"><a class="tk-tool tk-x" id="tk-x" href="${tkUrl(id, 'patahimikin')}" aria-label="Isara"><img src="${TK_ART}qt-x.png" alt=""></a>
+      ${tkShh('left:377.5px;top:134px;width:426px;height:431px')}
+      <img class="tk-shh-plate" src="${TK_ART}pt-plate.svg" alt="">
+      <h1 class="tk-shh-text" id="tk-title" tabindex="-1">IGALANG PO NATIN ANG GURO SA HARAP</h1></div>`,
     simula: () => `<h1 class="tk-vh" id="tk-title" tabindex="-1">Ang Nawawalang Larawan</h1><img class="tk-room" src="${TK_ART}room.jpg" alt="">
       ${TK_PIECES.map(([file, x, y, w, h, turn], i) => `<button class="tk-piece" type="button" aria-label="Piraso ${i + 1} ng puzzle" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><img src="${TK_ART}${file}.png" alt="" style="transform:${turn || 'none'}"></button>`).join('')}
       <img class="tk-kid" src="${TK_ART}biboy-tayo.png" alt="Si Biboy">`,
@@ -1415,6 +1425,8 @@
     piliin: { bg: 'bg-1', title: 'Piliin Na', back: (id) => tkUrl(id, 'kagamitan'), next: 'gulong', bare: true },
     gulong: { bg: 'bg-1', title: 'Pinipili Ko', back: (id) => tkUrl(id, 'piliin'), next: 'gulong', bare: true },
     napili: { bg: 'bg-1', title: 'Pinipili Ko', back: (id) => tkUrl(id, 'gulong'), next: 'gulong', bare: true },
+    patahimikin: { bg: 'bg-1', title: 'Patahimikin Na', back: (id) => tkUrl(id, 'kagamitan'), next: 'shh', bare: true },
+    shh: { bg: 'bg-1', title: 'Patahimikin Na', back: (id) => tkUrl(id, 'patahimikin'), next: 'patahimikin', bare: true },
   };
 
   function tkShow(id, screen) {
@@ -1428,7 +1440,7 @@
         kicker: `Tuklasin ${String.fromCharCode(183)} ${LESSONS[id].title}`,
         title: TK_SOON[name],
         body: `<p>Malapit na ang bahaging ito ng gawain.</p>
-          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: tkUrl(id, name === 'patahimikin' ? 'kagamitan' : tkState.from || 'simula') })}</div>`,
+          <div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik sa Gawain', name: 'Bumalik sa Gawain', href: tkUrl(id, tkState.from || 'simula') })}</div>`,
       });
       return;
     }
