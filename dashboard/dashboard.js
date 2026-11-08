@@ -868,21 +868,20 @@
   function lkStreetStories(street) {
     return LK_STORY_ORDER.filter((id) => LESSONS[id].street === street.street);
   }
+  // The street's own story card, as in the Lakbay street frames (1116:23897, 1116:24680, 1116:25463):
+  // the same card Tulong Aralin uses, in the street's colour
   function lkCard(id, tone) {
     const n = LK_STORY_ORDER.indexOf(id) + 1;
-    const t = LK_TONES[tone];
     const l = LESSONS[id];
-    return `<li class="lk-card lk-card-${tone}">
-      <svg class="lk-card-shape" viewBox="0 0 287 439" aria-hidden="true">
-        <defs><linearGradient id="lk-body-${n}" gradientUnits="userSpaceOnUse" x1="212.5" y1="558.976" x2="-57.313" y2="173.443"><stop stop-color="${t.body}"/><stop offset="1" stop-color="#FFF8E9"/></linearGradient></defs>
-        <path transform="translate(20 20)" d="M53.79 2H212.64C228.88 2 241.71 15.76 240.57 31.96L216.79 370.96C215.76 385.63 203.56 397 188.85 397H30C13.77 397 .93 383.24 2.07 367.04L25.86 28.04C26.89 13.37 39.09 2 53.79 2Z" fill="${t.head}" stroke="#fff" stroke-width="4"/>
-        <path transform="translate(20 66)" d="M53.16 2H211.35C227.57 2 240.4 15.75 239.28 31.94L218.94 324.94C217.92 339.62 205.72 351 191.01 351H32.22C15.97 351 3.13 337.21 4.29 321L25.24 28C26.28 13.35 38.47 2 53.16 2Z" fill="url(#lk-body-${n})" stroke="#fff" stroke-width="4"/>
-      </svg>
-      <p class="lk-card-no">Kuwento #${n}</p>
-      <h2 class="lk-card-title">${escapeHtml(l.title).replace("Sari-Sari", "<span style=\"white-space:nowrap\">Sari-Sari</span>")}</h2>
-      <p class="lk-card-aralin">Aralin: ${LK_ARALIN[n - 1]}</p>
-      <img class="lk-card-art" src="assets/lakbay/story-k${String(n).padStart(2, '0')}.jpg" width="180" height="180" alt="" loading="lazy">
-      ${pill({ tone: t.pill, label: 'Piliin', name: `Piliin ang ${l.title}`, href: `#/lakbay-aralin/kuwento/${id}` })}
+    const no = lkStreetStories(LK_STREETS.find((s) => s.street === l.street)).indexOf(id) + 1;
+    return `<li class="story-card story-${tone}" data-story="${n}">
+      <h2 class="story-number">Kuwento #${no}</h2>
+      <div class="story-body">
+        <p class="story-title">${l.cardTitle || escapeHtml(l.title)}</p>
+        <p class="story-topic">${l.topic}</p>
+        <img class="story-cover" src="assets/cover-${id}.png" width="160" height="141" alt="" loading="lazy">
+        ${pill({ tone, label: 'Piliin', name: `Piliin ang ${l.title}`, href: `#/lakbay-aralin/kuwento/${id}` })}
+      </div>
     </li>`;
   }
   function lkRenderStreet(street) {
@@ -895,9 +894,7 @@
     $('lk-next').href = `#/lakbay-aralin/${next.slug}`;
     $('lk-next').setAttribute('aria-label', `Susunod na kalye: ${next.street}`);
     const stories = lkStreetStories(street);
-    // Four cards run green → blue; Matatag's two sit in the yellow and red slots, as in its frame
-    const tones = stories.length === 2 ? ['yellow', 'red'] : ['green', 'yellow', 'red', 'blue'];
-    $('lk-cards').innerHTML = stories.map((id, i) => lkCard(id, tones[i])).join('');
+    $('lk-cards').innerHTML = stories.map((id) => lkCard(id, street.tone)).join('');
   }
 
   $('lk-go').innerHTML = pill({ tone: 'blue', label: 'Simulan', name: 'Simulan ang Lakbay Aralin', href: '#/lakbay-aralin/saan-patungo' });

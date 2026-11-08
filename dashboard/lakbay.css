@@ -13,7 +13,6 @@
 @media (min-width: 701px) and (min-height: 501px), (min-width: 901px) {
   html:has(body.lk-on), body.lk-on { overflow: hidden; }
 }
-@media (max-width: 340px) { .lk-card { zoom: .9; } }
 
 /* Title board with the two blue tabs behind it */
 .lk-title { position: absolute; left: 340.6px; top: 61.3px; width: 696.2px; height: 150.5px; transform-origin: 0 0; }
@@ -76,8 +75,7 @@
 .lk-sign-text b { display: block; font-weight: 400; font-size: 57.7px; }
 .lk-sign img { position: absolute; left: 103px; top: 134px; width: 144px; height: 61.5px; max-width: none; }
 .lk-sign-green { left: 26.5px; top: 674px; background: linear-gradient(90deg, #136C39 2%, #29BF68 49%, #136C39 100%); }
-.lk-sign-yellow { left: 426.75px; top: 674.8px; background: linear-gradient(90deg, #FFAE00 2%, #FBCB39 49%, #FFAE00 100%); color: var(--navy); }
-.lk-sign-yellow .lk-sign-text { text-shadow: 0 1px 0 rgba(255, 255, 255, .45); } /* white on yellow is 1.6:1; navy is 10:1 */
+.lk-sign-yellow { left: 426.75px; top: 674.8px; background: linear-gradient(90deg, #FFAE00 2%, #FBCB39 49%, #FFAE00 100%); } /* frame: white letters, as the other signs */
 .lk-sign-red { left: 827px; top: 676.8px; background: linear-gradient(90deg, #AF0414 0%, #E43D45 50%, #AF0414 100%); }
 
 .lk-close { position: absolute; left: 1110px; top: 26px; width: 58.5px; height: 57px; border-radius: 50%; z-index: 3; transition: transform .15s ease; }
@@ -97,17 +95,10 @@
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .lk-pick { position: absolute; left: 144px; top: 206px; width: 911px; text-align: center; color: var(--navy); font-weight: 700; font-size: 30px; line-height: 30px; }
-.lk-cards { position: absolute; left: 108px; top: 226px; width: 983px; height: 439px; display: flex; justify-content: center; }
-.lk-card { position: relative; flex: none; width: 287px; height: 439px; color: var(--navy); }
-.lk-card + .lk-card { margin-left: -55px; }
-.lk-card-shape { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.lk-card-no { position: absolute; left: 48px; top: 28.6px; width: 205px; text-align: center; color: #FFFBF4; font-weight: 700; font-size: 22.5px; line-height: 30px; }
-.lk-card-yellow .lk-card-no { color: var(--navy); } /* cream on yellow is 1.6:1 */
-.lk-card-title { position: absolute; left: 47px; top: 78.6px; width: 202px; text-align: center; font-weight: 700; font-size: 19px; line-height: 19px; text-wrap: balance; }
-.lk-card-aralin { position: absolute; left: 64px; top: 122.6px; width: 168px; text-align: center; color: var(--caption); font-size: 17px; line-height: 15px; }
-.lk-card-art { position: absolute; left: 52.8px; top: 157.6px; width: 179.4px; height: 179.8px; max-width: none; object-fit: cover; transform: skewX(-3.2deg); border: 4.26px solid #FFFBF4; border-radius: 11px; box-shadow: 0 4.26px 5.11px rgba(0, 0, 0, .25); }
-.lk-card .pill { position: absolute; left: 75px; top: 366.6px; width: 118.7px; height: 32px; }
-.lk-card .pill-label { font-size: 17px; }
+/* Story cards: 196 × 318, 26px apart, centred under the prompt (STORY 1151:38811) */
+.lk-cards { position: absolute; left: 0; top: 279px; width: 1200px; display: flex; justify-content: center; gap: 26px; margin: 0; padding: 0; list-style: none; }
+.lk-cards .story-card { flex: none; width: 196px; height: 318px; color: var(--navy); }
+.lk-cards .story-body { padding-top: 10px; }
 .lk-arrow { position: absolute; top: 352px; width: 113px; height: 112px; transition: transform .15s ease; }
 .lk-arrow img { width: 100%; height: 100%; }
 .lk-prev { left: 38px; }
@@ -154,8 +145,8 @@
   .lk-street-sign { order: 1; width: min(100%, 340px); height: 60px; }
   .lk-street-sign h1 { padding-top: 11px; font-size: clamp(20px, 6.4vw, 26px); line-height: 30px; }
   .lk-pick { order: 2; width: 100%; max-width: 420px; padding: 12px 16px; border-radius: 20px; background: rgba(255, 251, 244, .94); font-size: 18px; line-height: 28px; }
-  .lk-cards { order: 3; width: 100%; height: auto; flex-direction: column; align-items: center; gap: 4px; }
-  .lk-card + .lk-card { margin-left: 0; }
+  .lk-cards { position: static; order: 3; width: 100%; flex-wrap: wrap; gap: 20px; }
+  .lk-cards .story-card { width: min(100%, 228px); height: auto; }
   .lk-stage > .lk-arrow { position: fixed; top: 12px; width: 48px; height: 47px; z-index: 3; }
   .lk-stage > .lk-prev { left: 12px; }
   .lk-stage > .lk-next { left: 68px; }

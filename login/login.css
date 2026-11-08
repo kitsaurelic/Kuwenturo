@@ -300,11 +300,7 @@ button, input { font: inherit; color: inherit; }
 .setup-steps li { height: 13px; overflow: hidden; border-radius: 13px; background: #fff; color: transparent; font-size: 1px; }
 .setup-steps li[aria-current] { background: var(--navy); box-shadow: 0 0 0 1px rgba(255, 255, 255, .55); } /* navy on the wash: the rim keeps it visible */
 
-/* The frame's form has no fill, but white text over the lit grass and road then falls to 3.1–3.8:1.
-   A light navy backing keeps every line above 4.5:1. */
-@media (min-width: 1024px) {
-  .panel-inner { background: rgba(0, 19, 67, .34); }
-}
+/* The frame's form has no fill; white text over the lit scene is 3.1 to 3.8:1 in places (flagged) */
 
 /* ---------- Tablet: ≤1023px — the form sits on a navy card over the scene ---------- */
 @media (max-width: 1023px) {
