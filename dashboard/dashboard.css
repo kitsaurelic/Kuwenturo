@@ -895,6 +895,13 @@ button.pill:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px
 .tsp-lines { position: relative; margin: 0; padding: 0 0 0 18px; list-style: disc; color: #000; font-size: 14px; line-height: 17px; }
 .tsp-lines li { display: list-item; }
 .tsp-lines b { font-weight: 700; }
+/* Turo Tips: two plain lines, the second (the prompt) in bold */
+.tsp-para { padding: 0 0 0 8px; }
+.tsp-para p { margin: 0; }
+.tsp-faq-title:focus { outline: none; }
+/* source note along the bottom of the Turo Tips frame (italic; raised from 10px to stay legible) */
+.tsp-note { position: relative; z-index: 2; width: 880px; max-width: 100%; margin: 17px 0 0 -3px; color: var(--cream); font-size: 13px; line-height: 17px; font-style: italic; text-shadow: 0 1px 3px rgba(0, 19, 67, .85); }
+.tsp-note[hidden] { display: none; }
 .tsp-star { position: absolute; bottom: 11px; width: 26px; height: 27px; rotate: -1.55deg; pointer-events: none; }
 .tsp-star-l { left: 21.7px; }
 .tsp-star-r { right: 19px; }

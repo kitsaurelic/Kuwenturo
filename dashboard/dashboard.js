@@ -1695,21 +1695,56 @@
       'Basahin at unawain ang mga mensahe na ipinadala ng mga magulang.',
       'Pindutin ang <b>Tumugon</b> upang makapagpadala ng mensahe pabalik sa mga magulang.']],
   ];
-  const TSP_SOON = { 'turo-tips': 'Turo Tips', 'madalas-itanong': 'Madalas Itanong' };
+  // Turo Tips (1146:10178; rows open as 1146:10909, 11636, 12365, 13094, 13823, 14552): a sentence, then the bold prompt
+  const TSP_TIPS = [
+    ['ipakita-ang-pabalat', 'Ipakita ang Pabalat', [
+      'Simulan ang pagbabasa sa pamamagitan ng pagtingin sa pabalat at mga larawan.',
+      '<b>Ipakita ang pabalat at itanong: “Ano kaya ang kuwento?”</b>']],
+    ['huminto-at-magtanong', 'Huminto at Magtanong', [
+      'Tulungan ang bata na mag-isip at hulaan ang maaaring mangyari sa kuwento.',
+      '<b>Huminto paminsan-minsan at itanong: “Ano kaya ang mangyayari sa susunod?”</b>']],
+    ['pag-usapan-ang-mga-larawan', 'Pag-usapan ang mga Larawan', [
+      'Gamitin ang mga larawan upang mas madaling maunawaan ng bata ang kuwento.',
+      '<b>Ituro ang mga larawan at tanungin: “Ano ang nakikita mo?”</b>']],
+    ['iugnay-sa-buhay', 'Iugnay sa Buhay', [
+      'Iugnay ang mga pangyayari sa kuwento sa sariling karanasan ng bata.',
+      '<b>Itanong: “Naranasan mo na rin ba ang nangyari sa kuwento?”</b>']],
+    ['pakinggan-ang-sagot', 'Pakinggan ang Sagot', [
+      'Bigyan ang bata ng pagkakataong magpahayag nang malaya, kahit nagkakamali pa.',
+      '<b>Hayaan siyang sumagot sa sariling salita at tulungan kapag nahihirapan.</b>']],
+    ['balikan-ang-kuwento', 'Balikan ang Kuwento', [
+      'Balikan ang mahahalagang pangyayari upang mas mapalalim ang pag-unawa ng bata.',
+      '<b>Itanong: “Sino ang paborito mong tauhan? Bakit?”</b>']],
+  ];
+  // The jeep's signs switch the list under the video; each list keeps its own addresses
+  const TSP_PAGES = {
+    '': { heading: 'Paano Gamitin?', items: TSP_ITEMS, bullets: true, sign: 'paano' },
+    'turo-tips': { heading: 'Turo Tips', items: TSP_TIPS, bullets: false, sign: 'tips', note: true },
+  };
+  const TSP_SOON = { 'madalas-itanong': 'Madalas Itanong' };
+  const tspHref = (page, key) => `#/tulong-sa-paggamit${page ? `/${page}` : ''}${key ? `/${key}` : ''}`;
+  let tspPage = null;
   let tspChapter = 0;
   let tspPressed = null; // the row just pressed keeps the focus after the list redraws
   function renderTspChapters() {
     $('tsp-chapters').innerHTML = TSP_CHAPTERS.map(([time, name], i) => `<li><button type="button" class="tsp-chapter" data-chapter="${i}" aria-pressed="${i === tspChapter}"><span class="tsp-time">${time}</span> ${name}</button></li>`).join('');
   }
-  function renderTsp(open) {
-    $('tsp-list').innerHTML = TSP_ITEMS.map(([key, name, lines]) => {
+  function renderTsp(page, open) {
+    const p = TSP_PAGES[page];
+    $('tsp-faq-title').textContent = p.heading;
+    $('tsp-note').hidden = !p.note;
+    document.querySelectorAll('.tsp-sign').forEach((a) => {
+      if (a.classList.contains(`tsp-sign-${p.sign}`)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    $('tsp-list').dataset.page = page;
+    $('tsp-list').innerHTML = p.items.map(([key, name, lines]) => {
       const on = key === open;
       return `<li class="tsp-item${on ? ' is-open' : ''}">
         <h3 class="tsp-row-wrap"><button type="button" class="tsp-row" data-tsp="${key}" aria-expanded="${on}" aria-controls="tsp-${key}" id="tsp-btn-${key}">
           <span class="tsp-label">${name}</span><img class="tsp-caret" src="assets/tsp-caret.svg" width="24" height="24" alt="">
         </button></h3>
         <div class="tsp-panel" id="tsp-${key}" role="region" aria-labelledby="tsp-btn-${key}"${on ? '' : ' hidden'}>
-          <ul class="tsp-lines">${lines.map((l) => `<li>${l}</li>`).join('')}</ul>
+          ${p.bullets ? `<ul class="tsp-lines">${lines.map((l) => `<li>${l}</li>`).join('')}</ul>` : `<div class="tsp-lines tsp-para">${lines.map((l) => `<p>${l}</p>`).join('')}</div>`}
           <img class="tsp-star tsp-star-l" src="assets/tsp-star.svg" alt=""><img class="tsp-star tsp-star-r" src="assets/tsp-star.svg" alt="">
         </div>
       </li>`;
@@ -1730,7 +1765,8 @@
     if (!b) return;
     tspPressed = b.dataset.tsp;
     const open = b.getAttribute('aria-expanded') === 'true';
-    location.hash = open ? '#/tulong-sa-paggamit' : `#/tulong-sa-paggamit/${b.dataset.tsp}`;
+    const page = $('tsp-list').dataset.page;
+    location.hash = tspHref(page, open ? '' : b.dataset.tsp);
   });
 
   function showView(viewId) {
@@ -1793,14 +1829,19 @@
       showPage({ kicker: 'Tulong sa Paggamit', title: TSP_SOON[id], body: `<p>Malapit na ang bahaging ito.</p><div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik', name: 'Bumalik sa Paano Gamitin', href: '#/tulong-sa-paggamit' })}</div>` });
     } else if (section === 'tulong-sa-paggamit') {
       const wasHidden = showView('view-tsp');
+      const page = TSP_PAGES[id] && id ? id : '';
+      const key = page ? sub : id;
+      const item = TSP_PAGES[page].items.find(([k]) => k === key);
+      const turned = tspPage !== page; // a jeep sign was pressed: the list under the video changes
       keepScroll = !wasHidden;
-      const item = TSP_ITEMS.find(([key]) => key === id);
-      document.title = `${item ? `${item[1]} — ` : ''}Tulong sa Paggamit — Kuwenturo`;
+      document.title = `${item ? `${item[1]} — ` : ''}${page ? `${TSP_PAGES[page].heading} — ` : ''}Tulong sa Paggamit — Kuwenturo`;
       const had = tspPressed || (document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.tsp : null);
       tspPressed = null;
-      renderTsp(item ? id : null);
+      renderTsp(page, item ? key : null);
+      tspPage = page;
       if (wasHidden) $('tsp-title').focus();
-      else if (had) $(`tsp-btn-${had}`).focus();
+      else if (turned) $('tsp-faq-title').focus({ preventScroll: true });
+      else if (had && $(`tsp-btn-${had}`)) $(`tsp-btn-${had}`).focus();
     } else if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
     } else if (section === 'aralin' && LESSONS[id]) {
