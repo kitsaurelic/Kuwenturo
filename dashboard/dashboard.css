@@ -845,3 +845,78 @@ button.pill:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
 }
+
+/* ---------- Tulong sa Paggamit (Figma 1146:9818 and the Paano Gamitin rows) ---------- */
+.tsp-wrap { position: relative; container-type: inline-size; }
+/* tutorial: 943 × 361, white rim, navy band across the top */
+.tsp-tutorial {
+  position: relative; display: grid; grid-template-columns: 475px 1fr; gap: 0 0; width: 943px; max-width: 100%; min-height: 361px; margin: 21px 0 0 2px; padding: 50px 0 16px 9px;
+  border: 4px solid #fff; border-radius: 13px; background: linear-gradient(90deg, #FFF4C0, #fff 50%, #FFF4C0);
+  box-shadow: inset 0 30px 0 var(--navy), 3px 4px 0 var(--navy);
+}
+.tsp-video { position: relative; height: 291px; border-radius: 12.35px; background: linear-gradient(180deg, #CFE9FD 0%, #8FCBF9 100%); }
+.tsp-video-cap { position: absolute; left: 9px; right: 2px; bottom: 14px; display: flex; flex-direction: column; gap: 5px; }
+.tsp-video-title { color: #fff; font-family: var(--font-display); font-size: 22.8px; line-height: 1.4; text-shadow: 0 1px 3px rgba(0, 19, 67, .45); }
+.tsp-video-desc { color: #fff; font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px rgba(0, 19, 67, .45); }
+.tsp-video-track { align-self: center; width: calc(100% - 21px); height: 5px; border-radius: 28.5px; background: #D9D9D9; }
+/* chapters: 40px amber bar on the chosen one, running to the card's right edge */
+.tsp-chapters { margin: 21px -4px 0 0; padding: 0; list-style: none; }
+.tsp-chapters li + li { margin-top: 2px; }
+.tsp-chapter {
+  display: block; width: 100%; min-height: 40px; padding: 8px 12px 8px 28px; border: 0; background: transparent; cursor: pointer;
+  color: var(--navy); font: inherit; font-size: 16px; line-height: 24px; font-weight: 700; text-align: left;
+}
+.tsp-chapter:hover { background: rgba(255, 190, 51, .35); }
+.tsp-chapter:active { background: #F5A900; }
+.tsp-chapter[aria-pressed="true"] { background: var(--color-amber, #FFBE33); }
+.tsp-chapter:focus-visible { outline: 3px solid var(--navy); outline-offset: -3px; }
+
+.tsp-faq { width: 559px; max-width: 100%; margin: 19px 0 0 -3px; }
+.tsp-faq-title { color: var(--cream); font-size: 24px; line-height: 1; font-weight: 700; text-shadow: 0 1px 3px rgba(0, 19, 67, .55); }
+.tsp-list { margin: 23px 0 0; padding: 0; list-style: none; }
+.tsp-item { position: relative; border-radius: 8px; background: var(--cream); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .25); }
+.tsp-item.is-open { margin-bottom: 5px; box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .25), 3px 4px 0 #A71516; }
+/* the open row sits on an amber oval with a star at each lower corner */
+.tsp-item.is-open::before { content: ""; position: absolute; left: 36px; right: 36px; top: 10px; bottom: 9px; background: url(assets/tsp-oval.svg) center / 100% 100% no-repeat; pointer-events: none; }
+.tsp-row-wrap { position: relative; margin: 0; font: inherit; }
+.tsp-row {
+  display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 36px; padding: 0 20px 0 19px;
+  border: 0; border-radius: 8px; background: none; cursor: pointer; font: inherit; text-align: left;
+}
+.tsp-label { font-size: 16px; line-height: 20px; font-weight: 700; background: linear-gradient(180deg, #C9373C, #9D0A0A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tsp-caret { flex: none; width: 24px; height: 24px; rotate: -90deg; transition: rotate .15s ease; }
+.tsp-row[aria-expanded="true"] .tsp-caret { rotate: 0deg; }
+.tsp-row:hover { background: rgba(255, 190, 51, .18); }
+.tsp-row:active { background: rgba(255, 190, 51, .35); }
+.tsp-item.is-open .tsp-row:hover, .tsp-item.is-open .tsp-row:active { background: none; }
+.tsp-row:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.tsp-item + .tsp-item { margin-top: 0; }
+.tsp-panel { position: relative; padding: 0 36px 22px 35px; }
+.tsp-lines { position: relative; margin: 0; padding: 0 0 0 18px; list-style: disc; color: #000; font-size: 14px; line-height: 17px; }
+.tsp-lines li { display: list-item; }
+.tsp-lines b { font-weight: 700; }
+.tsp-star { position: absolute; bottom: 11px; width: 26px; height: 27px; rotate: -1.55deg; pointer-events: none; }
+.tsp-star-l { left: 21.7px; }
+.tsp-star-r { right: 19px; }
+
+/* jeep: the Gabay jeep window, its left edge at x 820 and top at y 362 of the frame; it runs over the tutorial card */
+.tsp-jeep { position: absolute; left: 598px; top: 247px; margin: 0; z-index: 1; }
+.tsp-sign { left: 5.28%; }
+.tsp-sign-paano { top: 17.03%; width: 85.06%; height: 15.47%; }
+.tsp-sign-tips { top: 34.06%; width: 84.54%; height: 13.94%; }
+.tsp-sign-itanong { top: 52.97%; width: 84.82%; height: 14.75%; }
+
+@container (max-width: 953px) {
+  .tsp-tutorial { grid-template-columns: minmax(0, 1fr); width: 100%; padding: 46px 10px 12px; }
+  .tsp-video { height: auto; aspect-ratio: 475 / 291; }
+  .tsp-chapters { margin: 12px -14px 0; }
+  .tsp-chapter { padding-left: 24px; }
+  .tsp-faq { width: 100%; margin-left: 0; }
+  .tsp-jeep { position: relative; left: auto; top: auto; display: block; margin: 32px -24px 0 auto; }
+}
+@media (max-width: 640px) {
+  .tsp-faq-title { font-size: 22px; }
+  .tsp-panel { padding: 0 16px 40px 18px; }
+  .tsp-item.is-open::before { left: 8px; right: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .tsp-caret { transition: none; } }

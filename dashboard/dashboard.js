@@ -95,6 +95,7 @@
     'lakbay-aralin': 'Lakbay Aralin',
     'tulong-aralin': 'Tulong Aralin',
     'guro-konek': 'Guro Konek',
+    'tulong-sa-paggamit': 'Tulong sa Paggamit',
   };
   const MONTHS = ['Enero', 'Pebrero', 'Marso', 'Abril', 'Mayo', 'Hunyo', 'Hulyo', 'Agosto', 'Setyembre', 'Oktubre', 'Nobyembre', 'Disyembre'];
   const DAYS = ['Linggo', 'Lunes', 'Martes', 'Miyerkules', 'Huwebes', 'Biyernes', 'Sabado'];
@@ -1661,7 +1662,77 @@
   });
 
   // ---------- Routing (#/, #/gabay-aralin, #/lakbay-aralin, #/tulong-aralin, #/guro-konek, #/aralin/<id>) ----------
-  const VIEWS = ['view-dashboard', 'view-gabay', 'view-lakbay', 'view-tulong', 'view-guro', 'view-page'];
+  const VIEWS = ['view-dashboard', 'view-gabay', 'view-lakbay', 'view-tulong', 'view-guro', 'view-tsp', 'view-page'];
+  // ---------- Tulong sa Paggamit: Paano Gamitin ----------
+  const TSP_CHAPTERS = [
+    ['0:00', 'Pagsisimula sa Dashboard'],
+    ['1:12', 'Pagpili ng Kuwento sa Gabay Aralin'],
+    ['2:40', 'Pag-set up ng Lingguhang Plano'],
+  ];
+  // Text as in the frames; <b> marks the words the frames set in bold
+  const TSP_ITEMS = [
+    ['dashboard', 'Dashboard', [
+      'Tingnan ang mga araling <b>Natapos</b> at <b>Isinasagawa</b> upang malaman kung alin ang maaari mong ipagpatuloy.',
+      'Suriin ang mga nakatakdang aralin at gawain ngayong linggo.',
+      'Gamitin ang <b>Search</b>, <b>Notifications</b>, at <b>Profile</b> para maghanap, tumingin ng paalala o mensahe, at ayusin ang account.']],
+    ['gabay-aralin', 'Gabay Aralin', [
+      'Piliin ang <b>Street</b> batay sa antas ng kuwento, pagkatapos ay pindutin ang <b>Next</b> para pumili ng ibang kuwento na iyong nais makita.',
+      'Tignan ang mahahalagang detalye na matutuklasan sa kuwento.',
+      'Pindutin ang <b>Bago Basahin</b>, <b>Basahin</b>, o <b>Pagkatapos Basahin</b> para makita ang kaukulang gabay, kuwento, at activity answers.']],
+    ['lakbay-aralin', 'Lakbay Aralin', [
+      'Piliin ang <b>Street</b> at <b>kuwento</b> na gagamitin para sa reading session ng buong klase.',
+      'Sundin ang bawat hakbang mula <b>Bago Basahin</b> hanggang <b>Pagkatapos Basahin</b>.',
+      'Gabayan ang bata sa mga activity habang binabasa at inuunawa ang kuwento.',
+      'Gamitin ang bawat <b>prompt</b>, <b>activity</b>, at <b>gabay</b> upang maging maayos at tuloy-tuloy ang classroom reading session.']],
+    ['tulong-aralin', 'Tulong Aralin', [
+      'Pindutin ang <b>Add Story</b> upang pumili ng kuwentong gagamitin sa napiling araw.',
+      'I-swipe ang mga kuwento upang makita at piliin ang nais na antas o Street.',
+      'Ilagay ang mga napiling kuwento sa bawat araw upang mabuo ang iyong reading plan para sa buong linggo.',
+      'I-save ang plano pagkatapos makumpleto ang bawat araw.']],
+    ['guro-konek', 'Guro Konek', [
+      'Pumunta sa Guro Konek.',
+      'Hanapin ang mga obserbasyon mula sa magulang.',
+      'Basahin at unawain ang mga mensahe na ipinadala ng mga magulang.',
+      'Pindutin ang <b>Tumugon</b> upang makapagpadala ng mensahe pabalik sa mga magulang.']],
+  ];
+  const TSP_SOON = { 'turo-tips': 'Turo Tips', 'madalas-itanong': 'Madalas Itanong' };
+  let tspChapter = 0;
+  let tspPressed = null; // the row just pressed keeps the focus after the list redraws
+  function renderTspChapters() {
+    $('tsp-chapters').innerHTML = TSP_CHAPTERS.map(([time, name], i) => `<li><button type="button" class="tsp-chapter" data-chapter="${i}" aria-pressed="${i === tspChapter}"><span class="tsp-time">${time}</span> ${name}</button></li>`).join('');
+  }
+  function renderTsp(open) {
+    $('tsp-list').innerHTML = TSP_ITEMS.map(([key, name, lines]) => {
+      const on = key === open;
+      return `<li class="tsp-item${on ? ' is-open' : ''}">
+        <h3 class="tsp-row-wrap"><button type="button" class="tsp-row" data-tsp="${key}" aria-expanded="${on}" aria-controls="tsp-${key}" id="tsp-btn-${key}">
+          <span class="tsp-label">${name}</span><img class="tsp-caret" src="assets/tsp-caret.svg" width="24" height="24" alt="">
+        </button></h3>
+        <div class="tsp-panel" id="tsp-${key}" role="region" aria-labelledby="tsp-btn-${key}"${on ? '' : ' hidden'}>
+          <ul class="tsp-lines">${lines.map((l) => `<li>${l}</li>`).join('')}</ul>
+          <img class="tsp-star tsp-star-l" src="assets/tsp-star.svg" alt=""><img class="tsp-star tsp-star-r" src="assets/tsp-star.svg" alt="">
+        </div>
+      </li>`;
+    }).join('');
+  }
+  renderTspChapters();
+  $('tsp-chapters').addEventListener('click', (event) => {
+    const b = event.target.closest('[data-chapter]');
+    if (!b) return;
+    tspChapter = Number(b.dataset.chapter);
+    renderTspChapters();
+    $('tsp-chapters').querySelector(`[data-chapter="${tspChapter}"]`).focus();
+    announce(`${TSP_CHAPTERS[tspChapter][1]}. Wala pang video na mapapanood.`);
+  });
+  // Each row opens its own screen (its own address), and pressing it again closes it
+  $('tsp-list').addEventListener('click', (event) => {
+    const b = event.target.closest('[data-tsp]');
+    if (!b) return;
+    tspPressed = b.dataset.tsp;
+    const open = b.getAttribute('aria-expanded') === 'true';
+    location.hash = open ? '#/tulong-sa-paggamit' : `#/tulong-sa-paggamit/${b.dataset.tsp}`;
+  });
+
   function showView(viewId) {
     const wasHidden = $(viewId).hidden;
     VIEWS.forEach((v) => { $(v).hidden = v !== viewId; });
@@ -1678,6 +1749,7 @@
   }
 
   function route() {
+    closeDrawer(false); // first, so the new page is no longer inert when its heading takes focus
     const path = location.hash.replace(/^#\/?/, '');
     const [section, id, sub, step, screen] = path.split('/');
     // #/gabay-aralin/<story id>/<part>; the older #/gabay-aralin/<part> uses the current story
@@ -1717,6 +1789,18 @@
         renderObsCards();
         $('guro-title').focus();
       }
+    } else if (section === 'tulong-sa-paggamit' && TSP_SOON[id]) {
+      showPage({ kicker: 'Tulong sa Paggamit', title: TSP_SOON[id], body: `<p>Malapit na ang bahaging ito.</p><div class="lk-page-back">${pill({ tone: 'blue', label: 'Bumalik', name: 'Bumalik sa Paano Gamitin', href: '#/tulong-sa-paggamit' })}</div>` });
+    } else if (section === 'tulong-sa-paggamit') {
+      const wasHidden = showView('view-tsp');
+      keepScroll = !wasHidden;
+      const item = TSP_ITEMS.find(([key]) => key === id);
+      document.title = `${item ? `${item[1]} — ` : ''}Tulong sa Paggamit — Kuwenturo`;
+      const had = tspPressed || (document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.tsp : null);
+      tspPressed = null;
+      renderTsp(item ? id : null);
+      if (wasHidden) $('tsp-title').focus();
+      else if (had) $(`tsp-btn-${had}`).focus();
     } else if (SECTIONS[section]) {
       showPage({ kicker: 'Kuwenturo', title: SECTIONS[section], body: '<p>Ginagawa pa ang bahaging ito. Malapit na!</p>' });
     } else if (section === 'aralin' && LESSONS[id]) {
@@ -1732,7 +1816,6 @@
       document.title = 'Dashboard — Kuwenturo';
       if (wasHidden) $('main').focus();
     }
-    closeDrawer(false);
     if (!keepScroll) window.scrollTo(0, 0);
   }
 

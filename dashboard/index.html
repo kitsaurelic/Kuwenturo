@@ -19,8 +19,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fredoka+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../design-system/tokens.css">
-  <link rel="stylesheet" href="dashboard.css?v=6">
-  <link rel="stylesheet" href="lakbay.css?v=6">
+  <link rel="stylesheet" href="dashboard.css?v=7">
+  <link rel="stylesheet" href="lakbay.css?v=7">
 </head>
 <body>
   <a class="skip-link" href="#main">Lumaktaw sa nilalaman</a>
@@ -120,10 +120,10 @@
       </div>
 
       <div class="sidebar-foot">
-        <button type="button" class="nav-link help-btn" data-open="help-dialog">
+        <a class="nav-link help-btn" href="#/tulong-sa-paggamit" data-route="tulong-sa-paggamit">
           <span class="nav-icon-slot"><img src="assets/icon-help.svg" width="17" height="17" alt=""></span>
           <span class="nav-label">Tulong sa Paggamit</span>
-        </button>
+        </a>
       </div>
     </aside>
     <div class="scrim" id="scrim" hidden></div>
@@ -324,6 +324,36 @@
         </div>
 
         <!-- Lakbay Aralin: Figma 4763:8758, 4763:12150, 4786:1868 / 3613 / 4420 (1200 × 900 frames) -->
+        <!-- Tulong sa Paggamit (Figma 1146:9818; Paano Gamitin rows open as 1146:9091, 7996, 8365, 8728, 9454) -->
+        <div class="content tsp" id="view-tsp" hidden>
+          <header class="gabay-head">
+            <h1 class="gabay-title" id="tsp-title" tabindex="-1">Tulong sa Paggamit</h1>
+            <p class="gabay-sub">Tignan ang mga gabay na makakatulong sa iyong pagtuturo.</p>
+          </header>
+          <div class="tsp-wrap">
+            <section class="tsp-tutorial" aria-label="Video tutorial">
+              <div class="tsp-video" role="img" aria-label="Video tutorial (wala pang video)">
+                <div class="tsp-video-cap">
+                  <p class="tsp-video-title">Video Tutorial</p>
+                  <p class="tsp-video-desc">Video Tutorial Description</p>
+                  <span class="tsp-video-track"></span>
+                </div>
+              </div>
+              <ol class="tsp-chapters" id="tsp-chapters" aria-label="Mga bahagi ng video"></ol>
+            </section>
+            <section class="tsp-faq" aria-labelledby="tsp-faq-title">
+              <h2 class="tsp-faq-title" id="tsp-faq-title">Paano Gamitin?</h2>
+              <ul class="tsp-list" id="tsp-list"></ul>
+            </section>
+            <nav class="jeep tsp-jeep" aria-label="Mga bahagi ng Tulong sa Paggamit">
+              <img class="jeep-art" src="assets/gabay-jeep.png" alt="">
+              <a class="jeep-sign tsp-sign tsp-sign-paano" href="#/tulong-sa-paggamit" aria-current="page"><img src="assets/tsp-sign-paano.png" alt="Paano Gamitin"></a>
+              <a class="jeep-sign tsp-sign tsp-sign-tips" href="#/tulong-sa-paggamit/turo-tips"><img src="assets/tsp-sign-tips.png" alt="Turo Tips"></a>
+              <a class="jeep-sign tsp-sign tsp-sign-itanong" href="#/tulong-sa-paggamit/madalas-itanong"><img src="assets/tsp-sign-itanong.png" alt="Madalas Itanong"></a>
+            </nav>
+          </div>
+        </div>
+
         <div class="lk" id="view-lakbay" hidden>
           <section class="lk-scene lk-start" id="lk-start" aria-labelledby="lk-start-title" hidden>
             <img class="lk-bg" src="assets/lakbay/bg-start.jpg" width="1496" height="1034" alt="">
@@ -606,24 +636,8 @@
     </div>
   </dialog>
 
-  <!-- Help -->
-  <dialog class="dialog" id="help-dialog" aria-labelledby="help-title">
-    <div class="dialog-head">
-      <h2 class="dialog-title" id="help-title">Tulong sa Paggamit</h2>
-      <button type="button" class="dialog-close" data-close aria-label="Isara">×</button>
-    </div>
-    <ul class="help-list">
-      <li><strong>Menu sa kaliwa</strong> — pumunta sa Gabay Aralin, Lakbay Aralin, Tulong Aralin, o Guro Konek.</li>
-      <li><strong>Naantala / Natapos</strong> — piliin kung aling mga aralin ang ipapakita.</li>
-      <li><strong>Ituloy</strong> — buksan ang aralin na sinimulan mo.</li>
-      <li><strong>Aralin / Palitan</strong> — buksan ang naka-iskedyul na aralin, o pumili ng ibang aralin para sa araw na iyon.</li>
-      <li><strong>Mga arrow sa Iskedyul</strong> — tingnan ang nakaraan o susunod na linggo.</li>
-      <li><strong>Gabay Aralin</strong> — pumili ng kalye at kuwento, saka pindutin ang Bago Basahin, Basahin, o Pagkatapos Basahin sa dyip.</li>
-      <li><strong>Mga bilog na button sa itaas</strong> — maghanap, tingnan ang mga abiso, o mag-log out.</li>
-    </ul>
-  </dialog>
 
   <script src="guides.js"></script>
-  <script src="dashboard.js?v=6"></script>
+  <script src="dashboard.js?v=7"></script>
 </body>
 </html>
