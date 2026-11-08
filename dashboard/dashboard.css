@@ -884,6 +884,8 @@ button.pill:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px
   border: 0; border-radius: 8px; background: none; cursor: pointer; font: inherit; text-align: left;
 }
 .tsp-label { font-size: 16px; line-height: 20px; font-weight: 700; background: linear-gradient(180deg, #C9373C, #9D0A0A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tsp-row { gap: 12px; }
+.tsp-label { padding: 8px 0; }
 .tsp-caret { flex: none; width: 24px; height: 24px; rotate: -90deg; transition: rotate .15s ease; }
 .tsp-row[aria-expanded="true"] .tsp-caret { rotate: 0deg; }
 .tsp-row:hover { background: rgba(255, 190, 51, .18); }

@@ -1716,12 +1716,28 @@
       'Balikan ang mahahalagang pangyayari upang mas mapalalim ang pag-unawa ng bata.',
       '<b>Itanong: “Sino ang paborito mong tauhan? Bakit?”</b>']],
   ];
+  // Madalas Itanong (1146:10544; rows open as 1146:11268, 11997, 12726, 13455, 14184, 14913): one answer paragraph each
+  const TSP_FAQS = [
+    ['may-gabay-na-sagot', 'May mga gabay na sagot ba ang mga gawain?', [
+      'Oo! Pumunta sa <b>Gabay Aralin</b> para makita ang overview ng kuwento at mga answer key. Habang nasa activity, maaari ring i-click ang <b>dilaw na button</b> sa itaas ng screen para mabilis na matingnan ang mga answer key.']],
+    ['obserbasyon-ng-magulang', 'Saan ko makikita ang mga obserbasyon ng magulang?', [
+      'Makikita ang mga ito sa <b>Guro Konek</b>, kung saan maaari ka ring magbigay ng mabilis na kasagutan ukol sa mensahe na ipinadala.']],
+    ['bagong-reading-session', 'Paano ako magsisimula ng bagong reading session?', [
+      'Maaari mong gamitin ang <b>Gabay Aralin</b> para sa mabilisang pag-check o ang <b>Lakbay Aralin</b> para sa buong classroom reading journey.']],
+    ['magkakaibang-antas', 'Paano kung magkakaiba ang antas ng mga mag-aaral?', [
+      'Maaari mong basahin nang malakas ang kuwento, gumamit ng mga larawan, magbigay ng pahiwatig, o magtanong ng mas simple o mas malalim ayon sa pangangailangan ng bawat bata.']],
+    ['bawat-activity', 'Kailangan bang gawin ang bawat activity?', [
+      'Hindi kinakailangan. Maaari mong piliin at iangkop ang mga gawain ayon sa layunin ng aralin, kakayahan ng mga bata, at oras na mayroon ka.']],
+    ['walang-grading-system', 'Paano maa-assess ang mga bata kung walang grading system?', [
+      'Sa pamamagitan ng sariling obserbasyon ng guro sa pakikilahok at pagsagot ng mga bata. Maaari itong maging dagdag na batayan sa pagbibigay ng grado sa pagtatapos ng grading period, dahil pantulong na materyal lamang ang Kuwenturo.']],
+  ];
   // The jeep's signs switch the list under the video; each list keeps its own addresses
   const TSP_PAGES = {
     '': { heading: 'Paano Gamitin?', items: TSP_ITEMS, bullets: true, sign: 'paano' },
     'turo-tips': { heading: 'Turo Tips', items: TSP_TIPS, bullets: false, sign: 'tips', note: true },
+    'madalas-itanong': { heading: 'Madalas Itanong (FAQs)', items: TSP_FAQS, bullets: false, sign: 'itanong' },
   };
-  const TSP_SOON = { 'madalas-itanong': 'Madalas Itanong' };
+  const TSP_SOON = {};
   const tspHref = (page, key) => `#/tulong-sa-paggamit${page ? `/${page}` : ''}${key ? `/${key}` : ''}`;
   let tspPage = null;
   let tspChapter = 0;
