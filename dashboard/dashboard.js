@@ -789,6 +789,12 @@
       const fit = Math.min(W / 1182, H / 887);
       scene.style.setProperty('--tk-s', fit);
       scene.style.setProperty('--tk-z', (W - 32) / 1182);
+      const back = scene.querySelector(':scope > .tk-back-room');
+      if (back) {
+        const sc = Math.max(W / 1182, H / 887);
+        const by = W / H >= 1182 / 887 ? -Math.min(TK_ROOM_TOP, 887 - H / sc) * sc : (H - 887 * sc) / 2;
+        back.style.transform = `translate(${(W - 1182 * sc) / 2}px, ${by}px) scale(${sc})`;
+      }
       if (tkState.pic && lkPhone.matches) { const sp = W / 1182; stages[0].style.transform = `translate(0, ${Math.max(64, (H - 887 * sp) / 2)}px) scale(${sp})`; return; }
       if (!tkState.room && lkPhone.matches) { stages[0].style.transform = ''; return; }
       if (tkState.room && lkPhone.matches) { stages[0].style.transform = `translate(0, 72px) scale(${W / 1182})`; return; }
@@ -1431,6 +1437,11 @@
   };
   // A cream card with its dashes, its folder tabs and the banner across its top
   const tkCard = (y, h, inset, sign) => tkTabs(y) + bbPanel(24, y + 46, 1133.5, h, 45.7, y + 46 + inset, 1089, h - inset * 2, '#001343').replace('rx="30"', 'rx="16"') + sign;
+  // Backdrops cover the whole window; the frame's own content stays at its size in the middle.
+  // The room keeps the place it has on the board (lkFit), so opening a question does not move it.
+  const tkRoomBack = (id, extra) => `<div class="tk-back tk-back-room" aria-hidden="true"><img class="tk-room" src="${TK_ART}room.jpg" alt=""><div class="tk-board" inert>${tkBoard(id, false)}</div>
+      <img class="tk-kid" src="${TK_ART}biboy-tayo.png" alt=""><i class="tk-dim"></i>${extra}</div>`;
+  const tkImgBack = (file, soft) => `<div class="tk-back tk-back-img${soft ? ' is-soft' : ''}" aria-hidden="true"><img src="${TK_ART}${file}" alt="">${soft ? '<i class="tk-veil"></i>' : ''}</div>`;
   const tkScreens = {
     start: () => `<img class="tk-cork" src="${TK_ART}cork.png" alt="Bakanteng frame na may hugis ng anim na piraso ng puzzle">${tkCard(443, 261, 23, tkSign('TUKLASIN #1', 452))}
       <p class="tk-box tk-name">ANG NAWAWALANG<br>LARAWAN</p>`,
@@ -1481,9 +1492,7 @@
       const [file, x, y, w, h, turn] = TK_PIECES[q.piece];
       const [tx, ty, tw, th] = q.thumb;
       const art = `src="${TK_ART}${file}.png" alt=""`;
-      return `<img class="tk-room" src="${TK_ART}room.jpg" alt=""><div class="tk-board" inert>${tkBoard(id, false)}</div>
-      <img class="tk-kid" src="${TK_ART}biboy-tayo.png" alt=""><i class="tk-dim"></i>
-      <img class="tk-lit" ${art} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:${turn || 'none'}">
+      return `${tkRoomBack(id, `<img class="tk-lit" ${art} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:${turn || 'none'}">`)}
       ${tkCard(463, 273, 29, tkRename(bbSign(270, 475, 725.5, 88.4, 'navy', q.sign, 47)))}
       <img class="tk-thumb" ${art} style="left:${tx}px;top:${ty}px;width:${tw}px;height:${th}px;transform:${turn || 'none'}">
       <p class="tk-ask"><span>${q.text}</span> <span class="tk-ask-q">(${q.ask})</span></p>
@@ -1493,23 +1502,24 @@
       </div>`;
     },
     // Answer Key_Question n (the frame itself, with its close tab live)
-    susi: (id, n) => `<img class="tk-room" src="${TK_ART}susi-${n}.jpg" alt="">
+    susi: (id, n) => `${tkRoomBack(id, '')}<img class="tk-art" src="${TK_ART}susi-card-${n}.png" alt="" style="left:0;top:218.6px;width:1182px;height:450.7px">
       <h1 class="tk-vh" id="tk-title" tabindex="-1">Tamang sagot sa tanong ${n}</h1>
       <p class="tk-vh">Piliin ang “${TK_Q[n].yes ? 'Opo!' : 'Hindi Po'}”. ${TK_Q[n].key}</p>
       <a class="tk-tool tk-x2" id="tk-x" href="${tkUrl(id, tkState.from && tkState.from !== 'susi' ? tkState.from : `tanong-${n}`)}" aria-label="Isara ang tamang sagot"><img src="${TK_ART}susi-x.png" alt=""></a>`,
-    tama: (id) => `<img class="tk-room" src="${TK_ART}tama.jpg" alt="">
+    tama: (id) => `${tkImgBack('kinalabasan-bg.jpg')}<img class="tk-art" src="${TK_ART}tama-card.png" alt="" style="left:107.5px;top:78.8px;width:963.8px;height:716.3px">
       <h1 class="tk-vh" id="tk-title" tabindex="-1">Wow galing! Tama ang iyong sagot.</h1>
       <a class="tk-go" id="tk-go" href="${tkUrl(id, 'simula')}" style="left:474px;top:625px;width:234px;height:70px"><img src="${TK_ART}btn-magpatuloy-tama.png" alt="Magpatuloy"></a>`,
-    mali: (id) => `<img class="tk-room" src="${TK_ART}mali.jpg" alt="">
+    mali: (id) => `${tkImgBack('kinalabasan-bg.jpg')}<img class="tk-art" src="${TK_ART}mali-card.png" alt="" style="left:106.6px;top:79px;width:963.8px;height:716.3px">
       <h1 class="tk-vh" id="tk-title" tabindex="-1">Oops sayang! Mali ang iyong sagot.</h1>
       <a class="tk-go" id="tk-go" href="${tkUrl(id, 'simula')}" style="left:474px;top:625px;width:234px;height:70px"><img src="${TK_ART}btn-magpatuloy-mali.png" alt="Magpatuloy"></a>`,
     // PICTURE_CLEAN: the finished picture; pressing anywhere goes on
-    larawan: (id) => `<a class="tk-whole" id="tk-whole" href="${tkUrl(id, 'dulo')}"><img class="tk-room" src="${TK_ART}larawan.jpg" alt="Ang buong larawan ng pamilya ni Popoy"><h1 class="tk-vh" id="tk-title" tabindex="-1">Buo na ang larawan! Pindutin kahit saan upang magpatuloy.</h1></a>`,
+    larawan: (id) => `${tkImgBack('larawan-bg.jpg')}<img class="tk-art" src="${TK_ART}larawan-glow.png" alt="Ang buong larawan ng pamilya ni Popoy" style="left:-1.5px;top:-13px;width:1182px;height:913px">
+      <a class="tk-whole" id="tk-whole" href="${tkUrl(id, 'dulo')}"><h1 class="tk-vh" id="tk-title" tabindex="-1">Buo na ang larawan! Pindutin kahit saan upang magpatuloy.</h1></a>`,
     dulo: () => `<h1 class="tk-vh" id="tk-title" tabindex="-1">Naibalik ang larawan ng pamilya ni Popoy</h1><img class="tk-room" src="${TK_ART}dulo.jpg" alt="Nakasabit na ang buong larawan ng pamilya ni Popoy; nakatayo si Biboy sa harap nito">`,
-    tagumpay: (id) => `<img class="tk-room" src="${TK_ART}tagumpay.jpg" alt="">
+    tagumpay: (id) => `${tkImgBack('dulo.jpg', true)}<img class="tk-art" src="${TK_ART}tagumpay-card.png" alt="" style="left:23.6px;top:63px;width:1135.5px;height:823.3px"><img class="tk-art" src="${TK_ART}tagumpay-biboy.png" alt="Si Biboy, masayang kumakaway" style="left:24px;top:179px;width:516.5px;height:707.3px">
       <h1 class="tk-vh" id="tk-title" tabindex="-1">Tagumpay! YEHEY! Dito na po nagtatapos ang Tuklasin #1. Maraming salamat po sa inyong tulong!</h1>
       <a class="tk-go" id="tk-go" href="${tkUrl(id, 'wakas')}" style="left:925px;top:240px;width:215px;height:65px"><img src="${TK_ART}btn-ipasa.png" alt="Ipasa"></a>`,
-    wakas: () => `<img class="tk-room tk-blur" src="${TK_ART}dulo.jpg" alt=""><img class="tk-photo" src="${TK_ART}wakas-larawan.png" alt="Ang buong larawan ng pamilya ni Popoy">
+    wakas: () => `${tkImgBack('dulo.jpg', true)}<img class="tk-photo" src="${TK_ART}wakas-larawan.png" alt="Ang buong larawan ng pamilya ni Popoy">
       ${tkCard(443, 261, 23, tkSign('PAGWAWAKAS', 454))}
       <p class="tk-box tk-wakas">ANO ANG PABORITO NIYONG DETALYE SA KUWENTO?</p>`,
 
@@ -1520,15 +1530,15 @@
     biboy: { bg: 'bg-3', title: 'Tuklasin Natin', back: (id) => tkUrl(id, 'pindutin'), next: 'panuto', bare: true },
     panuto: { bg: 'bg-1', title: 'Panuto', back: (id) => tkUrl(id, 'biboy'), next: 'daloy' },
     daloy: { bg: 'bg-2', title: 'Daloy ng Gawain', back: (id) => tkUrl(id, tkState.from || 'panuto'), next: 'simula' },
-    simula: { title: 'Ang Nawawalang Larawan', back: (id) => tkUrl(id, 'daloy'), next: () => { const s = tkStatus(); return s.done ? 'larawan' : (tkNextQ(s) ? `tanong-${tkNextQ(s)}` : 'simula'); }, top: true, room: true },
+    simula: { title: 'Ang Nawawalang Larawan', back: (id) => tkUrl(id, 'daloy'), next: () => { const s = tkStatus(); return s.done ? 'larawan' : (tkNextQ(s) ? `tanong-${tkNextQ(s)}` : 'simula'); }, top: true, room: true, fill: 'room.jpg' },
     tanong: { title: 'Tanong', back: (id) => tkUrl(id, 'simula'), next: (n) => { const s = tkStatus(); const m = tkNextQ(s, n); return m && m !== n ? `tanong-${m}` : 'simula'; }, top: true, pic: true, esc: 'simula' },
     susi: { title: 'Tamang Sagot', back: (id) => tkUrl(id, 'simula'), next: 'simula', bare: true, pic: true },
     tama: { title: 'Tama ang iyong sagot', back: (id) => tkUrl(id, 'simula'), next: 'simula', bare: true, pic: true, still: true, esc: 'simula' },
     mali: { title: 'Mali ang iyong sagot', back: (id) => tkUrl(id, 'simula'), next: 'simula', bare: true, pic: true, still: true, esc: 'simula' },
     larawan: { title: 'Ang Buong Larawan', back: (id) => tkUrl(id, 'simula'), next: 'dulo', bare: true, pic: true, still: true, esc: 'simula' },
-    dulo: { title: 'Ang Buong Larawan', back: (id) => tkUrl(id, 'simula'), next: 'tagumpay', pic: true, esc: 'simula' },
+    dulo: { title: 'Ang Buong Larawan', back: (id) => tkUrl(id, 'simula'), next: 'tagumpay', room: true, fill: 'dulo.jpg', pic: true, esc: 'simula' },
     tagumpay: { title: 'Tagumpay', back: (id) => tkUrl(id, 'dulo'), next: 'wakas', bare: true, pic: true, still: true, esc: 'dulo' },
-    wakas: { bg: 'bg-1', title: 'Pagwawakas', back: (id) => tkUrl(id, 'tagumpay'), next: 'saan', pic: true, esc: 'tagumpay' },
+    wakas: { title: 'Pagwawakas', back: (id) => tkUrl(id, 'tagumpay'), next: 'saan', pic: true, esc: 'tagumpay' },
     kagamitan: { bg: 'bg-1', title: 'Kagamitan', back: (id) => tkUrl(id, tkState.from || 'simula'), next: 'piliin', bare: true },
     piliin: { bg: 'bg-1', title: 'Piliin Na', back: (id) => tkUrl(id, 'kagamitan'), next: 'gulong', bare: true },
     gulong: { bg: 'bg-1', title: 'Pinipili Ko', back: (id) => tkUrl(id, 'piliin'), next: 'gulong', bare: true },
@@ -1572,9 +1582,16 @@
     tkState.pic = !!step.pic;
     tkState.num = num;
     $('tk-stage').innerHTML = tkScreens[key](id, num);
+    $('lk-tk').querySelectorAll(':scope > .tk-lifted').forEach((e) => e.remove());
+    $('tk-stage').querySelectorAll('.tk-back, .tk-x, .tk-whole').forEach((e) => {
+      e.classList.add('tk-lifted');
+      $('lk-tk').insertBefore(e, e.classList.contains('tk-back') ? $('tk-stage') : $('tk-top'));
+    });
     $('lk-tk').className = `lk-scene lk-full lk-tk is-${key}${step.pic ? ' is-pic' : ''}`;
-    $('tk-bg').hidden = !step.bg;
+    $('tk-bg').hidden = !step.bg && !step.fill;
     if (step.bg) $('tk-bg').src = `${TK_ART}${step.bg}.jpg`;
+    else if (step.fill) $('tk-bg').src = `${TK_ART}${step.fill}`;
+    $('tk-bg').classList.toggle('is-soft', !step.bg && !!step.fill);
     $('tk-top').hidden = !step.top;
     $('tk-daloy').href = tkUrl(id, 'daloy');
     $('tk-sagot').href = tkUrl(id, `susi-${num || tkNextQ(game) || 1}`);

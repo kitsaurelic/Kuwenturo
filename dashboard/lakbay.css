@@ -736,8 +736,27 @@ a.tk-piece { display: block; }
 @media (max-width: 700px), (max-width: 900px) and (max-height: 500px) {
   .lk-tk.is-pic .lk-stage { position: absolute; display: block; width: 1182px; height: 887px; min-height: 0; padding: 0; }
   .lk-tk.is-pic { min-height: 100dvh; }
+  .lk-tk.is-pic, .lk-tk.is-simula { overflow: hidden; } /* the frame is scaled to the width; its full-size box must not make the scene scroll */
 }
 @media (prefers-reduced-motion: reduce) {
   .tk-done, .tk-ans, .tk-go { transition: none; }
   .tk-ans:hover, .tk-go:hover, .tk-ans:active, .tk-go:active { transform: none; }
 }
+
+/* ---------- Full-window game screens: backdrop covers, the frame's content keeps its proportions ---------- */
+.tk-back { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.tk-back-room { inset: auto; left: 0; top: 0; width: 1182px; height: 887px; transform-origin: 0 0; overflow: visible; }
+.tk-back-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Figma: background blur 14.8 under navy at 85% */
+.tk-back-img.is-soft img { filter: blur(7.4px); transform: scale(1.04); }
+.tk-veil { position: absolute; inset: 0; background: rgba(9, 22, 56, .85); }
+.tk-bg.is-soft { filter: blur(14px) brightness(.85); transform: scale(1.06); }
+.tk-art { position: absolute; max-width: none; pointer-events: none; }
+.lk-tk > .tk-whole { position: absolute; inset: 0; z-index: 4; }
+/* corner close buttons stay in the window's corner, sized with the frame */
+.tk-x.tk-lifted { left: auto; right: calc(30.5px * var(--tk-s, 1)); top: calc(22px * var(--tk-s, 1)); width: calc(58.5px * var(--tk-s, 1)); height: calc(57px * var(--tk-s, 1)); z-index: 6; }
+@media (max-width: 700px), (max-width: 900px) and (max-height: 500px) {
+  .tk-x.tk-lifted { position: fixed; right: 8px; top: 8px; width: 48px; height: 48px; }
+}
+/* the game is a fixed full-window layer: the page behind it must not scroll (it ran 1px tall and showed a scrollbar) */
+html:has(#lk-tk:not([hidden])), html:has(#lk-tk:not([hidden])) body { overflow: hidden; }
